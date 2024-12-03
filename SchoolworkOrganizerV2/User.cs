@@ -11,18 +11,24 @@ using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Windows.Forms;
 using System.Text.Json;
+using Microsoft.Data.SqlClient;
+using System.Text.Json.Serialization;
+using Microsoft.Identity.Client;
+using MySqlConnector;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     [Serializable]
     public class User
     {
         public static readonly List<User> Users = new List<User>();
+        public static User? currentUser = null;
+
         private static readonly string UserDataPath = "UserData.data";
         private string UserPath;
 
         public string Email;
-        private string _username;
+        private string _username = "";
         public string Username {
             get { return _username; }
             set
@@ -33,12 +39,11 @@ namespace SchoolworkOrganizerV2
                 UserPath = newPath;
             }
         }
+
         public string Password;
-        private byte[] UserImageData;
 
+        private byte[]? UserImageData;
         public List<Subject> Subjects = new List<Subject>();
-
-        [NonSerialized]
         public Image UserImage;
 
         public User(string Email, string Username, string Password, Image UserImage)
@@ -48,31 +53,32 @@ namespace SchoolworkOrganizerV2
             this.Password = Password;
             this.UserImage = UserImage;
             UserPath = "Data/" + Username;
+
         }
 
         public static void LoadUsers()
         {
-            if (!File.Exists(UserDataPath) || new FileInfo(UserDataPath).Length == 0)
-            {
-                return;
-            }
+            //if (!File.Exists(UserDataPath) || new FileInfo(UserDataPath).Length == 0)
+            //{
+            //    return;
+            //}
 
-            using (var stream = new FileStream(UserDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                // Deserialize the JSON data to a List<User>
-                var users = JsonSerializer.Deserialize<List<User>>(stream);
+            //using (var stream = new FileStream(UserDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    // Deserialize the JSON data to a List<User>
+            //    var users = JsonSerializer.Deserialize<List<User>>(stream);
 
-                if (users != null)
-                {
-                    Users.Clear();
-                    Users.AddRange(users);
-                }
-            }
+            //    if (users != null)
+            //    {
+            //        Users.Clear();
+            //        Users.AddRange(users);
+            //    }
+            //}
 
-            foreach (User user in Users)
-            {
-                user.ConvertBytesToImage();
-            }
+            //foreach (User user in Users)
+            //{
+            //    user.ConvertBytesToImage();
+            //}
         }
 
         public static void SaveUsers()
@@ -90,18 +96,8 @@ namespace SchoolworkOrganizerV2
 
             using (var stream = new FileStream(UserDataPath, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
-                // Serialize the Users list to the stream
                 JsonSerializer.Serialize(stream, Users);
             }
-        }
-
-        public static User GetUser(string username)
-        {
-            foreach (User user in Users)
-            {
-                if (user.Username == username) return user;
-            }
-            return null;
         }
 
         private void ConvertImageToBytes()
@@ -140,6 +136,98 @@ namespace SchoolworkOrganizerV2
             foreach (Subject subject in Subjects)
             {
                 subject.CheckForFiles();
+            }
+        }
+
+        public static bool Login(string username, string password)
+        {
+            foreach (User user in Users)
+            {
+                if (user.Username == username && user.Password == password) 
+                {
+                    currentUser = user;
+                    return true; 
+                }
+            }
+
+            return false;
+        }
+
+        public static void Logout()
+        {
+            currentUser = null;
+        }
+
+        public void AddUserToDatabase()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    connection.Open();
+                    string query = "INSERT INTO `user` (username, password, email, imageData) VALUES (@Username, @Password, @Email, @ImageData)";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@Password", Password);
+                        command.Parameters.AddWithValue("@Email", Email);
+                        command.Parameters.AddWithValue("@ImageData", UserImageData ?? (object)DBNull.Value);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.Message, "Error");
+            }
+        }
+
+        public void UpdateUserInDatabase(string oldUsername)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE `user` SET username = @Username, password = @Password, email = @Email, imageData = @ImageData WHERE username = @OldUsername";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@OldUsername", oldUsername);
+                        command.Parameters.AddWithValue("@Password", Password);
+                        command.Parameters.AddWithValue("@Email", Email);
+                        command.Parameters.AddWithValue("@ImageData", UserImageData ?? (object)DBNull.Value);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.Message, "Error");
+            }
+        }
+
+        public void DeleteUserFromDatabase()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    connection.Open();
+                    string query = "DELETE FROM `user` WHERE username = @Username";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (MySqlException e)
+            {
+                MessageBox.Show(e.Message, "Error");
             }
         }
 

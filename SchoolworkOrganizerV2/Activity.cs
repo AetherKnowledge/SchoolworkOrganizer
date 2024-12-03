@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     [Serializable]
     public class Activity
     {
         public string Name { get; set; }
         private Subject _subject;
+
         public Subject Subject
         {
             get { return _subject; }
@@ -34,7 +36,6 @@ namespace SchoolworkOrganizerV2
             }
         }
 
-        public string _folderPath;
         public string FolderPath
         {
             get 
@@ -44,15 +45,14 @@ namespace SchoolworkOrganizerV2
             }
         }
 
-        private string _filePath;
+        public string FileName { get; private set; }
         public string FilePath
         {
             get
             {
                 if (FolderPath == null) return null;
-                return FolderPath + "/" + _filePath;
+                return FolderPath + "/" + FileName;
             }
-            private set { _filePath = value; }
         }
 
         public DateTime DueDate { get; set; }
@@ -66,7 +66,7 @@ namespace SchoolworkOrganizerV2
             Status = status;
 
             string fileName = Path.GetFileName(sourcePath);
-            FilePath = fileName;
+            FileName = fileName;
 
             if (sourcePath != FilePath)
             {
@@ -82,7 +82,7 @@ namespace SchoolworkOrganizerV2
                 if (!File.Exists(sourcePath)) return;
                 File.Delete(FilePath);
                 string fileName = Path.GetFileName(sourcePath);
-                FilePath = fileName;
+                FileName = fileName;
                 Utilities.CopyFile(sourcePath, FolderPath + "/" + fileName);
             }
             catch (Exception ex)

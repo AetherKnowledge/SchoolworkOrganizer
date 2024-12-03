@@ -1,4 +1,4 @@
-﻿namespace SchoolworkOrganizerV2
+﻿namespace SchoolworkOrganizer
 {
     partial class HomePanel
     {
@@ -28,18 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
-            // home
+            // mainPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 480);
-            this.Name = "home";
-            this.Text = "Home";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            mainPanel.Margin = new Padding(5, 3, 5, 3);
+            mainPanel.Size = new Size(1089, 626);
+            // 
+            // HomePanel
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1280, 720);
+            Margin = new Padding(5, 3, 5, 3);
+            Name = "HomePanel";
+            Text = "Home";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

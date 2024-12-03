@@ -1,4 +1,4 @@
-﻿namespace SchoolworkOrganizerV2.Panels
+﻿namespace SchoolworkOrganizer.Panels
 {
     partial class SubjectsPanel
     {
@@ -28,231 +28,241 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.refreshBtn = new System.Windows.Forms.Button();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cancelBtn = new System.Windows.Forms.Button();
-            this.deleteBtn = new System.Windows.Forms.Button();
-            this.saveBtn = new System.Windows.Forms.Button();
-            this.addBtn = new System.Windows.Forms.Button();
-            this.subjectTxtBox = new System.Windows.Forms.TextBox();
-            this.subjectLabel = new System.Windows.Forms.Label();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.table = new System.Windows.Forms.DataGridView();
-            this.Subject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Reviewers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Activities = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mainPanel.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
-            this.SuspendLayout();
+            panel4 = new Panel();
+            refreshBtn = new Button();
+            panel5 = new Panel();
+            label3 = new Label();
+            cancelBtn = new Button();
+            deleteBtn = new Button();
+            saveBtn = new Button();
+            addBtn = new Button();
+            subjectTxtBox = new TextBox();
+            subjectLabel = new Label();
+            panel8 = new Panel();
+            table = new DataGridView();
+            Subject = new DataGridViewTextBoxColumn();
+            Reviewers = new DataGridViewTextBoxColumn();
+            Activities = new DataGridViewTextBoxColumn();
+            mainPanel.SuspendLayout();
+            panel4.SuspendLayout();
+            panel5.SuspendLayout();
+            panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)table).BeginInit();
+            SuspendLayout();
             // 
             // mainPanel
             // 
-            this.mainPanel.Controls.Add(this.panel8);
-            this.mainPanel.Controls.Add(this.panel4);
-            this.mainPanel.Size = new System.Drawing.Size(780, 420);
+            mainPanel.Controls.Add(panel8);
+            mainPanel.Controls.Add(panel4);
+            mainPanel.Margin = new Padding(5, 3, 5, 3);
+            mainPanel.Size = new Size(1089, 626);
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.refreshBtn);
-            this.panel4.Controls.Add(this.panel5);
-            this.panel4.Controls.Add(this.cancelBtn);
-            this.panel4.Controls.Add(this.deleteBtn);
-            this.panel4.Controls.Add(this.saveBtn);
-            this.panel4.Controls.Add(this.addBtn);
-            this.panel4.Controls.Add(this.subjectTxtBox);
-            this.panel4.Controls.Add(this.subjectLabel);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(216, 420);
-            this.panel4.TabIndex = 0;
+            panel4.Controls.Add(refreshBtn);
+            panel4.Controls.Add(panel5);
+            panel4.Controls.Add(cancelBtn);
+            panel4.Controls.Add(deleteBtn);
+            panel4.Controls.Add(saveBtn);
+            panel4.Controls.Add(addBtn);
+            panel4.Controls.Add(subjectTxtBox);
+            panel4.Controls.Add(subjectLabel);
+            panel4.Dock = DockStyle.Left;
+            panel4.Location = new Point(0, 0);
+            panel4.Margin = new Padding(4, 3, 4, 3);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(252, 626);
+            panel4.TabIndex = 0;
             // 
             // refreshBtn
             // 
-            this.refreshBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.refreshBtn.FlatAppearance.BorderSize = 0;
-            this.refreshBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.refreshBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.refreshBtn.Location = new System.Drawing.Point(132, 385);
-            this.refreshBtn.Name = "refreshBtn";
-            this.refreshBtn.Size = new System.Drawing.Size(75, 23);
-            this.refreshBtn.TabIndex = 16;
-            this.refreshBtn.Text = "Refresh";
-            this.refreshBtn.UseVisualStyleBackColor = false;
-            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
+            refreshBtn.BackColor = Color.FromArgb(52, 63, 82);
+            refreshBtn.FlatAppearance.BorderSize = 0;
+            refreshBtn.FlatStyle = FlatStyle.Flat;
+            refreshBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            refreshBtn.Location = new Point(154, 444);
+            refreshBtn.Margin = new Padding(4, 3, 4, 3);
+            refreshBtn.Name = "refreshBtn";
+            refreshBtn.Size = new Size(88, 27);
+            refreshBtn.TabIndex = 16;
+            refreshBtn.Text = "Refresh";
+            refreshBtn.UseVisualStyleBackColor = false;
+            refreshBtn.Click += refreshBtn_Click;
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.label3);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(216, 54);
-            this.panel5.TabIndex = 7;
+            panel5.Controls.Add(label3);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 0);
+            panel5.Margin = new Padding(4, 3, 4, 3);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(252, 62);
+            panel5.TabIndex = 7;
             // 
             // label3
             // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Roboto", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(0, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(216, 54);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Subjects";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label3.Dock = DockStyle.Fill;
+            label3.Font = new Font("Roboto", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(0, 0);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(252, 62);
+            label3.TabIndex = 6;
+            label3.Text = "Subjects";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // cancelBtn
             // 
-            this.cancelBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.cancelBtn.FlatAppearance.BorderSize = 0;
-            this.cancelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cancelBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.cancelBtn.Location = new System.Drawing.Point(132, 119);
-            this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 5;
-            this.cancelBtn.Text = "Cancel";
-            this.cancelBtn.UseVisualStyleBackColor = false;
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            cancelBtn.BackColor = Color.FromArgb(52, 63, 82);
+            cancelBtn.FlatAppearance.BorderSize = 0;
+            cancelBtn.FlatStyle = FlatStyle.Flat;
+            cancelBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cancelBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            cancelBtn.Location = new Point(154, 137);
+            cancelBtn.Margin = new Padding(4, 3, 4, 3);
+            cancelBtn.Name = "cancelBtn";
+            cancelBtn.Size = new Size(88, 27);
+            cancelBtn.TabIndex = 5;
+            cancelBtn.Text = "Cancel";
+            cancelBtn.UseVisualStyleBackColor = false;
+            cancelBtn.Click += cancelBtn_Click;
             // 
             // deleteBtn
             // 
-            this.deleteBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.deleteBtn.Enabled = false;
-            this.deleteBtn.FlatAppearance.BorderSize = 0;
-            this.deleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deleteBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.deleteBtn.Location = new System.Drawing.Point(9, 119);
-            this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(75, 23);
-            this.deleteBtn.TabIndex = 4;
-            this.deleteBtn.Text = "Delete";
-            this.deleteBtn.UseVisualStyleBackColor = false;
-            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
+            deleteBtn.BackColor = Color.FromArgb(171, 37, 51);
+            deleteBtn.Enabled = false;
+            deleteBtn.FlatAppearance.BorderSize = 0;
+            deleteBtn.FlatStyle = FlatStyle.Flat;
+            deleteBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            deleteBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            deleteBtn.Location = new Point(10, 137);
+            deleteBtn.Margin = new Padding(4, 3, 4, 3);
+            deleteBtn.Name = "deleteBtn";
+            deleteBtn.Size = new Size(88, 27);
+            deleteBtn.TabIndex = 4;
+            deleteBtn.Text = "Delete";
+            deleteBtn.UseVisualStyleBackColor = false;
+            deleteBtn.Click += deleteBtn_Click;
             // 
             // saveBtn
             // 
-            this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.saveBtn.Enabled = false;
-            this.saveBtn.FlatAppearance.BorderSize = 0;
-            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.saveBtn.Location = new System.Drawing.Point(132, 90);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(75, 23);
-            this.saveBtn.TabIndex = 3;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = false;
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            saveBtn.BackColor = Color.FromArgb(52, 63, 82);
+            saveBtn.Enabled = false;
+            saveBtn.FlatAppearance.BorderSize = 0;
+            saveBtn.FlatStyle = FlatStyle.Flat;
+            saveBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            saveBtn.Location = new Point(154, 104);
+            saveBtn.Margin = new Padding(4, 3, 4, 3);
+            saveBtn.Name = "saveBtn";
+            saveBtn.Size = new Size(88, 27);
+            saveBtn.TabIndex = 3;
+            saveBtn.Text = "Save";
+            saveBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += saveBtn_Click;
             // 
             // addBtn
             // 
-            this.addBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(192)))), ((int)(((byte)(170)))));
-            this.addBtn.FlatAppearance.BorderSize = 0;
-            this.addBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.addBtn.Location = new System.Drawing.Point(9, 90);
-            this.addBtn.Name = "addBtn";
-            this.addBtn.Size = new System.Drawing.Size(75, 23);
-            this.addBtn.TabIndex = 2;
-            this.addBtn.Text = "Add";
-            this.addBtn.UseVisualStyleBackColor = false;
-            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
+            addBtn.BackColor = Color.FromArgb(95, 192, 170);
+            addBtn.FlatAppearance.BorderSize = 0;
+            addBtn.FlatStyle = FlatStyle.Flat;
+            addBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            addBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            addBtn.Location = new Point(10, 104);
+            addBtn.Margin = new Padding(4, 3, 4, 3);
+            addBtn.Name = "addBtn";
+            addBtn.Size = new Size(88, 27);
+            addBtn.TabIndex = 2;
+            addBtn.Text = "Add";
+            addBtn.UseVisualStyleBackColor = false;
+            addBtn.Click += addBtn_Click;
             // 
             // subjectTxtBox
             // 
-            this.subjectTxtBox.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.subjectTxtBox.Location = new System.Drawing.Point(89, 60);
-            this.subjectTxtBox.Name = "subjectTxtBox";
-            this.subjectTxtBox.Size = new System.Drawing.Size(118, 22);
-            this.subjectTxtBox.TabIndex = 1;
+            subjectTxtBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectTxtBox.Location = new Point(104, 69);
+            subjectTxtBox.Margin = new Padding(4, 3, 4, 3);
+            subjectTxtBox.Name = "subjectTxtBox";
+            subjectTxtBox.Size = new Size(137, 22);
+            subjectTxtBox.TabIndex = 1;
             // 
             // subjectLabel
             // 
-            this.subjectLabel.AutoSize = true;
-            this.subjectLabel.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.subjectLabel.Location = new System.Drawing.Point(6, 63);
-            this.subjectLabel.Name = "subjectLabel";
-            this.subjectLabel.Size = new System.Drawing.Size(80, 15);
-            this.subjectLabel.TabIndex = 0;
-            this.subjectLabel.Text = "Subject Name:";
+            subjectLabel.AutoSize = true;
+            subjectLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectLabel.Location = new Point(7, 73);
+            subjectLabel.Margin = new Padding(4, 0, 4, 0);
+            subjectLabel.Name = "subjectLabel";
+            subjectLabel.Size = new Size(80, 15);
+            subjectLabel.TabIndex = 0;
+            subjectLabel.Text = "Subject Name:";
             // 
             // panel8
             // 
-            this.panel8.Controls.Add(this.table);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel8.Location = new System.Drawing.Point(216, 0);
-            this.panel8.Name = "panel8";
-            this.panel8.Padding = new System.Windows.Forms.Padding(10);
-            this.panel8.Size = new System.Drawing.Size(564, 420);
-            this.panel8.TabIndex = 16;
+            panel8.Controls.Add(table);
+            panel8.Dock = DockStyle.Fill;
+            panel8.Location = new Point(252, 0);
+            panel8.Margin = new Padding(4, 3, 4, 3);
+            panel8.Name = "panel8";
+            panel8.Padding = new Padding(12);
+            panel8.Size = new Size(837, 626);
+            panel8.TabIndex = 16;
             // 
             // table
             // 
-            this.table.AllowUserToAddRows = false;
-            this.table.AllowUserToDeleteRows = false;
-            this.table.AllowUserToResizeRows = false;
-            this.table.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.table.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Subject,
-            this.Reviewers,
-            this.Activities});
-            this.table.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.table.Location = new System.Drawing.Point(10, 10);
-            this.table.MultiSelect = false;
-            this.table.Name = "table";
-            this.table.ReadOnly = true;
-            this.table.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.table.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.table.Size = new System.Drawing.Size(544, 400);
-            this.table.TabIndex = 6;
+            table.AllowUserToAddRows = false;
+            table.AllowUserToDeleteRows = false;
+            table.AllowUserToResizeRows = false;
+            table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            table.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            table.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            table.Columns.AddRange(new DataGridViewColumn[] { Subject, Reviewers, Activities });
+            table.Dock = DockStyle.Fill;
+            table.Location = new Point(12, 12);
+            table.Margin = new Padding(4, 3, 4, 3);
+            table.MultiSelect = false;
+            table.Name = "table";
+            table.ReadOnly = true;
+            table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            table.Size = new Size(813, 602);
+            table.TabIndex = 6;
             // 
             // Subject
             // 
-            this.Subject.HeaderText = "Subject";
-            this.Subject.Name = "Subject";
-            this.Subject.ReadOnly = true;
+            Subject.HeaderText = "Subject";
+            Subject.Name = "Subject";
+            Subject.ReadOnly = true;
             // 
             // Reviewers
             // 
-            this.Reviewers.HeaderText = "Reviewers";
-            this.Reviewers.Name = "Reviewers";
-            this.Reviewers.ReadOnly = true;
+            Reviewers.HeaderText = "Reviewers";
+            Reviewers.Name = "Reviewers";
+            Reviewers.ReadOnly = true;
             // 
             // Activities
             // 
-            this.Activities.HeaderText = "Activities";
-            this.Activities.Name = "Activities";
-            this.Activities.ReadOnly = true;
+            Activities.HeaderText = "Activities";
+            Activities.Name = "Activities";
+            Activities.ReadOnly = true;
             // 
             // SubjectsPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(942, 480);
-            this.Name = "SubjectsPanel";
-            this.Text = "Subjects";
-            this.mainPanel.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1280, 720);
+            Margin = new Padding(5, 3, 5, 3);
+            Name = "SubjectsPanel";
+            Text = "Subjects";
+            mainPanel.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)table).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

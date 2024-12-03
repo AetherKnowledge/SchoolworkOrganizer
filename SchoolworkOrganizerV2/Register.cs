@@ -1,4 +1,4 @@
-﻿using SchoolworkOrganizerV2.Panels;
+﻿using SchoolworkOrganizer.Panels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     public partial class RegisterPanel : Form
     {
@@ -74,6 +74,7 @@ namespace SchoolworkOrganizerV2
             }
 
             User.Users.Add(new User(email, username, password, userImage));
+            User.SaveUsers();
             MessageBox.Show("Register Successful", "Success");
             this.Hide();
             OpenPanels.loginPage.Show();

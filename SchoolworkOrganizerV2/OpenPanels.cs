@@ -1,12 +1,12 @@
-﻿using SchoolworkOrganizerV2.Panels;
-using SchoolworkOrganizerV2.Popups;
+﻿using SchoolworkOrganizer.Panels;
+using SchoolworkOrganizer.Popups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     internal static class OpenPanels
     {

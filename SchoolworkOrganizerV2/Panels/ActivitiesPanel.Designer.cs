@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace SchoolworkOrganizerV2.Panels
+namespace SchoolworkOrganizer.Panels
 {
     partial class ActivitiesPanel
     {
@@ -30,470 +30,488 @@ namespace SchoolworkOrganizerV2.Panels
         /// </summary>
         private void InitializeComponent()
         {
-            this.searchComboBox = new System.Windows.Forms.ComboBox();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.refreshBtn = new System.Windows.Forms.Button();
-            this.statusCBox = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.selectedFileLabel = new System.Windows.Forms.TextBox();
-            this.openFileBtn = new System.Windows.Forms.Button();
-            this.editFileBtn = new System.Windows.Forms.Button();
-            this.fileLabel = new System.Windows.Forms.Label();
-            this.cancelBtn = new System.Windows.Forms.Button();
-            this.deleteBtn = new System.Windows.Forms.Button();
-            this.saveBtn = new System.Windows.Forms.Button();
-            this.addBtn = new System.Windows.Forms.Button();
-            this.dueDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.editSubjectCBox = new System.Windows.Forms.ComboBox();
-            this.subjectLabel = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.reviewerTxtBox = new System.Windows.Forms.TextBox();
-            this.reviewerLabel = new System.Windows.Forms.Label();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.table = new System.Windows.Forms.DataGridView();
-            this.ActivityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Subject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FilePath = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.DueDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DaysRemaining = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.subjectCBox = new System.Windows.Forms.ComboBox();
-            this.mainPanel.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel7.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel8.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.table)).BeginInit();
-            this.panel3.SuspendLayout();
-            this.SuspendLayout();
+            searchComboBox = new ComboBox();
+            panel5 = new Panel();
+            panel7 = new Panel();
+            panel6 = new Panel();
+            panel4 = new Panel();
+            refreshBtn = new Button();
+            statusCBox = new ComboBox();
+            label2 = new Label();
+            selectedFileLabel = new TextBox();
+            openFileBtn = new Button();
+            editFileBtn = new Button();
+            fileLabel = new Label();
+            cancelBtn = new Button();
+            deleteBtn = new Button();
+            saveBtn = new Button();
+            addBtn = new Button();
+            dueDatePicker = new DateTimePicker();
+            label1 = new Label();
+            editSubjectCBox = new ComboBox();
+            subjectLabel = new Label();
+            panel1 = new Panel();
+            label3 = new Label();
+            reviewerTxtBox = new TextBox();
+            reviewerLabel = new Label();
+            panel8 = new Panel();
+            panel2 = new Panel();
+            table = new DataGridView();
+            ActivityName = new DataGridViewTextBoxColumn();
+            Subject = new DataGridViewTextBoxColumn();
+            FilePath = new DataGridViewButtonColumn();
+            DueDate = new DataGridViewTextBoxColumn();
+            DaysRemaining = new DataGridViewTextBoxColumn();
+            Status = new DataGridViewTextBoxColumn();
+            panel3 = new Panel();
+            subjectCBox = new ComboBox();
+            mainPanel.SuspendLayout();
+            panel5.SuspendLayout();
+            panel7.SuspendLayout();
+            panel4.SuspendLayout();
+            panel1.SuspendLayout();
+            panel8.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)table).BeginInit();
+            panel3.SuspendLayout();
+            SuspendLayout();
             // 
             // mainPanel
             // 
-            this.mainPanel.Controls.Add(this.panel8);
-            this.mainPanel.Controls.Add(this.panel4);
-            this.mainPanel.Size = new System.Drawing.Size(780, 420);
+            mainPanel.Controls.Add(panel8);
+            mainPanel.Controls.Add(panel4);
+            mainPanel.Margin = new Padding(5, 3, 5, 3);
+            mainPanel.Size = new Size(1089, 626);
             // 
             // searchComboBox
             // 
-            this.searchComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.searchComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchComboBox.FormattingEnabled = true;
-            this.searchComboBox.Location = new System.Drawing.Point(10, 10);
-            this.searchComboBox.Name = "searchComboBox";
-            this.searchComboBox.Size = new System.Drawing.Size(772, 33);
-            this.searchComboBox.TabIndex = 7;
+            searchComboBox.Dock = DockStyle.Fill;
+            searchComboBox.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchComboBox.FormattingEnabled = true;
+            searchComboBox.Location = new Point(10, 10);
+            searchComboBox.Name = "searchComboBox";
+            searchComboBox.Size = new Size(772, 33);
+            searchComboBox.TabIndex = 7;
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.panel7);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel5.Location = new System.Drawing.Point(0, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(792, 50);
-            this.panel5.TabIndex = 14;
+            panel5.Controls.Add(panel7);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(792, 50);
+            panel5.TabIndex = 14;
             // 
             // panel7
             // 
-            this.panel7.Controls.Add(this.searchComboBox);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Name = "panel7";
-            this.panel7.Padding = new System.Windows.Forms.Padding(10);
-            this.panel7.Size = new System.Drawing.Size(792, 50);
-            this.panel7.TabIndex = 1;
+            panel7.Controls.Add(searchComboBox);
+            panel7.Dock = DockStyle.Fill;
+            panel7.Location = new Point(0, 0);
+            panel7.Name = "panel7";
+            panel7.Padding = new Padding(10);
+            panel7.Size = new Size(792, 50);
+            panel7.TabIndex = 1;
             // 
             // panel6
             // 
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel6.Location = new System.Drawing.Point(692, 0);
-            this.panel6.Name = "panel6";
-            this.panel6.Padding = new System.Windows.Forms.Padding(5);
-            this.panel6.Size = new System.Drawing.Size(100, 50);
-            this.panel6.TabIndex = 0;
+            panel6.Dock = DockStyle.Right;
+            panel6.Location = new Point(692, 0);
+            panel6.Name = "panel6";
+            panel6.Padding = new Padding(5);
+            panel6.Size = new Size(100, 50);
+            panel6.TabIndex = 0;
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.refreshBtn);
-            this.panel4.Controls.Add(this.statusCBox);
-            this.panel4.Controls.Add(this.label2);
-            this.panel4.Controls.Add(this.selectedFileLabel);
-            this.panel4.Controls.Add(this.openFileBtn);
-            this.panel4.Controls.Add(this.editFileBtn);
-            this.panel4.Controls.Add(this.fileLabel);
-            this.panel4.Controls.Add(this.cancelBtn);
-            this.panel4.Controls.Add(this.deleteBtn);
-            this.panel4.Controls.Add(this.saveBtn);
-            this.panel4.Controls.Add(this.addBtn);
-            this.panel4.Controls.Add(this.dueDatePicker);
-            this.panel4.Controls.Add(this.label1);
-            this.panel4.Controls.Add(this.editSubjectCBox);
-            this.panel4.Controls.Add(this.subjectLabel);
-            this.panel4.Controls.Add(this.panel1);
-            this.panel4.Controls.Add(this.reviewerTxtBox);
-            this.panel4.Controls.Add(this.reviewerLabel);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(216, 420);
-            this.panel4.TabIndex = 2;
+            panel4.Controls.Add(refreshBtn);
+            panel4.Controls.Add(statusCBox);
+            panel4.Controls.Add(label2);
+            panel4.Controls.Add(selectedFileLabel);
+            panel4.Controls.Add(openFileBtn);
+            panel4.Controls.Add(editFileBtn);
+            panel4.Controls.Add(fileLabel);
+            panel4.Controls.Add(cancelBtn);
+            panel4.Controls.Add(deleteBtn);
+            panel4.Controls.Add(saveBtn);
+            panel4.Controls.Add(addBtn);
+            panel4.Controls.Add(dueDatePicker);
+            panel4.Controls.Add(label1);
+            panel4.Controls.Add(editSubjectCBox);
+            panel4.Controls.Add(subjectLabel);
+            panel4.Controls.Add(panel1);
+            panel4.Controls.Add(reviewerTxtBox);
+            panel4.Controls.Add(reviewerLabel);
+            panel4.Dock = DockStyle.Left;
+            panel4.Location = new Point(0, 0);
+            panel4.Margin = new Padding(4, 3, 4, 3);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(252, 626);
+            panel4.TabIndex = 2;
             // 
             // refreshBtn
             // 
-            this.refreshBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.refreshBtn.FlatAppearance.BorderSize = 0;
-            this.refreshBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.refreshBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.refreshBtn.Location = new System.Drawing.Point(132, 385);
-            this.refreshBtn.Name = "refreshBtn";
-            this.refreshBtn.Size = new System.Drawing.Size(75, 23);
-            this.refreshBtn.TabIndex = 26;
-            this.refreshBtn.Text = "Refresh";
-            this.refreshBtn.UseVisualStyleBackColor = false;
-            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
+            refreshBtn.BackColor = Color.FromArgb(52, 63, 82);
+            refreshBtn.FlatAppearance.BorderSize = 0;
+            refreshBtn.FlatStyle = FlatStyle.Flat;
+            refreshBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            refreshBtn.Location = new Point(154, 444);
+            refreshBtn.Margin = new Padding(4, 3, 4, 3);
+            refreshBtn.Name = "refreshBtn";
+            refreshBtn.Size = new Size(88, 27);
+            refreshBtn.TabIndex = 26;
+            refreshBtn.Text = "Refresh";
+            refreshBtn.UseVisualStyleBackColor = false;
+            refreshBtn.Click += refreshBtn_Click;
             // 
             // statusCBox
             // 
-            this.statusCBox.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusCBox.FormattingEnabled = true;
-            this.statusCBox.Items.AddRange(new object[] {
-            "Complete",
-            "Incomplete"});
-            this.statusCBox.Location = new System.Drawing.Point(92, 139);
-            this.statusCBox.Name = "statusCBox";
-            this.statusCBox.Size = new System.Drawing.Size(115, 23);
-            this.statusCBox.TabIndex = 25;
+            statusCBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            statusCBox.FormattingEnabled = true;
+            statusCBox.Items.AddRange(new object[] { "Complete", "Incomplete" });
+            statusCBox.Location = new Point(107, 160);
+            statusCBox.Margin = new Padding(4, 3, 4, 3);
+            statusCBox.Name = "statusCBox";
+            statusCBox.Size = new Size(134, 23);
+            statusCBox.TabIndex = 25;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(52, 139);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(42, 15);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "Status:";
+            label2.AutoSize = true;
+            label2.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(61, 160);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(42, 15);
+            label2.TabIndex = 24;
+            label2.Text = "Status:";
             // 
             // selectedFileLabel
             // 
-            this.selectedFileLabel.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectedFileLabel.Location = new System.Drawing.Point(92, 166);
-            this.selectedFileLabel.Multiline = true;
-            this.selectedFileLabel.Name = "selectedFileLabel";
-            this.selectedFileLabel.ReadOnly = true;
-            this.selectedFileLabel.Size = new System.Drawing.Size(115, 46);
-            this.selectedFileLabel.TabIndex = 23;
+            selectedFileLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            selectedFileLabel.Location = new Point(107, 192);
+            selectedFileLabel.Margin = new Padding(4, 3, 4, 3);
+            selectedFileLabel.Multiline = true;
+            selectedFileLabel.Name = "selectedFileLabel";
+            selectedFileLabel.ReadOnly = true;
+            selectedFileLabel.Size = new Size(134, 52);
+            selectedFileLabel.TabIndex = 23;
             // 
             // openFileBtn
             // 
-            this.openFileBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.openFileBtn.FlatAppearance.BorderSize = 0;
-            this.openFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.openFileBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openFileBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.openFileBtn.Location = new System.Drawing.Point(92, 249);
-            this.openFileBtn.Name = "openFileBtn";
-            this.openFileBtn.Size = new System.Drawing.Size(115, 23);
-            this.openFileBtn.TabIndex = 22;
-            this.openFileBtn.Text = "Open File";
-            this.openFileBtn.UseVisualStyleBackColor = false;
-            this.openFileBtn.Click += new System.EventHandler(this.openFileBtn_Click);
+            openFileBtn.BackColor = Color.FromArgb(52, 63, 82);
+            openFileBtn.FlatAppearance.BorderSize = 0;
+            openFileBtn.FlatStyle = FlatStyle.Flat;
+            openFileBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            openFileBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            openFileBtn.Location = new Point(107, 287);
+            openFileBtn.Margin = new Padding(4, 3, 4, 3);
+            openFileBtn.Name = "openFileBtn";
+            openFileBtn.Size = new Size(134, 27);
+            openFileBtn.TabIndex = 22;
+            openFileBtn.Text = "Open File";
+            openFileBtn.UseVisualStyleBackColor = false;
+            openFileBtn.Click += openFileBtn_Click;
             // 
             // editFileBtn
             // 
-            this.editFileBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.editFileBtn.FlatAppearance.BorderSize = 0;
-            this.editFileBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.editFileBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editFileBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.editFileBtn.Location = new System.Drawing.Point(92, 220);
-            this.editFileBtn.Name = "editFileBtn";
-            this.editFileBtn.Size = new System.Drawing.Size(115, 23);
-            this.editFileBtn.TabIndex = 21;
-            this.editFileBtn.Text = "Edit File";
-            this.editFileBtn.UseVisualStyleBackColor = false;
-            this.editFileBtn.Click += new System.EventHandler(this.editFileBtn_Click);
+            editFileBtn.BackColor = Color.FromArgb(52, 63, 82);
+            editFileBtn.FlatAppearance.BorderSize = 0;
+            editFileBtn.FlatStyle = FlatStyle.Flat;
+            editFileBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            editFileBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            editFileBtn.Location = new Point(107, 254);
+            editFileBtn.Margin = new Padding(4, 3, 4, 3);
+            editFileBtn.Name = "editFileBtn";
+            editFileBtn.Size = new Size(134, 27);
+            editFileBtn.TabIndex = 21;
+            editFileBtn.Text = "Edit File";
+            editFileBtn.UseVisualStyleBackColor = false;
+            editFileBtn.Click += editFileBtn_Click;
             // 
             // fileLabel
             // 
-            this.fileLabel.AutoSize = true;
-            this.fileLabel.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileLabel.Location = new System.Drawing.Point(63, 169);
-            this.fileLabel.Name = "fileLabel";
-            this.fileLabel.Size = new System.Drawing.Size(27, 15);
-            this.fileLabel.TabIndex = 20;
-            this.fileLabel.Text = "File:";
+            fileLabel.AutoSize = true;
+            fileLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            fileLabel.Location = new Point(74, 195);
+            fileLabel.Margin = new Padding(4, 0, 4, 0);
+            fileLabel.Name = "fileLabel";
+            fileLabel.Size = new Size(27, 15);
+            fileLabel.TabIndex = 20;
+            fileLabel.Text = "File:";
             // 
             // cancelBtn
             // 
-            this.cancelBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.cancelBtn.FlatAppearance.BorderSize = 0;
-            this.cancelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cancelBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.cancelBtn.Location = new System.Drawing.Point(132, 324);
-            this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 19;
-            this.cancelBtn.Text = "Cancel";
-            this.cancelBtn.UseVisualStyleBackColor = false;
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            cancelBtn.BackColor = Color.FromArgb(52, 63, 82);
+            cancelBtn.FlatAppearance.BorderSize = 0;
+            cancelBtn.FlatStyle = FlatStyle.Flat;
+            cancelBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cancelBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            cancelBtn.Location = new Point(154, 374);
+            cancelBtn.Margin = new Padding(4, 3, 4, 3);
+            cancelBtn.Name = "cancelBtn";
+            cancelBtn.Size = new Size(88, 27);
+            cancelBtn.TabIndex = 19;
+            cancelBtn.Text = "Cancel";
+            cancelBtn.UseVisualStyleBackColor = false;
+            cancelBtn.Click += cancelBtn_Click;
             // 
             // deleteBtn
             // 
-            this.deleteBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.deleteBtn.Enabled = false;
-            this.deleteBtn.FlatAppearance.BorderSize = 0;
-            this.deleteBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.deleteBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.deleteBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.deleteBtn.Location = new System.Drawing.Point(9, 324);
-            this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(75, 23);
-            this.deleteBtn.TabIndex = 18;
-            this.deleteBtn.Text = "Delete";
-            this.deleteBtn.UseVisualStyleBackColor = false;
-            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
+            deleteBtn.BackColor = Color.FromArgb(171, 37, 51);
+            deleteBtn.Enabled = false;
+            deleteBtn.FlatAppearance.BorderSize = 0;
+            deleteBtn.FlatStyle = FlatStyle.Flat;
+            deleteBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            deleteBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            deleteBtn.Location = new Point(10, 374);
+            deleteBtn.Margin = new Padding(4, 3, 4, 3);
+            deleteBtn.Name = "deleteBtn";
+            deleteBtn.Size = new Size(88, 27);
+            deleteBtn.TabIndex = 18;
+            deleteBtn.Text = "Delete";
+            deleteBtn.UseVisualStyleBackColor = false;
+            deleteBtn.Click += deleteBtn_Click;
             // 
             // saveBtn
             // 
-            this.saveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.saveBtn.Enabled = false;
-            this.saveBtn.FlatAppearance.BorderSize = 0;
-            this.saveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.saveBtn.Location = new System.Drawing.Point(132, 295);
-            this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(75, 23);
-            this.saveBtn.TabIndex = 17;
-            this.saveBtn.Text = "Save";
-            this.saveBtn.UseVisualStyleBackColor = false;
-            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
+            saveBtn.BackColor = Color.FromArgb(52, 63, 82);
+            saveBtn.Enabled = false;
+            saveBtn.FlatAppearance.BorderSize = 0;
+            saveBtn.FlatStyle = FlatStyle.Flat;
+            saveBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            saveBtn.Location = new Point(154, 340);
+            saveBtn.Margin = new Padding(4, 3, 4, 3);
+            saveBtn.Name = "saveBtn";
+            saveBtn.Size = new Size(88, 27);
+            saveBtn.TabIndex = 17;
+            saveBtn.Text = "Save";
+            saveBtn.UseVisualStyleBackColor = false;
+            saveBtn.Click += saveBtn_Click;
             // 
             // addBtn
             // 
-            this.addBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(192)))), ((int)(((byte)(170)))));
-            this.addBtn.FlatAppearance.BorderSize = 0;
-            this.addBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.addBtn.Location = new System.Drawing.Point(9, 295);
-            this.addBtn.Name = "addBtn";
-            this.addBtn.Size = new System.Drawing.Size(75, 23);
-            this.addBtn.TabIndex = 16;
-            this.addBtn.Text = "Add";
-            this.addBtn.UseVisualStyleBackColor = false;
-            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
+            addBtn.BackColor = Color.FromArgb(95, 192, 170);
+            addBtn.FlatAppearance.BorderSize = 0;
+            addBtn.FlatStyle = FlatStyle.Flat;
+            addBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            addBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            addBtn.Location = new Point(10, 340);
+            addBtn.Margin = new Padding(4, 3, 4, 3);
+            addBtn.Name = "addBtn";
+            addBtn.Size = new Size(88, 27);
+            addBtn.TabIndex = 16;
+            addBtn.Text = "Add";
+            addBtn.UseVisualStyleBackColor = false;
+            addBtn.Click += addBtn_Click;
             // 
             // dueDatePicker
             // 
-            this.dueDatePicker.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dueDatePicker.Location = new System.Drawing.Point(92, 113);
-            this.dueDatePicker.Name = "dueDatePicker";
-            this.dueDatePicker.Size = new System.Drawing.Size(115, 22);
-            this.dueDatePicker.TabIndex = 15;
+            dueDatePicker.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dueDatePicker.Location = new Point(107, 130);
+            dueDatePicker.Margin = new Padding(4, 3, 4, 3);
+            dueDatePicker.Name = "dueDatePicker";
+            dueDatePicker.Size = new Size(134, 22);
+            dueDatePicker.TabIndex = 15;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(36, 113);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 15);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Due Date:";
+            label1.AutoSize = true;
+            label1.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(42, 130);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(54, 15);
+            label1.TabIndex = 14;
+            label1.Text = "Due Date:";
             // 
             // editSubjectCBox
             // 
-            this.editSubjectCBox.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editSubjectCBox.FormattingEnabled = true;
-            this.editSubjectCBox.Location = new System.Drawing.Point(92, 86);
-            this.editSubjectCBox.Name = "editSubjectCBox";
-            this.editSubjectCBox.Size = new System.Drawing.Size(115, 23);
-            this.editSubjectCBox.TabIndex = 9;
+            editSubjectCBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            editSubjectCBox.FormattingEnabled = true;
+            editSubjectCBox.Location = new Point(107, 99);
+            editSubjectCBox.Margin = new Padding(4, 3, 4, 3);
+            editSubjectCBox.Name = "editSubjectCBox";
+            editSubjectCBox.Size = new Size(134, 23);
+            editSubjectCBox.TabIndex = 9;
             // 
             // subjectLabel
             // 
-            this.subjectLabel.AutoSize = true;
-            this.subjectLabel.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.subjectLabel.Location = new System.Drawing.Point(15, 89);
-            this.subjectLabel.Name = "subjectLabel";
-            this.subjectLabel.Size = new System.Drawing.Size(80, 15);
-            this.subjectLabel.TabIndex = 8;
-            this.subjectLabel.Text = "Subject Name:";
+            subjectLabel.AutoSize = true;
+            subjectLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectLabel.Location = new Point(18, 103);
+            subjectLabel.Margin = new Padding(4, 0, 4, 0);
+            subjectLabel.Name = "subjectLabel";
+            subjectLabel.Size = new Size(80, 15);
+            subjectLabel.TabIndex = 8;
+            subjectLabel.Text = "Subject Name:";
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(216, 54);
-            this.panel1.TabIndex = 7;
+            panel1.Controls.Add(label3);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(4, 3, 4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(252, 62);
+            panel1.TabIndex = 7;
             // 
             // label3
             // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Roboto", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(0, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(216, 54);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Activities";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label3.Dock = DockStyle.Fill;
+            label3.Font = new Font("Roboto", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(0, 0);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(252, 62);
+            label3.TabIndex = 6;
+            label3.Text = "Activities";
+            label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // reviewerTxtBox
             // 
-            this.reviewerTxtBox.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reviewerTxtBox.Location = new System.Drawing.Point(92, 60);
-            this.reviewerTxtBox.Name = "reviewerTxtBox";
-            this.reviewerTxtBox.Size = new System.Drawing.Size(115, 22);
-            this.reviewerTxtBox.TabIndex = 1;
+            reviewerTxtBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            reviewerTxtBox.Location = new Point(107, 69);
+            reviewerTxtBox.Margin = new Padding(4, 3, 4, 3);
+            reviewerTxtBox.Name = "reviewerTxtBox";
+            reviewerTxtBox.Size = new Size(134, 22);
+            reviewerTxtBox.TabIndex = 1;
             // 
             // reviewerLabel
             // 
-            this.reviewerLabel.AutoSize = true;
-            this.reviewerLabel.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.reviewerLabel.Location = new System.Drawing.Point(15, 63);
-            this.reviewerLabel.Name = "reviewerLabel";
-            this.reviewerLabel.Size = new System.Drawing.Size(79, 15);
-            this.reviewerLabel.TabIndex = 0;
-            this.reviewerLabel.Text = "Activity Name:";
+            reviewerLabel.AutoSize = true;
+            reviewerLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            reviewerLabel.Location = new Point(18, 73);
+            reviewerLabel.Margin = new Padding(4, 0, 4, 0);
+            reviewerLabel.Name = "reviewerLabel";
+            reviewerLabel.Size = new Size(79, 15);
+            reviewerLabel.TabIndex = 0;
+            reviewerLabel.Text = "Activity Name:";
             // 
             // panel8
             // 
-            this.panel8.Controls.Add(this.panel2);
-            this.panel8.Controls.Add(this.panel3);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel8.Location = new System.Drawing.Point(216, 0);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(564, 420);
-            this.panel8.TabIndex = 18;
+            panel8.Controls.Add(panel2);
+            panel8.Controls.Add(panel3);
+            panel8.Dock = DockStyle.Fill;
+            panel8.Location = new Point(252, 0);
+            panel8.Margin = new Padding(4, 3, 4, 3);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(837, 626);
+            panel8.TabIndex = 18;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.table);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 37);
-            this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(10);
-            this.panel2.Size = new System.Drawing.Size(564, 383);
-            this.panel2.TabIndex = 8;
+            panel2.Controls.Add(table);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 43);
+            panel2.Margin = new Padding(4, 3, 4, 3);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(12);
+            panel2.Size = new Size(837, 583);
+            panel2.TabIndex = 8;
             // 
             // table
             // 
-            this.table.AllowUserToAddRows = false;
-            this.table.AllowUserToDeleteRows = false;
-            this.table.AllowUserToResizeRows = false;
-            this.table.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.table.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ActivityName,
-            this.Subject,
-            this.FilePath,
-            this.DueDate,
-            this.DaysRemaining,
-            this.Status});
-            this.table.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.table.Location = new System.Drawing.Point(10, 10);
-            this.table.MultiSelect = false;
-            this.table.Name = "table";
-            this.table.ReadOnly = true;
-            this.table.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.table.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.table.Size = new System.Drawing.Size(544, 363);
-            this.table.TabIndex = 6;
+            table.AllowUserToAddRows = false;
+            table.AllowUserToDeleteRows = false;
+            table.AllowUserToResizeRows = false;
+            table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            table.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            table.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            table.Columns.AddRange(new DataGridViewColumn[] { ActivityName, Subject, FilePath, DueDate, DaysRemaining, Status });
+            table.Dock = DockStyle.Fill;
+            table.Location = new Point(12, 12);
+            table.Margin = new Padding(4, 3, 4, 3);
+            table.MultiSelect = false;
+            table.Name = "table";
+            table.ReadOnly = true;
+            table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            table.Size = new Size(813, 559);
+            table.TabIndex = 6;
             // 
             // ActivityName
             // 
-            this.ActivityName.HeaderText = "Activity";
-            this.ActivityName.Name = "ActivityName";
-            this.ActivityName.ReadOnly = true;
+            ActivityName.HeaderText = "Activity";
+            ActivityName.Name = "ActivityName";
+            ActivityName.ReadOnly = true;
             // 
             // Subject
             // 
-            this.Subject.HeaderText = "Subject";
-            this.Subject.Name = "Subject";
-            this.Subject.ReadOnly = true;
+            Subject.HeaderText = "Subject";
+            Subject.Name = "Subject";
+            Subject.ReadOnly = true;
             // 
             // FilePath
             // 
-            this.FilePath.HeaderText = "File";
-            this.FilePath.Name = "FilePath";
-            this.FilePath.ReadOnly = true;
-            this.FilePath.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.FilePath.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            FilePath.HeaderText = "File";
+            FilePath.Name = "FilePath";
+            FilePath.ReadOnly = true;
+            FilePath.Resizable = DataGridViewTriState.True;
+            FilePath.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // DueDate
             // 
-            this.DueDate.HeaderText = "Due Date";
-            this.DueDate.Name = "DueDate";
-            this.DueDate.ReadOnly = true;
+            DueDate.HeaderText = "Due Date";
+            DueDate.Name = "DueDate";
+            DueDate.ReadOnly = true;
             // 
             // DaysRemaining
             // 
-            this.DaysRemaining.HeaderText = "Days Remaining";
-            this.DaysRemaining.Name = "DaysRemaining";
-            this.DaysRemaining.ReadOnly = true;
+            DaysRemaining.HeaderText = "Days Remaining";
+            DaysRemaining.Name = "DaysRemaining";
+            DaysRemaining.ReadOnly = true;
             // 
             // Status
             // 
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            this.Status.ReadOnly = true;
+            Status.HeaderText = "Status";
+            Status.Name = "Status";
+            Status.ReadOnly = true;
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.subjectCBox);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Padding = new System.Windows.Forms.Padding(10);
-            this.panel3.Size = new System.Drawing.Size(564, 37);
-            this.panel3.TabIndex = 7;
+            panel3.Controls.Add(subjectCBox);
+            panel3.Dock = DockStyle.Top;
+            panel3.Location = new Point(0, 0);
+            panel3.Margin = new Padding(4, 3, 4, 3);
+            panel3.Name = "panel3";
+            panel3.Padding = new Padding(12);
+            panel3.Size = new Size(837, 43);
+            panel3.TabIndex = 7;
             // 
             // subjectCBox
             // 
-            this.subjectCBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.subjectCBox.Font = new System.Drawing.Font("Roboto Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.subjectCBox.FormattingEnabled = true;
-            this.subjectCBox.Location = new System.Drawing.Point(10, 10);
-            this.subjectCBox.Name = "subjectCBox";
-            this.subjectCBox.Size = new System.Drawing.Size(544, 26);
-            this.subjectCBox.TabIndex = 0;
-            this.subjectCBox.SelectedIndexChanged += new System.EventHandler(this.subjectCBox_SelectedIndexChanged);
+            subjectCBox.Dock = DockStyle.Fill;
+            subjectCBox.Font = new Font("Roboto Light", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectCBox.FormattingEnabled = true;
+            subjectCBox.Location = new Point(12, 12);
+            subjectCBox.Margin = new Padding(4, 3, 4, 3);
+            subjectCBox.Name = "subjectCBox";
+            subjectCBox.Size = new Size(813, 26);
+            subjectCBox.TabIndex = 0;
+            subjectCBox.SelectedIndexChanged += subjectCBox_SelectedIndexChanged;
             // 
             // ActivitiesPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(942, 480);
-            this.Name = "ActivitiesPanel";
-            this.Text = "Activities";
-            this.mainPanel.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
-            this.panel7.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.table)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1280, 720);
+            Margin = new Padding(5, 3, 5, 3);
+            Name = "ActivitiesPanel";
+            Text = "Activities";
+            mainPanel.ResumeLayout(false);
+            panel5.ResumeLayout(false);
+            panel7.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel8.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)table).EndInit();
+            panel3.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

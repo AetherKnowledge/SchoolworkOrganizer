@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace SchoolworkOrganizerV2.Panels
+namespace SchoolworkOrganizer.Panels
 {
     public partial class SettingsPanel : Template
     {
@@ -46,7 +46,7 @@ namespace SchoolworkOrganizerV2.Panels
             string password = passwordTxt.Text;
             string verifyPass = verifyTxt.Text;
 
-            if (LoginPanel.currentUser.Username != username && User.DoesUserExist(username))
+            if (User.currentUser.Username != username && User.DoesUserExist(username))
             {
                 MessageBox.Show("User already exists", "Error");
                 return;
@@ -64,10 +64,10 @@ namespace SchoolworkOrganizerV2.Panels
                 return;
             }
 
-            LoginPanel.currentUser.Username = username;
-            LoginPanel.currentUser.Email = email;
-            LoginPanel.currentUser.Password = password;
-            LoginPanel.currentUser.UserImage = uploadPicture.Image;
+            User.currentUser.Username = username;
+            User.currentUser.Email = email;
+            User.currentUser.Password = password;
+            User.currentUser.UserImage = uploadPicture.Image;
 
             RefreshUser();
         }
@@ -80,9 +80,9 @@ namespace SchoolworkOrganizerV2.Panels
         protected new void RefreshUser()
         {
             base.RefreshUser();
-            usernameTxt.Text = LoginPanel.currentUser.Username;
-            emailTxt.Text = LoginPanel.currentUser.Email;
-            uploadPicture.Image = LoginPanel.currentUser.UserImage;
+            usernameTxt.Text = User.currentUser.Username;
+            emailTxt.Text = User.currentUser.Email;
+            uploadPicture.Image = User.currentUser.UserImage;
         }
     }
 

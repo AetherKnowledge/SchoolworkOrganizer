@@ -1,4 +1,4 @@
-﻿using SchoolworkOrganizerV2.Panels;
+﻿using SchoolworkOrganizer.Panels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SchoolworkOrganizerV2.Panels
+namespace SchoolworkOrganizer.Panels
 {
     public partial class ReviewerPanel : Template
     {
@@ -62,7 +62,7 @@ namespace SchoolworkOrganizerV2.Panels
             subjectCBox.Items.Clear();
             editSubjectCBox.Items.Clear();
 
-            foreach (Subject subject in LoginPanel.currentUser.Subjects)
+            foreach (Subject subject in User.currentUser.Subjects)
             {
                 subjectCBox.Items.Add(subject.Name);
                 editSubjectCBox.Items.Add(subject.Name);
@@ -80,7 +80,7 @@ namespace SchoolworkOrganizerV2.Panels
             string subjectName = subjectCBox.Text;
             if (subjectName == null) return;
 
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
             if (selectedSubject == null) return;
 
             foreach (Reviewer reviewer in selectedSubject.Reviewers)
@@ -131,7 +131,7 @@ namespace SchoolworkOrganizerV2.Panels
         {
             string reviewerName = reviewerTxtBox.Text;
             string subjectName = editSubjectCBox.Text;
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
             string filePath = selectedFilePath;
 
             if (subjectName == "")
@@ -151,6 +151,7 @@ namespace SchoolworkOrganizerV2.Panels
             }
 
             new Reviewer(reviewerName, selectedSubject, selectedFilePath);
+            User.SaveUsers();
 
             RefreshTable();
             Clear();
@@ -163,11 +164,11 @@ namespace SchoolworkOrganizerV2.Panels
 
             string newReviewerName = reviewerTxtBox.Text;
 
-            Subject oldSelectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == oldSubjectName);
+            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == oldSubjectName);
             Reviewer selectedReviewer = oldSelectedSubject.Reviewers.FirstOrDefault(reviewer => reviewer.FilePath == filePath);
 
             string newSubjectName = editSubjectCBox.Text;
-            Subject newSelectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == newSubjectName);
+            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == newSubjectName);
             
 
             if (newReviewerName == "")
@@ -189,6 +190,7 @@ namespace SchoolworkOrganizerV2.Panels
             selectedReviewer.Name = newReviewerName;
             selectedReviewer.Subject = newSelectedSubject;
             selectedReviewer.ChangeFile(selectedFilePath);
+            User.SaveUsers();
 
             RefreshTable();
 
@@ -199,7 +201,7 @@ namespace SchoolworkOrganizerV2.Panels
         {
             string filePath = selectedFilePath;
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
             Reviewer selectedReviewer = selectedSubject.Reviewers.FirstOrDefault(reviewer => reviewer.FilePath == filePath);
 
             if (selectedReviewer == null)
@@ -214,6 +216,7 @@ namespace SchoolworkOrganizerV2.Panels
             {
                 selectedSubject.RemoveReviewer(selectedReviewer);
                 RefreshTable();
+                User.SaveUsers();
                 MessageBox.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -267,7 +270,7 @@ namespace SchoolworkOrganizerV2.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            LoginPanel.currentUser.CheckForFiles();
+            User.currentUser.CheckForFiles();
             RefreshTable();
         }
     }

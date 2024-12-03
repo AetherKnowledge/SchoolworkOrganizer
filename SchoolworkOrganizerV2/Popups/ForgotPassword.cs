@@ -9,9 +9,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SchoolworkOrganizerV2.Panels;
+using SchoolworkOrganizer.Panels;
 
-namespace SchoolworkOrganizerV2.Popups
+namespace SchoolworkOrganizer.Popups
 {
     public partial class ForgotPassword : Form
     {

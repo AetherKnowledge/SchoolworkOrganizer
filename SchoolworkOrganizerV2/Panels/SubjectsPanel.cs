@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SchoolworkOrganizerV2.Panels
+namespace SchoolworkOrganizer.Panels
 {
     public partial class SubjectsPanel : Template
     {
@@ -59,7 +59,7 @@ namespace SchoolworkOrganizerV2.Panels
         {
             table.Rows.Clear();
 
-            foreach (Subject subject in LoginPanel.currentUser.Subjects)
+            foreach (Subject subject in User.currentUser.Subjects)
             {
                 DataGridViewRow row = new DataGridViewRow();
 
@@ -107,7 +107,7 @@ namespace SchoolworkOrganizerV2.Panels
                 return;
             }
 
-            LoginPanel.currentUser.Subjects.Add(new Subject(LoginPanel.currentUser.Username, subjectName));
+            User.currentUser.Subjects.Add(new Subject(User.currentUser.Username, subjectName));
 
             RefreshTable();
             Clear();
@@ -116,7 +116,7 @@ namespace SchoolworkOrganizerV2.Panels
         private void saveBtn_Click(object sender, EventArgs e)
         {
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
 
             if (selectedSubject == null)
             {
@@ -132,7 +132,7 @@ namespace SchoolworkOrganizerV2.Panels
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
 
             if (selectedSubject == null)
             {
@@ -144,7 +144,7 @@ namespace SchoolworkOrganizerV2.Panels
                                                 "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
-                LoginPanel.currentUser.RemoveSubject(selectedSubject);
+                User.currentUser.RemoveSubject(selectedSubject);
                 RefreshTable();
                 MessageBox.Show("Subject deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -168,7 +168,7 @@ namespace SchoolworkOrganizerV2.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            LoginPanel.currentUser.CheckForFiles();
+            User.currentUser.CheckForFiles();
             RefreshTable();
         }
     }

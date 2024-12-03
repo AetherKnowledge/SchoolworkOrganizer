@@ -1,5 +1,5 @@
-﻿using SchoolworkOrganizerV2.Panels;
-using SchoolworkOrganizerV2.Popups;
+﻿using SchoolworkOrganizer.Panels;
+using SchoolworkOrganizer.Popups;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     public partial class LoginPanel : Form
     {
-        public static User currentUser = null;
+
         public LoginPanel()
         {
             InitializeComponent();
@@ -43,7 +43,7 @@ namespace SchoolworkOrganizerV2
         public new void Show()
         {
             base.Show();
-            currentUser = null;
+            User.Logout();
             this.Size = Template.size;
             this.Location = Template.location;
             this.WindowState = Template.windowState;
@@ -57,37 +57,28 @@ namespace SchoolworkOrganizerV2
             base.Hide();
         }
 
-        public static void MyFormClosing(object sender, FormClosingEventArgs e)
+        public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
             User.SaveUsers();
         }
 
-        private void Log_In_Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void GetUsers()
-        {
-            
-        }
         private void ButtonLogIn_Click(object sender, EventArgs e)
         {
-            User user = User.GetUser(txtUsername.Text);
+            string username = txtUsername.Text;
+            string password = txtPassword.Text;
 
-            if (txtUsername.Text == "Username"  || txtPassword.Text == "Password" || user == null)
+            if (username == "Username" || password == "Password")
             {
                 MessageBox.Show("Please enter valid credentials", "Error");
                 return;
             }
 
-            if (txtPassword.Text != user.Password)
+            if (!User.Login(username, password))
             {
-                MessageBox.Show("Invalid Password", "Error");
+                MessageBox.Show("Invalid Credentials", "Error");
                 return;
             }
 
-            currentUser = user;
             this.Hide();
             OpenPanels.homePanel.Show();
             Clear();
@@ -105,17 +96,12 @@ namespace SchoolworkOrganizerV2
             }
         }
 
-        private void txtPassword_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void labelForgotPassword_Click(object sender, EventArgs e)
         {
             this.Hide();
             ForgotPassword forgotPassword = new ForgotPassword();
             forgotPassword.Show();
-            
+
         }
 
         private void registerLabel_Click(object sender, EventArgs e)
@@ -134,6 +120,14 @@ namespace SchoolworkOrganizerV2
         private void testBtn_Click(object sender, EventArgs e)
         {
             OpenPanels.adminPage.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (User user in User.Users)
+            {
+                user.AddUserToDatabase();
+            }
         }
     }
 }

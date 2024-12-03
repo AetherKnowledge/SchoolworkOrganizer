@@ -1,4 +1,4 @@
-﻿namespace SchoolworkOrganizerV2
+﻿namespace SchoolworkOrganizer
 {
     partial class RegisterPanel
     {
@@ -29,225 +29,240 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegisterPanel));
-            this.RegisterBtn = new System.Windows.Forms.Button();
-            this.LoginLabel = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtEmail = new System.Windows.Forms.TextBox();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.uploadPicture = new System.Windows.Forms.PictureBox();
-            this.uploadBtn = new System.Windows.Forms.Button();
-            this.showPassword = new System.Windows.Forms.CheckBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.txtVerify = new System.Windows.Forms.TextBox();
-            this.showPassVerify = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uploadPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            this.SuspendLayout();
+            RegisterBtn = new Button();
+            LoginLabel = new Label();
+            txtPassword = new TextBox();
+            txtEmail = new TextBox();
+            txtUsername = new TextBox();
+            pictureBox4 = new PictureBox();
+            pictureBox3 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            pictureBox1 = new PictureBox();
+            uploadPicture = new PictureBox();
+            uploadBtn = new Button();
+            showPassword = new CheckBox();
+            pictureBox5 = new PictureBox();
+            txtVerify = new TextBox();
+            showPassVerify = new CheckBox();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)uploadPicture).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
+            SuspendLayout();
             // 
             // RegisterBtn
             // 
-            this.RegisterBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(192)))), ((int)(((byte)(170)))));
-            this.RegisterBtn.FlatAppearance.BorderSize = 0;
-            this.RegisterBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RegisterBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RegisterBtn.ForeColor = System.Drawing.Color.White;
-            this.RegisterBtn.Location = new System.Drawing.Point(383, 395);
-            this.RegisterBtn.Name = "RegisterBtn";
-            this.RegisterBtn.Size = new System.Drawing.Size(85, 32);
-            this.RegisterBtn.TabIndex = 14;
-            this.RegisterBtn.Text = "Register";
-            this.RegisterBtn.UseVisualStyleBackColor = false;
-            this.RegisterBtn.Click += new System.EventHandler(this.RegisterBtn_Click);
+            RegisterBtn.BackColor = Color.FromArgb(95, 192, 170);
+            RegisterBtn.FlatAppearance.BorderSize = 0;
+            RegisterBtn.FlatStyle = FlatStyle.Flat;
+            RegisterBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            RegisterBtn.ForeColor = Color.White;
+            RegisterBtn.Location = new Point(571, 508);
+            RegisterBtn.Margin = new Padding(4, 3, 4, 3);
+            RegisterBtn.Name = "RegisterBtn";
+            RegisterBtn.Size = new Size(99, 37);
+            RegisterBtn.TabIndex = 14;
+            RegisterBtn.Text = "Register";
+            RegisterBtn.UseVisualStyleBackColor = false;
+            RegisterBtn.Click += RegisterBtn_Click;
             // 
             // LoginLabel
             // 
-            this.LoginLabel.AutoSize = true;
-            this.LoginLabel.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabel.ForeColor = System.Drawing.Color.SteelBlue;
-            this.LoginLabel.Location = new System.Drawing.Point(388, 352);
-            this.LoginLabel.Name = "LoginLabel";
-            this.LoginLabel.Size = new System.Drawing.Size(133, 15);
-            this.LoginLabel.TabIndex = 13;
-            this.LoginLabel.Text = "Already have an account?";
-            this.LoginLabel.Click += new System.EventHandler(this.LoginLabel_Click);
+            LoginLabel.AutoSize = true;
+            LoginLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            LoginLabel.ForeColor = Color.SteelBlue;
+            LoginLabel.Location = new Point(577, 458);
+            LoginLabel.Margin = new Padding(4, 0, 4, 0);
+            LoginLabel.Name = "LoginLabel";
+            LoginLabel.Size = new Size(133, 15);
+            LoginLabel.TabIndex = 13;
+            LoginLabel.Text = "Already have an account?";
+            LoginLabel.Click += LoginLabel_Click;
             // 
             // txtPassword
             // 
-            this.txtPassword.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.Location = new System.Drawing.Point(348, 301);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(172, 22);
-            this.txtPassword.TabIndex = 10;
-            this.txtPassword.Text = "Password";
-            this.txtPassword.UseSystemPasswordChar = true;
+            txtPassword.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPassword.Location = new Point(530, 399);
+            txtPassword.Margin = new Padding(4, 3, 4, 3);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Size = new Size(200, 22);
+            txtPassword.TabIndex = 10;
+            txtPassword.Text = "Password";
+            txtPassword.UseSystemPasswordChar = true;
             // 
             // txtEmail
             // 
-            this.txtEmail.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(348, 249);
-            this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(172, 22);
-            this.txtEmail.TabIndex = 9;
-            this.txtEmail.Text = "Email";
+            txtEmail.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtEmail.Location = new Point(530, 339);
+            txtEmail.Margin = new Padding(4, 3, 4, 3);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new Size(200, 22);
+            txtEmail.TabIndex = 9;
+            txtEmail.Text = "Email";
             // 
             // txtUsername
             // 
-            this.txtUsername.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsername.Location = new System.Drawing.Point(348, 275);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(172, 22);
-            this.txtUsername.TabIndex = 16;
-            this.txtUsername.Text = "Username";
+            txtUsername.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtUsername.Location = new Point(530, 369);
+            txtUsername.Margin = new Padding(4, 3, 4, 3);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(200, 22);
+            txtUsername.TabIndex = 16;
+            txtUsername.Text = "Username";
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::SchoolworkOrganizerV2.Properties.Resources.username;
-            this.pictureBox4.Location = new System.Drawing.Point(318, 275);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(24, 20);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox4.TabIndex = 17;
-            this.pictureBox4.TabStop = false;
+            pictureBox4.Image = Properties.Resources.username;
+            pictureBox4.Location = new Point(495, 369);
+            pictureBox4.Margin = new Padding(4, 3, 4, 3);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(28, 23);
+            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox4.TabIndex = 17;
+            pictureBox4.TabStop = false;
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Image = global::SchoolworkOrganizerV2.Properties.Resources.password;
-            this.pictureBox3.Location = new System.Drawing.Point(318, 301);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(24, 20);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox3.TabIndex = 12;
-            this.pictureBox3.TabStop = false;
+            pictureBox3.Image = Properties.Resources.password;
+            pictureBox3.Location = new Point(495, 399);
+            pictureBox3.Margin = new Padding(4, 3, 4, 3);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(28, 23);
+            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox3.TabIndex = 12;
+            pictureBox3.TabStop = false;
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::SchoolworkOrganizerV2.Properties.Resources.username;
-            this.pictureBox2.Location = new System.Drawing.Point(318, 249);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(24, 20);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 11;
-            this.pictureBox2.TabStop = false;
+            pictureBox2.Image = Properties.Resources.username;
+            pictureBox2.Location = new Point(495, 339);
+            pictureBox2.Margin = new Padding(4, 3, 4, 3);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(28, 23);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 11;
+            pictureBox2.TabStop = false;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::SchoolworkOrganizerV2.Properties.Resources.bg_dark;
-            this.pictureBox1.Location = new System.Drawing.Point(262, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(351, 118);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 8;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.Image = Properties.Resources.bg_dark;
+            pictureBox1.Location = new Point(430, 66);
+            pictureBox1.Margin = new Padding(4, 3, 4, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(410, 136);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 8;
+            pictureBox1.TabStop = false;
             // 
             // uploadPicture
             // 
-            this.uploadPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.uploadPicture.Location = new System.Drawing.Point(420, 165);
-            this.uploadPicture.Name = "uploadPicture";
-            this.uploadPicture.Size = new System.Drawing.Size(100, 78);
-            this.uploadPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.uploadPicture.TabIndex = 36;
-            this.uploadPicture.TabStop = false;
+            uploadPicture.BorderStyle = BorderStyle.FixedSingle;
+            uploadPicture.Location = new Point(614, 242);
+            uploadPicture.Margin = new Padding(4, 3, 4, 3);
+            uploadPicture.Name = "uploadPicture";
+            uploadPicture.Size = new Size(116, 90);
+            uploadPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+            uploadPicture.TabIndex = 36;
+            uploadPicture.TabStop = false;
             // 
             // uploadBtn
             // 
-            this.uploadBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(63)))), ((int)(((byte)(82)))));
-            this.uploadBtn.FlatAppearance.BorderSize = 0;
-            this.uploadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.uploadBtn.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uploadBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(231)))), ((int)(((byte)(231)))));
-            this.uploadBtn.Location = new System.Drawing.Point(309, 188);
-            this.uploadBtn.Name = "uploadBtn";
-            this.uploadBtn.Size = new System.Drawing.Size(105, 27);
-            this.uploadBtn.TabIndex = 37;
-            this.uploadBtn.Text = "Upload";
-            this.uploadBtn.UseVisualStyleBackColor = false;
-            this.uploadBtn.Click += new System.EventHandler(this.uploadBtn_Click);
+            uploadBtn.BackColor = Color.FromArgb(52, 63, 82);
+            uploadBtn.FlatAppearance.BorderSize = 0;
+            uploadBtn.FlatStyle = FlatStyle.Flat;
+            uploadBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            uploadBtn.ForeColor = Color.FromArgb(231, 231, 231);
+            uploadBtn.Location = new Point(484, 269);
+            uploadBtn.Margin = new Padding(4, 3, 4, 3);
+            uploadBtn.Name = "uploadBtn";
+            uploadBtn.Size = new Size(122, 31);
+            uploadBtn.TabIndex = 37;
+            uploadBtn.Text = "Upload";
+            uploadBtn.UseVisualStyleBackColor = false;
+            uploadBtn.Click += uploadBtn_Click;
             // 
             // showPassword
             // 
-            this.showPassword.AutoSize = true;
-            this.showPassword.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showPassword.Location = new System.Drawing.Point(526, 304);
-            this.showPassword.Name = "showPassword";
-            this.showPassword.Size = new System.Drawing.Size(105, 19);
-            this.showPassword.TabIndex = 38;
-            this.showPassword.Text = "Show Password";
-            this.showPassword.UseVisualStyleBackColor = true;
-            this.showPassword.CheckedChanged += new System.EventHandler(this.showPassword_CheckedChanged);
+            showPassword.AutoSize = true;
+            showPassword.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            showPassword.Location = new Point(738, 403);
+            showPassword.Margin = new Padding(4, 3, 4, 3);
+            showPassword.Name = "showPassword";
+            showPassword.Size = new Size(105, 19);
+            showPassword.TabIndex = 38;
+            showPassword.Text = "Show Password";
+            showPassword.UseVisualStyleBackColor = true;
+            showPassword.CheckedChanged += showPassword_CheckedChanged;
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Image = global::SchoolworkOrganizerV2.Properties.Resources.password;
-            this.pictureBox5.Location = new System.Drawing.Point(318, 327);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(24, 20);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox5.TabIndex = 40;
-            this.pictureBox5.TabStop = false;
+            pictureBox5.Image = Properties.Resources.password;
+            pictureBox5.Location = new Point(495, 429);
+            pictureBox5.Margin = new Padding(4, 3, 4, 3);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(28, 23);
+            pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox5.TabIndex = 40;
+            pictureBox5.TabStop = false;
             // 
             // txtVerify
             // 
-            this.txtVerify.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtVerify.Location = new System.Drawing.Point(348, 327);
-            this.txtVerify.Name = "txtVerify";
-            this.txtVerify.Size = new System.Drawing.Size(172, 22);
-            this.txtVerify.TabIndex = 39;
-            this.txtVerify.Text = "Password";
-            this.txtVerify.UseSystemPasswordChar = true;
+            txtVerify.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtVerify.Location = new Point(530, 429);
+            txtVerify.Margin = new Padding(4, 3, 4, 3);
+            txtVerify.Name = "txtVerify";
+            txtVerify.Size = new Size(200, 22);
+            txtVerify.TabIndex = 39;
+            txtVerify.Text = "Password";
+            txtVerify.UseSystemPasswordChar = true;
             // 
             // showPassVerify
             // 
-            this.showPassVerify.AutoSize = true;
-            this.showPassVerify.Font = new System.Drawing.Font("Roboto Light", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showPassVerify.Location = new System.Drawing.Point(526, 329);
-            this.showPassVerify.Name = "showPassVerify";
-            this.showPassVerify.Size = new System.Drawing.Size(105, 19);
-            this.showPassVerify.TabIndex = 41;
-            this.showPassVerify.Text = "Show Password";
-            this.showPassVerify.UseVisualStyleBackColor = true;
-            this.showPassVerify.CheckedChanged += new System.EventHandler(this.showPassVerify_CheckedChanged);
+            showPassVerify.AutoSize = true;
+            showPassVerify.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            showPassVerify.Location = new Point(738, 432);
+            showPassVerify.Margin = new Padding(4, 3, 4, 3);
+            showPassVerify.Name = "showPassVerify";
+            showPassVerify.Size = new Size(105, 19);
+            showPassVerify.TabIndex = 41;
+            showPassVerify.Text = "Show Password";
+            showPassVerify.UseVisualStyleBackColor = true;
+            showPassVerify.CheckedChanged += showPassVerify_CheckedChanged;
             // 
             // RegisterPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(929, 478);
-            this.Controls.Add(this.showPassVerify);
-            this.Controls.Add(this.pictureBox5);
-            this.Controls.Add(this.txtVerify);
-            this.Controls.Add(this.showPassword);
-            this.Controls.Add(this.uploadPicture);
-            this.Controls.Add(this.uploadBtn);
-            this.Controls.Add(this.pictureBox4);
-            this.Controls.Add(this.txtUsername);
-            this.Controls.Add(this.RegisterBtn);
-            this.Controls.Add(this.LoginLabel);
-            this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.pictureBox1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "RegisterPanel";
-            this.Text = "Register";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.uploadPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1264, 681);
+            Controls.Add(showPassVerify);
+            Controls.Add(pictureBox5);
+            Controls.Add(txtVerify);
+            Controls.Add(showPassword);
+            Controls.Add(uploadPicture);
+            Controls.Add(uploadBtn);
+            Controls.Add(pictureBox4);
+            Controls.Add(txtUsername);
+            Controls.Add(RegisterBtn);
+            Controls.Add(LoginLabel);
+            Controls.Add(pictureBox3);
+            Controls.Add(pictureBox2);
+            Controls.Add(txtPassword);
+            Controls.Add(txtEmail);
+            Controls.Add(pictureBox1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "RegisterPanel";
+            Text = "Register";
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)uploadPicture).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

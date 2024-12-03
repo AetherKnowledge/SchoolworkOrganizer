@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace SchoolworkOrganizerV2.Panels
+namespace SchoolworkOrganizer.Panels
 {
     public partial class ActivitiesPanel : Template
     {
@@ -57,7 +57,7 @@ namespace SchoolworkOrganizerV2.Panels
             subjectCBox.Items.Clear();
             editSubjectCBox.Items.Clear();
 
-            foreach (Subject subject in LoginPanel.currentUser.Subjects)
+            foreach (Subject subject in User.currentUser.Subjects)
             {
                 subjectCBox.Items.Add(subject.Name);
                 editSubjectCBox.Items.Add(subject.Name);
@@ -75,7 +75,7 @@ namespace SchoolworkOrganizerV2.Panels
             string subjectName = subjectCBox.Text;
             if (subjectName == null) return;
 
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
             if (selectedSubject == null) return;
 
             foreach (Activity activity in selectedSubject.Activities)
@@ -145,7 +145,7 @@ namespace SchoolworkOrganizerV2.Panels
         {
             string reviewerName = reviewerTxtBox.Text;
             string subjectName = editSubjectCBox.Text;
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
             string filePath = selectedFilePath;
             DateTime dueDate = dueDatePicker.Value;
             string status = statusCBox.Text;
@@ -167,6 +167,7 @@ namespace SchoolworkOrganizerV2.Panels
             }
 
             new Activity(reviewerName, selectedSubject, selectedFilePath, dueDate, status);
+            User.SaveUsers();
 
             RefreshTable();
             Clear();
@@ -181,11 +182,11 @@ namespace SchoolworkOrganizerV2.Panels
             DateTime newDueDate = dueDatePicker.Value;
             string newStatus = statusCBox.Text;
 
-            Subject oldSelectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == oldSubjectName);
+            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == oldSubjectName);
             Activity selectedActivity = oldSelectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == oldFilePath);
 
             string newSubjectName = editSubjectCBox.Text;
-            Subject newSelectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == newSubjectName);
+            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == newSubjectName);
 
 
             if (newActivityName == "")
@@ -209,6 +210,7 @@ namespace SchoolworkOrganizerV2.Panels
             selectedActivity.ChangeFile(selectedFilePath);
             selectedActivity.DueDate = newDueDate;
             selectedActivity.Status = newStatus;
+            User.SaveUsers();
 
             RefreshTable();
 
@@ -219,7 +221,7 @@ namespace SchoolworkOrganizerV2.Panels
         {
             string filePath = selectedFilePath;
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = LoginPanel.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
             Activity selectedActivity = selectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == filePath);
 
             if (selectedActivity == null)
@@ -234,6 +236,7 @@ namespace SchoolworkOrganizerV2.Panels
             {
                 selectedSubject.RemoveActivity(selectedActivity);
                 RefreshTable();
+                User.SaveUsers();
                 MessageBox.Show("Activity deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -287,7 +290,7 @@ namespace SchoolworkOrganizerV2.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            LoginPanel.currentUser.CheckForFiles();
+            User.currentUser.CheckForFiles();
             RefreshTable();
         }
     }

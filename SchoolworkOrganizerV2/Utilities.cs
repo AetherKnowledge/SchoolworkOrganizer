@@ -1,20 +1,48 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Button = System.Windows.Forms.Button;
 using TextBox = System.Windows.Forms.TextBox;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     public class Utilities
     {
+        internal readonly static string SqlConnectionString;
+        private readonly static string settingsPath = "appsettings.json";
+
+        static Utilities()
+        {
+            SqlConnectionString = GetSettingsFromJson("DefaultConnection");
+        }
+
+        private static string GetSettingsFromJson(string connectionName)
+        {
+            try
+            {
+                var json = File.ReadAllText(settingsPath);
+                using (JsonDocument doc = JsonDocument.Parse(json))
+                {
+                    var root = doc.RootElement;
+                    return root.GetProperty(connectionName).GetString() ?? throw new ArgumentNullException(nameof(connectionName));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while reading the connection string: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
         public static void InitializeTextBoxWithPlaceholder(TextBox textBox)
         {
             string placeholder = textBox.Text;
@@ -48,11 +76,11 @@ namespace SchoolworkOrganizerV2
 
             //hover
             button.MouseEnter += (sender, e) => { button.BackColor = Color.FromArgb(43, 49, 65); };
-            
+
             //press
             button.MouseDown += (sender, e) => { button.BackColor = Color.FromArgb(34, 40, 54); };
 
-            button.EnabledChanged += (sender, e) => 
+            button.EnabledChanged += (sender, e) =>
             {
                 if (!button.Enabled)
                 {

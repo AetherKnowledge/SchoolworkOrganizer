@@ -1,4 +1,4 @@
-﻿using SchoolworkOrganizerV2.Panels;
+﻿using SchoolworkOrganizer.Panels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     public partial class HomePanel : Template
     {

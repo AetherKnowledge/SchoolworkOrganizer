@@ -1,4 +1,4 @@
-﻿namespace SchoolworkOrganizerV2
+﻿namespace SchoolworkOrganizer
 {
     partial class LoginPanel
     {
@@ -39,6 +39,7 @@
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
             testBtn = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -47,7 +48,7 @@
             // txtUsername
             // 
             txtUsername.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtUsername.Location = new Point(390, 240);
+            txtUsername.Location = new Point(508, 276);
             txtUsername.Margin = new Padding(4, 3, 4, 3);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(291, 33);
@@ -57,14 +58,13 @@
             // txtPassword
             // 
             txtPassword.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtPassword.Location = new Point(390, 309);
+            txtPassword.Location = new Point(508, 345);
             txtPassword.Margin = new Padding(4, 3, 4, 3);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(291, 33);
             txtPassword.TabIndex = 2;
             txtPassword.Text = "Password";
             txtPassword.UseSystemPasswordChar = true;
-            txtPassword.TextChanged += txtPassword_TextChanged;
             // 
             // labelForgotPassword
             // 
@@ -72,7 +72,7 @@
             labelForgotPassword.Cursor = Cursors.Hand;
             labelForgotPassword.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelForgotPassword.ForeColor = Color.SteelBlue;
-            labelForgotPassword.Location = new Point(386, 372);
+            labelForgotPassword.Location = new Point(504, 408);
             labelForgotPassword.Margin = new Padding(4, 0, 4, 0);
             labelForgotPassword.Name = "labelForgotPassword";
             labelForgotPassword.Size = new Size(96, 15);
@@ -87,7 +87,7 @@
             ButtonLogIn.FlatStyle = FlatStyle.Flat;
             ButtonLogIn.Font = new Font("Roboto Light", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ButtonLogIn.ForeColor = Color.White;
-            ButtonLogIn.Location = new Point(559, 413);
+            ButtonLogIn.Location = new Point(677, 449);
             ButtonLogIn.Margin = new Padding(4, 3, 4, 3);
             ButtonLogIn.Name = "ButtonLogIn";
             ButtonLogIn.Size = new Size(122, 37);
@@ -100,7 +100,7 @@
             // 
             showPassword.AutoSize = true;
             showPassword.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            showPassword.Location = new Point(559, 354);
+            showPassword.Location = new Point(677, 390);
             showPassword.Margin = new Padding(4, 3, 4, 3);
             showPassword.Name = "showPassword";
             showPassword.Size = new Size(105, 19);
@@ -115,7 +115,7 @@
             registerLabel.Cursor = Cursors.Hand;
             registerLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             registerLabel.ForeColor = Color.SteelBlue;
-            registerLabel.Location = new Point(386, 354);
+            registerLabel.Location = new Point(504, 390);
             registerLabel.Margin = new Padding(4, 0, 4, 0);
             registerLabel.Name = "registerLabel";
             registerLabel.Size = new Size(119, 15);
@@ -126,7 +126,7 @@
             // pictureBox3
             // 
             pictureBox3.Image = Properties.Resources.password;
-            pictureBox3.Location = new Point(341, 312);
+            pictureBox3.Location = new Point(459, 348);
             pictureBox3.Margin = new Padding(4, 3, 4, 3);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(42, 36);
@@ -137,7 +137,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.username;
-            pictureBox2.Location = new Point(341, 240);
+            pictureBox2.Location = new Point(459, 276);
             pictureBox2.Margin = new Padding(4, 3, 4, 3);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(42, 38);
@@ -148,7 +148,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.bg_dark;
-            pictureBox1.Location = new Point(315, 42);
+            pictureBox1.Location = new Point(433, 78);
             pictureBox1.Margin = new Padding(4, 3, 4, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(410, 136);
@@ -158,19 +158,30 @@
             // 
             // testBtn
             // 
-            testBtn.Location = new Point(171, 170);
+            testBtn.Location = new Point(289, 206);
             testBtn.Name = "testBtn";
             testBtn.Size = new Size(75, 23);
             testBtn.TabIndex = 15;
             testBtn.Text = "button1";
             testBtn.UseVisualStyleBackColor = true;
-            testBtn.Click += this.testBtn_Click;
+            testBtn.Click += testBtn_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(243, 442);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 16;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // LoginPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1084, 552);
+            ClientSize = new Size(1264, 681);
+            Controls.Add(button1);
             Controls.Add(testBtn);
             Controls.Add(registerLabel);
             Controls.Add(showPassword);
@@ -186,7 +197,6 @@
             Name = "LoginPanel";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
-            Load += Log_In_Page_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -206,5 +216,6 @@
         private System.Windows.Forms.CheckBox showPassword;
         private System.Windows.Forms.Label registerLabel;
         private Button testBtn;
+        private Button button1;
     }
 }

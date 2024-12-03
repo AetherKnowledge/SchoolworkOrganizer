@@ -6,9 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
-using SchoolworkOrganizerV2.Panels;
+using SchoolworkOrganizer.Panels;
+using System.Text.Json.Serialization;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     [Serializable]
     public class Reviewer
@@ -37,7 +38,6 @@ namespace SchoolworkOrganizerV2
             }
         }
 
-        private string _folderPath;
         public string FolderPath
         {
             get 
@@ -47,15 +47,15 @@ namespace SchoolworkOrganizerV2
             }
         }
 
-        private string _filePath;
+        public string FileName { get; private set; }
+
         public string FilePath
         {
             get
             {
                 if (FolderPath == null) return null;
-                return FolderPath + "/" + _filePath;
+                return FolderPath + "/" + FileName;
             }
-            private set { _filePath = value; }
         }
 
         public Reviewer(string name, Subject subject, string sourcePath)
@@ -64,7 +64,7 @@ namespace SchoolworkOrganizerV2
             Subject = subject;
 
             string fileName = Path.GetFileName(sourcePath);
-            FilePath = fileName;
+            FileName = fileName;
 
             if (sourcePath != FilePath)
             {
@@ -81,7 +81,7 @@ namespace SchoolworkOrganizerV2
 
                 File.Delete(FilePath);
                 string fileName = Path.GetFileName(sourcePath);
-                FilePath = fileName;
+                FileName = fileName;
                 Utilities.CopyFile(sourcePath, FolderPath + "/" + fileName);
             }
             catch (Exception ex)

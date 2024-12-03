@@ -1,6 +1,8 @@
 using MaterialSkin;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     internal static class Program
     {
@@ -16,7 +18,7 @@ namespace SchoolworkOrganizerV2
             materialSkinManager.EnforceBackcolorOnAllComponents = false;
             materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(Color.FromArgb(43, 49, 65), Color.FromArgb(34, 40, 54), Color.FromArgb(65, 78, 101), Color.FromArgb(212, 231, 197), MaterialSkin.TextShade.WHITE);
 
-
+            User.Users.Add(new User("test", "test", "test", null));
             ApplicationConfiguration.Initialize();
             Application.Run(new LoginPanel());
         }

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SchoolworkOrganizerV2.Panels
+namespace SchoolworkOrganizer.Panels
 {
     public partial class Template : MaterialForm
     {
@@ -57,7 +57,7 @@ namespace SchoolworkOrganizerV2.Panels
         {
             base.Show();
 
-            if (LoginPanel.currentUser == null) return;
+            if (User.currentUser == null) return;
             
             this.Size = size;
             this.Location = location;
@@ -78,8 +78,8 @@ namespace SchoolworkOrganizerV2.Panels
 
         protected void RefreshUser()
         {
-            usernameLabel.Text = LoginPanel.currentUser.Username;
-            userImageBox.Image = LoginPanel.currentUser.UserImage;
+            usernameLabel.Text = User.currentUser.Username;
+            userImageBox.Image = User.currentUser.UserImage;
         }
 
         public void homeBtn_Click(object sender, EventArgs e)

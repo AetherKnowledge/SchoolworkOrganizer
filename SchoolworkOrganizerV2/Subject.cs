@@ -1,16 +1,18 @@
-﻿using SchoolworkOrganizerV2.Panels;
+﻿using SchoolworkOrganizer.Panels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SchoolworkOrganizerV2
+namespace SchoolworkOrganizer
 {
     [Serializable]
     public class Subject
     {
+
         private String _name;
         public String Name
         {
@@ -23,6 +25,7 @@ namespace SchoolworkOrganizerV2
                 FolderPath = newPath;
             }
         }
+
         public String Username;
         public String FolderPath;
         public List<Reviewer> Reviewers = new List<Reviewer>();

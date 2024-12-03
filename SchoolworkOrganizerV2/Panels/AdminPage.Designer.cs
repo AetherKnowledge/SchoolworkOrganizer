@@ -1,4 +1,4 @@
-﻿namespace SchoolworkOrganizerV2.Panels
+﻿namespace SchoolworkOrganizer.Panels
 {
     partial class AdminPage
     {

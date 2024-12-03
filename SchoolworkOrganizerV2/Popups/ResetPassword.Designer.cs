@@ -1,4 +1,4 @@
-﻿namespace SchoolworkOrganizerV2.Popups
+﻿namespace SchoolworkOrganizer.Popups
 {
     partial class ResetPassword
     {
@@ -85,7 +85,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Image = global::SchoolworkOrganizerV2.Properties.Resources.bg_dark;
+            this.pictureBox1.Image = global::SchoolworkOrganizer.Properties.Resources.bg_dark;
             this.pictureBox1.Location = new System.Drawing.Point(196, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(351, 118);
