@@ -111,10 +111,11 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "INSERT INTO `activities` (username, subject, dueDate, status, filename) VALUES (@Username, @Subject, @DueDate, @Status, @FileName)";
+                    string query = "INSERT INTO `activities` (name, username, subject, dueDate, status, filename) VALUES (@Name, @Username, @Subject, @DueDate, @Status, @FileName)";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.Username);
+                        command.Parameters.AddWithValue("@Name", Name);
+                        command.Parameters.AddWithValue("@Username", Subject.User);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
                         command.Parameters.AddWithValue("@DueDate", DueDate);
                         command.Parameters.AddWithValue("@Status", Status);
@@ -138,14 +139,15 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "UPDATE `activities` SET dueDate = @DueDate, status = @Status, filename = @FileName WHERE username = @Username AND subject = @Subject";
+                    string query = "UPDATE `activities` SET name = @Name, dueDate = @DueDate, status = @Status, filename = @FileName WHERE username = @Username AND subject = @Subject";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@DueDate", DueDate);
                         command.Parameters.AddWithValue("@Status", Status);
                         command.Parameters.AddWithValue("@FileName", FileName);
+                        command.Parameters.AddWithValue("@Username", Subject.User);
+                        command.Parameters.AddWithValue("@Subject", Subject.Name);
 
                         await command.ExecuteNonQueryAsync();
                     }
@@ -167,7 +169,7 @@ namespace SchoolworkOrganizerUtils
                     string query = "DELETE FROM `activities` WHERE username = @Username AND subject = @Subject";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.Username);
+                        command.Parameters.AddWithValue("@Username", Subject.User);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
 
                         await command.ExecuteNonQueryAsync();

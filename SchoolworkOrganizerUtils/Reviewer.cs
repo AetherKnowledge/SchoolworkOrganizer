@@ -102,10 +102,11 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "INSERT INTO `reviewers` (username, subject, name, filename) VALUES (@Username, @Subject, @Name, @FileName)";
+                    string query = "INSERT INTO `reviewers` (name, username, subject, name, filename) VALUES (@Name, @Username, @Subject, @Name, @FileName)";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.Username);
+                        command.Parameters.AddWithValue("@Name", Name);
+                        command.Parameters.AddWithValue("@Username", Subject.User);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@FileName", FileName);
@@ -130,7 +131,8 @@ namespace SchoolworkOrganizerUtils
                     string query = "UPDATE `reviewers` SET name = @Name, filename = @FileName WHERE username = @Username AND subject = @Subject";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.Username);
+                        command.Parameters.AddWithValue("@Name", Name);
+                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@FileName", FileName);
@@ -155,7 +157,7 @@ namespace SchoolworkOrganizerUtils
                     string query = "DELETE FROM `reviewers` WHERE username = @Username AND subject = @Subject";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.Username);
+                        command.Parameters.AddWithValue("@Username", Subject.User);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
 
                         await command.ExecuteNonQueryAsync();

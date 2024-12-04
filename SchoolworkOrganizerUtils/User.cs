@@ -167,7 +167,7 @@ namespace SchoolworkOrganizerUtils
                             while (await reader.ReadAsync())
                             {
                                 string name = reader.GetString("name");
-                                Subject subject = new Subject(Username, name);
+                                Subject subject = new Subject(this, name);
                                 Subjects.Add(subject);
                                 subject.LoadActivities();
                                 subject.LoadReviewers();
@@ -231,15 +231,51 @@ namespace SchoolworkOrganizerUtils
                     }
                 }
 
-                Subjects.All(subject => { subject.UpdateToDatabase(); return true;});
+                ChangeUsername();
                 LoadUsers(true);
             }
             catch (MySqlException e)
             {
                 Console.WriteLine(e.Message, "Error");
             }
+        }
 
-            
+        private async void ChangeUsername()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    await connection.OpenAsync();
+                    string query = "UPDATE `subject` SET username = @Username WHERE username = @OldUsername";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
+                        await command.ExecuteNonQueryAsync();
+                    }
+
+                    query = "UPDATE `activities` SET username = @Username WHERE username = @OldUsername";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
+                        await command.ExecuteNonQueryAsync();
+                    }
+
+                    query = "UPDATE `reviewer` SET username = @Username WHERE username = @OldUsername";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message, "Error");
+            }
         }
 
         public async void DeleteFromDatabase()

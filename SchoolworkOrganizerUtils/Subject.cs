@@ -18,23 +18,23 @@ namespace SchoolworkOrganizerUtils
                 else if (previousName != _name) previousName = _name;
 
                 _name = value;
-                string newPath = "Data/" + Username + "/" + value;
+                string newPath = "Data/" + User.Username + "/" + value;
                 Utilities.RenameFolder(FolderPath, newPath);
                 FolderPath = newPath;
             }
         }
 
-        public string Username;
+        public User User;
         public string FolderPath;
         public List<Reviewer> Reviewers = new List<Reviewer>();
         public List<Activity> Activities = new List<Activity>();
 
-        public Subject(string username, string subjectName)
+        public Subject(User user, string subjectName)
         {
-            _name = username;
-            Username = username;
+            User = user;
+            _name = subjectName;
             Name = subjectName;
-            FolderPath = "Data/" + Username + "/" + Name;
+            FolderPath = "Data/" + User + "/" + Name;
             CheckForFiles();
         }
 
@@ -101,7 +101,7 @@ namespace SchoolworkOrganizerUtils
                     string query = "SELECT name, dueDate, status, filename FROM `activities` WHERE username = @Username AND subject = @Subject";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@Username", User.Username);
                         command.Parameters.AddWithValue("@Subject", Name);
                         using (MySqlDataReader reader = await command.ExecuteReaderAsync())
                         {
@@ -134,7 +134,7 @@ namespace SchoolworkOrganizerUtils
                     string query = "SELECT name, filename FROM `reviewers` WHERE username = @Username AND subject = @Subject";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@Username", User.Username);
                         command.Parameters.AddWithValue("@Subject", Name);
                         using (MySqlDataReader reader = await command.ExecuteReaderAsync())
                         {
@@ -164,7 +164,7 @@ namespace SchoolworkOrganizerUtils
                     string query = "INSERT INTO `subject` (username, name) VALUES (@Username, @Name)";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@Username", User.Username);
                         command.Parameters.AddWithValue("@Name", Name);
 
                         await command.ExecuteNonQueryAsync();
@@ -185,18 +185,47 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "UPDATE `subject` SET name = @Name WHERE username = @Username AND name = @OldName";
+                    string query = "UPDATE `subject` name = @Name WHERE username = @Username AND name = @OldName";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Username);
                         command.Parameters.AddWithValue("@Name", Name);
+                        command.Parameters.AddWithValue("@Username", User.Username);
                         command.Parameters.AddWithValue("@OldName", previousName);
 
                         await command.ExecuteNonQueryAsync();
                     }
 
-                    foreach (var reviewer in Reviewers) reviewer.UpdateToDatabase();
-                    foreach (var activity in Activities) activity.UpdateToDatabase();
+                    ChangeSubject();
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message, "Error");
+            }
+        }
+
+        private async void ChangeSubject()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    await connection.OpenAsync();
+                    string query = "UPDATE `activities` SET subject = @Subject WHERE subject = @OldSubject";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Subject", Name);
+                        command.Parameters.AddWithValue("@OldSubject", previousName);
+                        await command.ExecuteNonQueryAsync();
+                    }
+
+                    query = "UPDATE `reviewer` SET subject = @Subject WHERE subject = @OldSubject";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Subject", Name);
+                        command.Parameters.AddWithValue("@OldSubject", previousName);
+                        await command.ExecuteNonQueryAsync();
+                    }
                 }
             }
             catch (MySqlException e)
@@ -218,7 +247,7 @@ namespace SchoolworkOrganizerUtils
                     string query = "DELETE FROM `subject` WHERE username = @Username AND name = @Name";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Username);
+                        command.Parameters.AddWithValue("@Username", User.Username);
                         command.Parameters.AddWithValue("@Name", Name);
 
                         await command.ExecuteNonQueryAsync();

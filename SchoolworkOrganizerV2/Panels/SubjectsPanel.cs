@@ -98,7 +98,7 @@ namespace SchoolworkOrganizer.Panels
                 MessageBox.Show("Please add subject name.", "Error");
                 return;
             }
-            Subject subject = new Subject(User.currentUser.Username, subjectName);
+            Subject subject = new Subject(User.currentUser, subjectName);
             User.currentUser.Subjects.Add(subject);
             subject.AddToDatabase();
 
