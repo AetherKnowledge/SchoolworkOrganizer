@@ -1,18 +1,8 @@
-﻿using SchoolworkOrganizer.Panels;
+﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Panels;
 using SchoolworkOrganizer.Popups;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.OleDb;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using SchoolworkOrganizerUtils;
+
 
 namespace SchoolworkOrganizer
 {
@@ -22,8 +12,8 @@ namespace SchoolworkOrganizer
         public LoginPanel()
         {
             InitializeComponent();
-            Utilities.InitializeTextBoxWithPlaceholder(txtUsername);
-            Utilities.InitializeTextBoxWithPlaceholder(txtPassword);
+            FormUtilities.InitializeTextBoxWithPlaceholder(txtUsername);
+            FormUtilities.InitializeTextBoxWithPlaceholder(txtPassword);
 
             User.LoadUsers();
             CheckForFiles();
@@ -59,7 +49,7 @@ namespace SchoolworkOrganizer
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
-            User.SaveUsers();
+            
         }
 
         private void ButtonLogIn_Click(object sender, EventArgs e)
@@ -126,7 +116,7 @@ namespace SchoolworkOrganizer
         {
             foreach (User user in User.Users)
             {
-                user.AddUserToDatabase();
+                user.AddToDatabase();
             }
         }
     }

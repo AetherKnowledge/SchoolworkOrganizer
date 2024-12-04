@@ -1,6 +1,5 @@
 using MaterialSkin;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer
 {
@@ -18,7 +17,7 @@ namespace SchoolworkOrganizer
             materialSkinManager.EnforceBackcolorOnAllComponents = false;
             materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(Color.FromArgb(43, 49, 65), Color.FromArgb(34, 40, 54), Color.FromArgb(65, 78, 101), Color.FromArgb(212, 231, 197), MaterialSkin.TextShade.WHITE);
 
-            User.Users.Add(new User("test", "test", "test", null));
+            User.LoadUsers();
             ApplicationConfiguration.Initialize();
             Application.Run(new LoginPanel());
         }

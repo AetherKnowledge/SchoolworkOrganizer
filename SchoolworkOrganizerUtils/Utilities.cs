@@ -1,19 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using SkiaSharp;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System.Runtime.Versioning;
 using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Button = System.Windows.Forms.Button;
-using TextBox = System.Windows.Forms.TextBox;
+using static System.Net.Mime.MediaTypeNames;
 
-namespace SchoolworkOrganizer
+namespace SchoolworkOrganizerUtils
 {
     public class Utilities
     {
@@ -43,86 +35,56 @@ namespace SchoolworkOrganizer
             }
         }
 
-        public static void InitializeTextBoxWithPlaceholder(TextBox textBox)
+        [SupportedOSPlatform("windows")]
+        public static System.Drawing.Image? ConvertToImage(SKImage skImage)
         {
-            string placeholder = textBox.Text;
-            textBox.ForeColor = Color.Gray;
-
-            textBox.Enter += (sender, e) =>
+            using (var data = skImage.Encode())
+            using (var ms = new MemoryStream(data.ToArray()))
             {
-                if (textBox.Text == placeholder)
-                {
-                    textBox.Text = "";
-                    textBox.ForeColor = Color.Black;
-                }
-            };
-
-            textBox.Leave += (sender, e) =>
-            {
-                if (string.IsNullOrWhiteSpace(textBox.Text))
-                {
-                    textBox.Text = placeholder;
-                    textBox.ForeColor = Color.Gray;
-                }
-            };
-
-        }
-
-        public static void ChangeButtonColors(Button button)
-        {
-            //normal
-            button.MouseLeave += (sender, e) => { button.BackColor = Color.FromArgb(52, 63, 82); };
-            button.MouseUp += (sender, e) => { button.BackColor = Color.FromArgb(52, 63, 82); };
-
-            //hover
-            button.MouseEnter += (sender, e) => { button.BackColor = Color.FromArgb(43, 49, 65); };
-
-            //press
-            button.MouseDown += (sender, e) => { button.BackColor = Color.FromArgb(34, 40, 54); };
-
-            button.EnabledChanged += (sender, e) =>
-            {
-                if (!button.Enabled)
-                {
-
-                }
-            };
-
-        }
-
-        public static void customButtonPaint(object sender, PaintEventArgs e)
-        {
-            Button btn = sender as Button;
-
-            if (!btn.Enabled)
-            {
-                Color disabledColor = Color.Gray;
-                TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, btn.ClientRectangle, disabledColor,
-                                      TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            }
-
-            if (btn.Enabled)
-            {
-
+                return System.Drawing.Image.FromStream(ms);
             }
         }
 
-        public static byte[] ImageToByteArray(Image image)
+        [SupportedOSPlatform("windows")]
+        public static SKImage ConvertToSKImage(System.Drawing.Image image)
         {
             using (var ms = new MemoryStream())
             {
                 image.Save(ms, image.RawFormat);
-                return ms.ToArray();
+                ms.Seek(0, SeekOrigin.Begin);
+                using (var skBitmap = SKBitmap.Decode(ms))
+                {
+                    return SKImage.FromBitmap(skBitmap);
+                }
             }
         }
 
-        public static Image ByteArrayToImage(byte[] byteArray)
+        public static async Task<byte[]> SKImageToByteArrayAsync(SKImage image)
+        {
+            return await Task.Run(() =>
+            {
+                using (var ms = new MemoryStream())
+                {
+                    using (var skImage = SKImage.FromBitmap(SKBitmap.FromImage(image)))
+                    using (var data = skImage.Encode(SKEncodedImageFormat.Png, 100))
+                    {
+                        data.SaveTo(ms);
+                    }
+                    return ms.ToArray();
+                }
+            });
+        }
+
+        public static async Task<SKImage?> ByteArrayToSKImageAsync(byte[] byteArray)
         {
             if (byteArray == null) return null;
-            using (var ms = new MemoryStream(byteArray))
+            return await Task.Run(() =>
             {
-                return Image.FromStream(ms);
-            }
+                using (var ms = new MemoryStream(byteArray))
+                {
+                    return SKImage.FromEncodedData(ms);
+                }
+            });
         }
 
         public static void MakeFolder(string path)
@@ -210,11 +172,12 @@ namespace SchoolworkOrganizer
         {
             if (!File.Exists(path))
             {
-                MessageBox.Show("File does not exist.", "Error");
+                Console.WriteLine("File does not exist.", "Error");
                 return;
             }
             Process.Start(new ProcessStartInfo(Path.GetFullPath(path)) { UseShellExecute = true });
         }
+
 
     }
 }

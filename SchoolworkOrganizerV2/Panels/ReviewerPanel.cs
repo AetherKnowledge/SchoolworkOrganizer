@@ -1,14 +1,5 @@
-﻿using SchoolworkOrganizer.Panels;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
@@ -43,10 +34,10 @@ namespace SchoolworkOrganizer.Panels
             table.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(43, 49, 65);
             table.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(231, 231, 231);
 
-            saveBtn.Paint += Utilities.customButtonPaint;
-            addBtn.Paint += Utilities.customButtonPaint;
-            deleteBtn.Paint += Utilities.customButtonPaint;
-            cancelBtn.Paint += Utilities.customButtonPaint;
+            saveBtn.Paint += FormUtilities.customButtonPaint;
+            addBtn.Paint += FormUtilities.customButtonPaint;
+            deleteBtn.Paint += FormUtilities.customButtonPaint;
+            cancelBtn.Paint += FormUtilities.customButtonPaint;
         }
 
         public new void Show()
@@ -100,7 +91,7 @@ namespace SchoolworkOrganizer.Panels
             }
         }
 
-        private void table_SelectionChanged(object sender, EventArgs e)
+        private void table_SelectionChanged(object? sender, EventArgs e)
         {
             if (table.SelectedRows.Count > 0)
             {
@@ -151,7 +142,6 @@ namespace SchoolworkOrganizer.Panels
             }
 
             new Reviewer(reviewerName, selectedSubject, selectedFilePath);
-            User.SaveUsers();
 
             RefreshTable();
             Clear();
@@ -190,7 +180,6 @@ namespace SchoolworkOrganizer.Panels
             selectedReviewer.Name = newReviewerName;
             selectedReviewer.Subject = newSelectedSubject;
             selectedReviewer.ChangeFile(selectedFilePath);
-            User.SaveUsers();
 
             RefreshTable();
 
@@ -216,7 +205,6 @@ namespace SchoolworkOrganizer.Panels
             {
                 selectedSubject.RemoveReviewer(selectedReviewer);
                 RefreshTable();
-                User.SaveUsers();
                 MessageBox.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 

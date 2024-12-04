@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.OleDb;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
@@ -67,7 +57,8 @@ namespace SchoolworkOrganizer.Panels
             User.currentUser.Username = username;
             User.currentUser.Email = email;
             User.currentUser.Password = password;
-            User.currentUser.UserImage = uploadPicture.Image;
+            User.currentUser.UserImage = uploadPicture.Image != Properties.Resources.user ? Utilities.ConvertToSKImage(uploadPicture.Image) : null;
+            User.currentUser.UpdateToDatabase();
 
             RefreshUser();
         }
@@ -80,9 +71,11 @@ namespace SchoolworkOrganizer.Panels
         protected new void RefreshUser()
         {
             base.RefreshUser();
+            if (User.currentUser == null) return;
+
             usernameTxt.Text = User.currentUser.Username;
             emailTxt.Text = User.currentUser.Email;
-            uploadPicture.Image = User.currentUser.UserImage;
+            if (uploadPicture.Image != User.currentUser.WinformImage) uploadPicture.Image = User.currentUser.WinformImage ?? Properties.Resources.user; ;
         }
     }
 

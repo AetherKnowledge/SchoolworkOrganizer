@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
@@ -41,10 +33,10 @@ namespace SchoolworkOrganizer.Panels
             table.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(43, 49, 65);
             table.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(231, 231, 231);
 
-            saveBtn.Paint += Utilities.customButtonPaint;
-            addBtn.Paint += Utilities.customButtonPaint;
-            deleteBtn.Paint += Utilities.customButtonPaint;
-            cancelBtn.Paint += Utilities.customButtonPaint;
+            saveBtn.Paint += FormUtilities.customButtonPaint;
+            addBtn.Paint += FormUtilities.customButtonPaint;
+            deleteBtn.Paint += FormUtilities.customButtonPaint;
+            cancelBtn.Paint += FormUtilities.customButtonPaint;
 
         }
 
@@ -106,8 +98,9 @@ namespace SchoolworkOrganizer.Panels
                 MessageBox.Show("Please add subject name.", "Error");
                 return;
             }
-
-            User.currentUser.Subjects.Add(new Subject(User.currentUser.Username, subjectName));
+            Subject subject = new Subject(User.currentUser.Username, subjectName);
+            User.currentUser.Subjects.Add(subject);
+            subject.AddToDatabase();
 
             RefreshTable();
             Clear();
@@ -125,6 +118,7 @@ namespace SchoolworkOrganizer.Panels
             }
 
             selectedSubject.Name = subjectTxtBox.Text;
+            selectedSubject.UpdateToDatabase();
             RefreshTable();
             Clear();
         }

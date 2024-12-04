@@ -1,7 +1,5 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
+﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
@@ -36,10 +34,10 @@ namespace SchoolworkOrganizer.Panels
             table.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(43, 49, 65);
             table.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(231, 231, 231);
 
-            saveBtn.Paint += Utilities.customButtonPaint;
-            addBtn.Paint += Utilities.customButtonPaint;
-            deleteBtn.Paint += Utilities.customButtonPaint;
-            cancelBtn.Paint += Utilities.customButtonPaint;
+            saveBtn.Paint += FormUtilities.customButtonPaint;
+            addBtn.Paint += FormUtilities.customButtonPaint;
+            deleteBtn.Paint += FormUtilities.customButtonPaint;
+            cancelBtn.Paint += FormUtilities.customButtonPaint;
 
             dueDatePicker.CalendarFont = new Font("Roboto Light", 8);
             dueDatePicker.CalendarForeColor = Color.FromArgb(65, 78, 101);
@@ -167,7 +165,6 @@ namespace SchoolworkOrganizer.Panels
             }
 
             new Activity(reviewerName, selectedSubject, selectedFilePath, dueDate, status);
-            User.SaveUsers();
 
             RefreshTable();
             Clear();
@@ -210,7 +207,6 @@ namespace SchoolworkOrganizer.Panels
             selectedActivity.ChangeFile(selectedFilePath);
             selectedActivity.DueDate = newDueDate;
             selectedActivity.Status = newStatus;
-            User.SaveUsers();
 
             RefreshTable();
 
@@ -236,7 +232,6 @@ namespace SchoolworkOrganizer.Panels
             {
                 selectedSubject.RemoveActivity(selectedActivity);
                 RefreshTable();
-                User.SaveUsers();
                 MessageBox.Show("Activity deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 

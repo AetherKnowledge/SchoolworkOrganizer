@@ -1,13 +1,7 @@
 ﻿using SchoolworkOrganizer.Panels;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using SchoolworkOrganizerUtils;
+using SchoolworkOrganizer.Design;
+using SkiaSharp;
 
 namespace SchoolworkOrganizer
 {
@@ -17,10 +11,10 @@ namespace SchoolworkOrganizer
         {
             InitializeComponent();
 
-            Utilities.InitializeTextBoxWithPlaceholder(txtEmail);
-            Utilities.InitializeTextBoxWithPlaceholder(txtUsername);
-            Utilities.InitializeTextBoxWithPlaceholder(txtPassword);
-            Utilities.InitializeTextBoxWithPlaceholder(txtVerify);
+            FormUtilities.InitializeTextBoxWithPlaceholder(txtEmail);
+            FormUtilities.InitializeTextBoxWithPlaceholder(txtUsername);
+            FormUtilities.InitializeTextBoxWithPlaceholder(txtPassword);
+            FormUtilities.InitializeTextBoxWithPlaceholder(txtVerify);
             this.FormClosing += Template.MyFormClosing;
         }
 
@@ -59,7 +53,7 @@ namespace SchoolworkOrganizer
             string username = txtUsername.Text;
             string password = txtPassword.Text;
             string verifyPass = txtVerify.Text;
-            Image userImage = uploadPicture.Image;
+            SKImage? userImage = uploadPicture.Image == Properties.Resources.user ? Utilities.ConvertToSKImage(uploadPicture.Image) : null;
 
             if (User.DoesUserExist(username))
             {
@@ -74,7 +68,6 @@ namespace SchoolworkOrganizer
             }
 
             User.Users.Add(new User(email, username, password, userImage));
-            User.SaveUsers();
             MessageBox.Show("Register Successful", "Success");
             this.Hide();
             OpenPanels.loginPage.Show();

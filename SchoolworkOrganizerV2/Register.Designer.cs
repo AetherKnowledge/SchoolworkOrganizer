@@ -159,11 +159,12 @@
             // uploadPicture
             // 
             uploadPicture.BorderStyle = BorderStyle.FixedSingle;
+            uploadPicture.Image = Properties.Resources.user;
             uploadPicture.Location = new Point(614, 242);
             uploadPicture.Margin = new Padding(4, 3, 4, 3);
             uploadPicture.Name = "uploadPicture";
             uploadPicture.Size = new Size(116, 90);
-            uploadPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+            uploadPicture.SizeMode = PictureBoxSizeMode.Zoom;
             uploadPicture.TabIndex = 36;
             uploadPicture.TabStop = false;
             // 

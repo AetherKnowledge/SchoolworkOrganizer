@@ -72,7 +72,7 @@
             sidePanel.Location = new Point(1, 93);
             sidePanel.Margin = new Padding(4, 3, 4, 3);
             sidePanel.Name = "sidePanel";
-            sidePanel.Size = new Size(189, 460);
+            sidePanel.Size = new Size(189, 626);
             sidePanel.TabIndex = 5;
             // 
             // userPanel
@@ -100,11 +100,12 @@
             // userImageBox
             // 
             userImageBox.Dock = DockStyle.Fill;
+            userImageBox.Image = Properties.Resources.user;
             userImageBox.Location = new Point(12, 12);
             userImageBox.Margin = new Padding(4, 3, 4, 3);
             userImageBox.Name = "userImageBox";
             userImageBox.Size = new Size(165, 125);
-            userImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            userImageBox.SizeMode = PictureBoxSizeMode.Zoom;
             userImageBox.TabIndex = 2;
             userImageBox.TabStop = false;
             // 
@@ -238,7 +239,7 @@
             topPanel.Margin = new Padding(4, 3, 4, 3);
             topPanel.MaximumSize = new Size(0, 69);
             topPanel.Name = "topPanel";
-            topPanel.Size = new Size(1083, 69);
+            topPanel.Size = new Size(1278, 69);
             topPanel.TabIndex = 4;
             // 
             // datePanel
@@ -246,7 +247,7 @@
             datePanel.Controls.Add(timeTxtBox);
             datePanel.Dock = DockStyle.Right;
             datePanel.ForeColor = Color.FromArgb(231, 231, 231);
-            datePanel.Location = new Point(819, 0);
+            datePanel.Location = new Point(1014, 0);
             datePanel.Margin = new Padding(4, 3, 4, 3);
             datePanel.Name = "datePanel";
             datePanel.Size = new Size(264, 69);
@@ -284,14 +285,14 @@
             mainPanel.Location = new Point(190, 93);
             mainPanel.Margin = new Padding(4, 3, 4, 3);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(894, 460);
+            mainPanel.Size = new Size(1089, 626);
             mainPanel.TabIndex = 6;
             // 
             // Template
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1085, 554);
+            ClientSize = new Size(1280, 720);
             Controls.Add(mainPanel);
             Controls.Add(sidePanel);
             Controls.Add(topPanel);

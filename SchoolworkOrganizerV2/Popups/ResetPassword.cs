@@ -5,12 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using SchoolworkOrganizer.Design;
 
 namespace SchoolworkOrganizer.Popups
 {
@@ -23,8 +18,8 @@ namespace SchoolworkOrganizer.Popups
         {
             this.Email = Email;
             InitializeComponent();
-            Utilities.InitializeTextBoxWithPlaceholder(newPasswordTxtBox);
-            Utilities.InitializeTextBoxWithPlaceholder(verifyPasswordTxtBox);
+            FormUtilities.InitializeTextBoxWithPlaceholder(newPasswordTxtBox);
+            FormUtilities.InitializeTextBoxWithPlaceholder(verifyPasswordTxtBox);
             this.FormClosing += MyFormClosing;
         }
         public new void Show()

@@ -1,21 +1,11 @@
 ﻿using MaterialSkin.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.OleDb;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using SchoolworkOrganizer.Design;
+using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
     public partial class Template : MaterialForm
     {
-        protected OleDbConnection conn;
         public static Point location = new Point(0,0);
         public static Size size = new Size(946, 519);
         public static FormWindowState windowState = FormWindowState.Normal;
@@ -28,11 +18,11 @@ namespace SchoolworkOrganizer.Panels
             timeKeeper.Start();
             this.FormClosing += MyFormClosing;
 
-            Utilities.ChangeButtonColors(homeBtn);
+            FormUtilities.ChangeButtonColors(homeBtn);
 
         }
 
-        public static void MyFormClosing(object sender, FormClosingEventArgs e)
+        public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to exit?", "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -47,7 +37,7 @@ namespace SchoolworkOrganizer.Panels
 
         }
 
-        private void Timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object? sender, EventArgs e)
         {
             timeTxtBox.Text = DateTime.Now.ToString("MMMM dd, yyyy hh:mm:ss tt");
         }
@@ -78,8 +68,10 @@ namespace SchoolworkOrganizer.Panels
 
         protected void RefreshUser()
         {
+            if (User.currentUser == null) return;
+
             usernameLabel.Text = User.currentUser.Username;
-            userImageBox.Image = User.currentUser.UserImage;
+            if (userImageBox.Image != User.currentUser.WinformImage) userImageBox.Image = User.currentUser.WinformImage ?? Properties.Resources.user;
         }
 
         public void homeBtn_Click(object sender, EventArgs e)
