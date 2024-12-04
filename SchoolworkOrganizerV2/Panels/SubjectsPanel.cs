@@ -68,7 +68,7 @@ namespace SchoolworkOrganizer.Panels
             }
         }
 
-        private void table_SelectionChanged(object sender, EventArgs e)
+        private void table_SelectionChanged(object? sender, EventArgs e)
         {
             if (table.SelectedRows.Count > 0)
             {
@@ -98,6 +98,13 @@ namespace SchoolworkOrganizer.Panels
                 MessageBox.Show("Please add subject name.", "Error");
                 return;
             }
+
+            if(User.currentUser.Subjects.Any(subject => subject.Name == subjectName))
+            {
+                MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             Subject subject = new Subject(User.currentUser, subjectName);
             User.currentUser.Subjects.Add(subject);
             subject.AddToDatabase();
@@ -114,6 +121,18 @@ namespace SchoolworkOrganizer.Panels
             if (selectedSubject == null)
             {
                 MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (selectedSubject.Name != subjectTxtBox.Text && User.currentUser.Subjects.Any(subject => subject.Name == subjectTxtBox.Text))
+            {
+                MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (Directory.Exists(User.currentUser.UserPath + "/Subjects/" + subjectName))
+            {
+                MessageBox.Show("Subject folder already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

@@ -62,6 +62,7 @@ namespace SchoolworkOrganizerUtils
         public Activity(string name, Subject subject, string sourcePath, DateTime dueDate, string status)
         {
             Name = name;
+            _subject = subject;
             Subject = subject;
             DueDate = dueDate;
             Status = status;
@@ -115,7 +116,7 @@ namespace SchoolworkOrganizerUtils
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Name", Name);
-                        command.Parameters.AddWithValue("@Username", Subject.User);
+                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
                         command.Parameters.AddWithValue("@DueDate", DueDate);
                         command.Parameters.AddWithValue("@Status", Status);
@@ -146,7 +147,7 @@ namespace SchoolworkOrganizerUtils
                         command.Parameters.AddWithValue("@DueDate", DueDate);
                         command.Parameters.AddWithValue("@Status", Status);
                         command.Parameters.AddWithValue("@FileName", FileName);
-                        command.Parameters.AddWithValue("@Username", Subject.User);
+                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
 
                         await command.ExecuteNonQueryAsync();
@@ -166,11 +167,12 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "DELETE FROM `activities` WHERE username = @Username AND subject = @Subject";
+                    string query = "DELETE FROM `activities` WHERE username = @Username AND subject = @Subject AND name = @Name";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.User);
+                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Name", Name);
 
                         await command.ExecuteNonQueryAsync();
                     }

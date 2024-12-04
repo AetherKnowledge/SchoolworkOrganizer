@@ -102,13 +102,12 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "INSERT INTO `reviewers` (name, username, subject, name, filename) VALUES (@Name, @Username, @Subject, @Name, @FileName)";
+                    string query = "INSERT INTO `reviewers` (name, username, subject, filename) VALUES (@Name, @Username, @Subject, @FileName)";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Name", Name);
-                        command.Parameters.AddWithValue("@Username", Subject.User);
+                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
-                        command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@FileName", FileName);
 
                         await command.ExecuteNonQueryAsync();
@@ -134,7 +133,6 @@ namespace SchoolworkOrganizerUtils
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
-                        command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@FileName", FileName);
 
                         await command.ExecuteNonQueryAsync();
@@ -154,11 +152,12 @@ namespace SchoolworkOrganizerUtils
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
                     await connection.OpenAsync();
-                    string query = "DELETE FROM `reviewers` WHERE username = @Username AND subject = @Subject";
+                    string query = "DELETE FROM `reviewers` WHERE username = @Username AND subject = @Subject AND name = @Name";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@Username", Subject.User);
+                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
                         command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Name", Name);
 
                         await command.ExecuteNonQueryAsync();
                     }

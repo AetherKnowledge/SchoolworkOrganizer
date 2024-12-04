@@ -9,8 +9,9 @@ namespace SchoolworkOrganizerUtils
 {
     public class Utilities
     {
-        internal readonly static string SqlConnectionString;
+        public readonly static string SqlConnectionString;
         private readonly static string settingsPath = "appsettings.json";
+        public const int BufferSize = 1024 * 1024 * 5;
 
         static Utilities()
         {
@@ -59,6 +60,19 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
+        public static byte[] SKImageToByteArray(SKImage image)
+        {
+            using (var ms = new MemoryStream())
+            {
+                using (var skImage = SKImage.FromBitmap(SKBitmap.FromImage(image)))
+                using (var data = skImage.Encode(SKEncodedImageFormat.Png, 100))
+                {
+                    data.SaveTo(ms);
+                }
+                return ms.ToArray();
+            }
+        }
+
         public static async Task<byte[]> SKImageToByteArrayAsync(SKImage image)
         {
             return await Task.Run(() =>
@@ -85,6 +99,24 @@ namespace SchoolworkOrganizerUtils
                     return SKImage.FromEncodedData(ms);
                 }
             });
+        }
+
+        public static SKImage? ByteArrayToSKImage(byte[] byteArray)
+        {
+            try
+            {
+                if (byteArray == null) return null;
+                using (var ms = new MemoryStream(byteArray))
+                {
+                    SKImage image = SKImage.FromEncodedData(ms);
+                    return image;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
 
         public static void MakeFolder(string path)

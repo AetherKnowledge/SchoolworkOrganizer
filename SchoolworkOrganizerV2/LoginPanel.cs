@@ -16,18 +16,9 @@ namespace SchoolworkOrganizer
             FormUtilities.InitializeTextBoxWithPlaceholder(txtPassword);
 
             User.LoadUsers();
-            CheckForFiles();
             this.FormClosing += MyFormClosing;
 
             OpenPanels.loginPage = this;
-        }
-
-        public static void CheckForFiles()
-        {
-            User.Users
-            .SelectMany(user => user.Subjects)
-            .ToList()
-            .ForEach(subject => subject.CheckForFiles());
         }
 
         public new void Show()
@@ -52,7 +43,7 @@ namespace SchoolworkOrganizer
             
         }
 
-        private void ButtonLogIn_Click(object sender, EventArgs e)
+        private async void ButtonLogIn_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
@@ -63,7 +54,9 @@ namespace SchoolworkOrganizer
                 return;
             }
 
-            if (!User.Login(username, password))
+            bool loginSuccess = await Program.client.Login(username, password);
+
+            if (!loginSuccess)
             {
                 MessageBox.Show("Invalid Credentials", "Error");
                 return;

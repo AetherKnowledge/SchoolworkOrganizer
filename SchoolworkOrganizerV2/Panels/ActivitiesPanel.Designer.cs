@@ -81,7 +81,6 @@ namespace SchoolworkOrganizer.Panels
             mainPanel.Controls.Add(panel8);
             mainPanel.Controls.Add(panel4);
             mainPanel.Margin = new Padding(5, 3, 5, 3);
-            mainPanel.Size = new Size(1089, 626);
             // 
             // searchComboBox
             // 

@@ -3,6 +3,7 @@ using SkiaSharp;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Text.Json.Serialization;
 
 namespace SchoolworkOrganizerUtils
 {
@@ -14,12 +15,14 @@ namespace SchoolworkOrganizerUtils
         public static User? currentUser = null;
 
         private static readonly string UserDataPath = "UserData.data";
-        private string UserPath;
+        public string UserPath;
 
         public string Email;
-        private string _username = "";
-        internal string previousUsername = "";
 
+        private string _username = "";
+        public string previousUsername = "";
+
+        [JsonPropertyName("username")]
         public string Username {
             get { return _username; }
             set
@@ -33,9 +36,9 @@ namespace SchoolworkOrganizerUtils
                 UserPath = newPath;
             }
         }
-
+        [JsonPropertyName("password")]
         public string Password;
-        //private byte[]? UserImageData;
+        private byte[]? UserImageData;
         public List<Subject> Subjects = new List<Subject>();
 
         private SKImage? _userImage;
@@ -92,20 +95,6 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public static bool Login(string username, string password)
-        {
-            foreach (User user in Users)
-            {
-                if (user.Username == username && user.Password == password) 
-                {
-                    currentUser = user;
-                    return true; 
-                }
-            }
-
-            return false;
-        }
-
         public static void Logout()
         {
             currentUser = null;
@@ -114,192 +103,153 @@ namespace SchoolworkOrganizerUtils
         private static bool isUpdating = false;
         public async static void LoadUsers(bool hasUpdated = false)
         {
-            if (isUpdating && !hasUpdated) return;
+            //if (isUpdating && !hasUpdated) return;
 
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "SELECT username, password, email, imageData FROM `user`";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-                        {
-                            Users.Clear();
-                            while (await reader.ReadAsync())
-                            {
-                                string username = reader.GetString("username");
-                                string password = reader.GetString("password");
-                                string email = reader.GetString("email");
-                                byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
-                                SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
+            //try
+            //{
+            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+            //    {
+            //        await connection.OpenAsync();
+            //        string query = "SELECT username, password, email, imageData FROM `users`";
+            //        using (MySqlCommand command = new MySqlCommand(query, connection))
+            //        {
+            //            using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+            //            {
+            //                Users.Clear();
+            //                while (await reader.ReadAsync())
+            //                {
+            //                    string username = reader.GetString("username");
+            //                    string password = reader.GetString("password");
+            //                    string email = reader.GetString("email");
+            //                    byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
+            //                    SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
 
-                                User user = new User(email, username, password, userImage);
-                                Users.Add(user);
-                                user.LoadSubjects();
-                            }
-                        }
-                    }
+            //                    User user = new User(email, username, password, userImage);
+            //                    Users.Add(user);
+            //                    user.LoadSubjects();
+            //                }
+            //            }
+            //        }
 
-                    
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+
+            //    }
+            //}
+            //catch (MySqlException e)
+            //{
+            //    Console.WriteLine(e.Message, "Error");
+            //}
         }
 
         private async void LoadSubjects()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "SELECT name FROM `subject` WHERE username = @Username";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
-                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                string name = reader.GetString("name");
-                                Subject subject = new Subject(this, name);
-                                Subjects.Add(subject);
-                                subject.LoadActivities();
-                                subject.LoadReviewers();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            //try
+            //{
+            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+            //    {
+            //        await connection.OpenAsync();
+            //        string query = "SELECT name FROM `subjects` WHERE username = @Username";
+            //        using (MySqlCommand command = new MySqlCommand(query, connection))
+            //        {
+            //            command.Parameters.AddWithValue("@Username", Username);
+            //            using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+            //            {
+            //                while (await reader.ReadAsync())
+            //                {
+            //                    string name = reader.GetString("name");
+            //                    Subject subject = new Subject(this, name);
+            //                    Subjects.Add(subject);
+            //                    subject.LoadActivities();
+            //                    subject.LoadReviewers();
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (MySqlException e)
+            //{
+            //    Console.WriteLine(e.Message, "Error");
+            //}
         }
 
         public async void AddToDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "INSERT INTO `user` (username, password, email, imageData) VALUES (@Username, @Password, @Email, @ImageData)";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
-                        command.Parameters.AddWithValue("@Password", Password);
-                        command.Parameters.AddWithValue("@Email", Email);
-                        command.Parameters.AddWithValue("@ImageData", UserImage != null ? await Utilities.SKImageToByteArrayAsync(UserImage) : DBNull.Value);
+            //try
+            //{
+            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+            //    {
+            //        await connection.OpenAsync();
+            //        string query = "INSERT INTO `users` (username, password, email, imageData) VALUES (@Username, @Password, @Email, @ImageData)";
+            //        using (MySqlCommand command = new MySqlCommand(query, connection))
+            //        {
+            //            command.Parameters.AddWithValue("@Username", Username);
+            //            command.Parameters.AddWithValue("@Password", Password);
+            //            command.Parameters.AddWithValue("@Email", Email);
+            //            command.Parameters.AddWithValue("@ImageData", UserImage != null ? await Utilities.SKImageToByteArrayAsync(UserImage) : DBNull.Value);
 
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
+            //            await command.ExecuteNonQueryAsync();
+            //        }
+            //    }
 
-                LoadUsers(true);
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            //    LoadUsers(true);
+            //}
+            //catch (MySqlException e)
+            //{
+            //    Console.WriteLine(e.Message, "Error");
+            //}
 
-            
+
         }
 
         public async void UpdateToDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "UPDATE `user` SET username = @Username, password = @Password, email = @Email, imageData = @ImageData WHERE username = @OldUsername";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
-                        command.Parameters.AddWithValue("@Password", Password);
-                        command.Parameters.AddWithValue("@Email", Email);
-                        command.Parameters.AddWithValue("@ImageData", UserImage != null ? await Utilities.SKImageToByteArrayAsync(UserImage) : DBNull.Value);
-                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
+            //try
+            //{
+            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+            //    {
+            //        await connection.OpenAsync();
+            //        string query = "UPDATE `users` SET username = @Username, password = @Password, email = @Email, imageData = @ImageData WHERE username = @OldUsername";
+            //        using (MySqlCommand command = new MySqlCommand(query, connection))
+            //        {
+            //            command.Parameters.AddWithValue("@Username", Username);
+            //            command.Parameters.AddWithValue("@Password", Password);
+            //            command.Parameters.AddWithValue("@Email", Email);
+            //            command.Parameters.AddWithValue("@ImageData", UserImage != null ? await Utilities.SKImageToByteArrayAsync(UserImage) : DBNull.Value);
+            //            command.Parameters.AddWithValue("@OldUsername", previousUsername);
 
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
+            //            await command.ExecuteNonQueryAsync();
+            //        }
+            //    }
 
-                ChangeUsername();
-                LoadUsers(true);
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
-        }
-
-        private async void ChangeUsername()
-        {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "UPDATE `subject` SET username = @Username WHERE username = @OldUsername";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
-                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
-                        await command.ExecuteNonQueryAsync();
-                    }
-
-                    query = "UPDATE `activities` SET username = @Username WHERE username = @OldUsername";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
-                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
-                        await command.ExecuteNonQueryAsync();
-                    }
-
-                    query = "UPDATE `reviewer` SET username = @Username WHERE username = @OldUsername";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
-                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            //    LoadUsers(true);
+            //}
+            //catch (MySqlException e)
+            //{
+            //    Console.WriteLine(e.Message, "Error");
+            //}
         }
 
         public async void DeleteFromDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "DELETE FROM `user` WHERE username = @Username";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Username);
+            //try
+            //{
+            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+            //    {
+            //        await connection.OpenAsync();
+            //        string query = "DELETE FROM `users` WHERE username = @Username";
+            //        using (MySqlCommand command = new MySqlCommand(query, connection))
+            //        {
+            //            command.Parameters.AddWithValue("@Username", Username);
 
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
+            //            await command.ExecuteNonQueryAsync();
+            //        }
+            //    }
 
-                LoadUsers(true);
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            //    LoadUsers(true);
+            //}
+            //catch (MySqlException e)
+            //{
+            //    Console.WriteLine(e.Message, "Error");
+            //}
         }
 
     }

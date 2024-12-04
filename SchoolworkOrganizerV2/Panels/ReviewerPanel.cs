@@ -141,7 +141,9 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            new Reviewer(reviewerName, selectedSubject, selectedFilePath);
+            Reviewer reviewer = new Reviewer(reviewerName, selectedSubject, selectedFilePath);
+            selectedSubject.Reviewers.Add(reviewer);
+            reviewer.AddToDatabase();
 
             RefreshTable();
             Clear();
@@ -180,6 +182,7 @@ namespace SchoolworkOrganizer.Panels
             selectedReviewer.Name = newReviewerName;
             selectedReviewer.Subject = newSelectedSubject;
             selectedReviewer.ChangeFile(selectedFilePath);
+            selectedReviewer.UpdateToDatabase();
 
             RefreshTable();
 
@@ -203,6 +206,7 @@ namespace SchoolworkOrganizer.Panels
                                                 "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
+                selectedReviewer.DeleteFromDatabase();
                 selectedSubject.RemoveReviewer(selectedReviewer);
                 RefreshTable();
                 MessageBox.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -164,7 +164,9 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            new Activity(reviewerName, selectedSubject, selectedFilePath, dueDate, status);
+            Activity activities = new Activity(reviewerName, selectedSubject, selectedFilePath, dueDate, status);
+            selectedSubject.Activities.Add(activities);
+            activities.AddToDatabase();
 
             RefreshTable();
             Clear();
@@ -207,6 +209,7 @@ namespace SchoolworkOrganizer.Panels
             selectedActivity.ChangeFile(selectedFilePath);
             selectedActivity.DueDate = newDueDate;
             selectedActivity.Status = newStatus;
+            selectedActivity.UpdateToDatabase();
 
             RefreshTable();
 
@@ -230,6 +233,7 @@ namespace SchoolworkOrganizer.Panels
                                                 "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
+                selectedActivity.DeleteFromDatabase();
                 selectedSubject.RemoveActivity(selectedActivity);
                 RefreshTable();
                 MessageBox.Show("Activity deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
