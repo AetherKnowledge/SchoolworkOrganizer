@@ -13,24 +13,26 @@ namespace SchoolworkOrganizerUtils
     {
         public MessageType Type { get; set; }
         private JsonObject Json = new JsonObject();
-        public Object? Data { get; private set; }
+
+        public object? Data { get; private set; }
+
         public Message(MessageType type, object? data)
         {
             Type = type;
             Data = data;
 
+            Json = ConvertToJson(Data);
             Json["type"] = type.ToString();
-            ConvertToJson(Data);
         }
 
         public Message(string rawData)
         {
             Json = JsonNode.Parse(rawData) as JsonObject ?? throw new ArgumentNullException("Json is not a JsonObject");
             Type = ToMessageType(Json["type"]?.ToString());
-            ParseJson();
+            Data = ParseJson();
         }
 
-        private void ParseJson()
+        private object? ParseJson()
         {
             try
             {
@@ -38,34 +40,31 @@ namespace SchoolworkOrganizerUtils
                 switch (Type)
                 {
                     case MessageType.Login:
-                        ParseLogin(Json);
-                        break;
+                        return ParseLogin(Json);
                     case MessageType.Logout:
-                        break;
+                        return null;
                     case MessageType.Register:
-                        break;
+                        return ParseRegister(Json);
                     case MessageType.UpdateUser:
-                        break;
+                        return ParseUpdateUser(Json);
                     case MessageType.UpdateSubject:
-                        break;
+                        return null;
                     case MessageType.UpdateActivity:
-                        break;
+                        return null;
                     case MessageType.DeleteUser:
-                        break;
+                        return null;
                     case MessageType.DeleteSubject:
-                        break;
+                        return null;
                     case MessageType.DeleteActivity:
-                        break;
+                        return null;
                     case MessageType.FetchUser:
-                        ParseFetchUser(Json).Wait();
-                        break;
+                        return ParseFetchUser(Json);
                     case MessageType.FetchSubjects:
-                        break;
+                        return null;
                     case MessageType.FetchActivities:
-                        break;
+                        return null;
                     case MessageType.Status:
-                        ParseStatus(Json);
-                        break;
+                        return ParseStatus(Json);
                     default:
                         throw new ArgumentException("Invalid MessageType");
                 }
@@ -73,10 +72,11 @@ namespace SchoolworkOrganizerUtils
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return null;
             }
         }
 
-        private void ConvertToJson(object? data)
+        private JsonObject ConvertToJson(object? data)
         {
             try
             {
@@ -84,34 +84,31 @@ namespace SchoolworkOrganizerUtils
                 switch (Type)
                 {
                     case MessageType.Login:
-                        ConvertLogin(data);
-                        break;
+                        return ConvertLogin(data);
                     case MessageType.Logout:
-                        break;
+                        return new JsonObject();
                     case MessageType.Register:
-                        break;
+                        return ConvertRegister(data);
                     case MessageType.UpdateUser:
-                        break;
+                        return ConvertUpdateUser(data);
                     case MessageType.UpdateSubject:
-                        break;
+                        return new JsonObject();
                     case MessageType.UpdateActivity:
-                        break;
+                        return new JsonObject();
                     case MessageType.DeleteUser:
-                        break;
+                        return new JsonObject();
                     case MessageType.DeleteSubject:
-                        break;
+                        return new JsonObject();
                     case MessageType.DeleteActivity:
-                        break;
+                        return new JsonObject();
                     case MessageType.FetchUser:
-                        ConvertFetchUser(data).Wait();
-                        break;
+                        return ConvertFetchUser(data);
                     case MessageType.FetchSubjects:
-                        break;
+                        return new JsonObject();
                     case MessageType.FetchActivities:
-                        break;
+                        return new JsonObject();
                     case MessageType.Status:
-                        ConvertStatus(data);
-                        break;
+                        return ConvertStatus(data);
                     default:
                         throw new ArgumentException("Invalid MessageType");
                 }
@@ -120,36 +117,53 @@ namespace SchoolworkOrganizerUtils
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return new JsonObject();
             }
         }
 
-        private void ConvertLogin(object? data)
+        private JsonObject ConvertRegister(object? data)
         {
-            if (data is not Dictionary<string, string> loginData) throw new ArgumentException("Type and Data mismatch");
-            Json["username"] = loginData["username"];
-            Json["password"] = loginData["password"];
+            if (data is not User user) throw new ArgumentException("Type and Data mismatch");
+            return user.ToJson();
         }
 
-        private void ParseLogin(JsonObject json)
+        private User ParseRegister(JsonObject json)
+        {
+            return User.ParseJson(json);
+        }
+
+        private JsonObject ConvertLogin(object? data)
+        {
+            if (data is not Dictionary<string, string> loginData) throw new ArgumentException("Type and Data mismatch");
+            JsonObject json = new JsonObject();
+            json["username"] = loginData["username"];
+            json["password"] = loginData["password"];
+
+            return json;
+        }
+
+        private object? ParseLogin(JsonObject json)
         {
             Dictionary<string, string> loginData = new Dictionary<string, string>();
             loginData["username"] = json["username"]?.ToString() ?? throw new ArgumentNullException("username");
             loginData["password"] = json["password"]?.ToString() ?? throw new ArgumentNullException("password");
-            Data = loginData;
+            return loginData;
         }
 
-        private void ConvertStatus(object? data)
+        private JsonObject ConvertStatus(object? data)
         {
             if (data is not Status) throw new ArgumentException("Type and Data mismatch");
-            Json["status"] = data switch
+            JsonObject json = new JsonObject();
+            json["status"] = data switch
             {
                 Status.Success => "Success",
                 Status.Failure => "Failure",
                 _ => throw new ArgumentException("Invalid Status")
             };
+            return json;
         }
 
-        private void ParseStatus(JsonObject json)
+        private Status ParseStatus(JsonObject json)
         {
             Status status = json["status"]?.ToString() switch
             {
@@ -157,36 +171,58 @@ namespace SchoolworkOrganizerUtils
                 "Failure" => Status.Failure,
                 _ => throw new ArgumentException("Invalid Status")
             };
-            Data = status;
+            return status;
         }
 
-        private async Task ConvertFetchUser(object? data)
+        private JsonObject ConvertFetchUser(object? data)
         {
             if (data is not User user) throw new ArgumentException("Type and Data mismatch");
-            Json["username"] = user.Username;
-            Json["password"] = user.Password;
-            Json["email"] = user.Email;
-            Json["imageData"] = user.UserImage != null ? Convert.ToBase64String(await Utilities.SKImageToByteArrayAsync(user.UserImage)) : null;
+            JsonObject json = new JsonObject();
+            json = user.ToJson();
+            json["type"] = Type.ToString();
+
+            return json;
         }
 
-        private async Task ParseFetchUser(JsonObject json)
+        private User ParseFetchUser(JsonObject json)
         {
-            string username = json["username"]?.ToString() ?? throw new ArgumentNullException(nameof(username));
-            string password = json["password"]?.ToString() ?? throw new ArgumentNullException(nameof(password));
-            string email = json["email"]?.ToString() ?? throw new ArgumentNullException(nameof(email));
+            return User.ParseJson(json);
+        }
 
-            string imageDataBase64 = json["imageData"]?.ToString() ?? throw new ArgumentNullException("imageData");
-            byte[] imageData = Convert.FromBase64String(imageDataBase64);
-            SKImage? userImage;
-            if (imageData != null) userImage = (await Utilities.ByteArrayToSKImageAsync(imageData)) ?? null;
-            else userImage = null;
+        private JsonObject ConvertUpdateUser(object? data)
+        {
+            if (data is not Dictionary<string, User> updateData) throw new ArgumentException("Type and Data mismatch");
+            JsonObject json = new JsonObject();
 
-            Data = new User(username, password, email, userImage);
+            var user = updateData.Values.FirstOrDefault();
+            if (user == null) throw new ArgumentException("No user found in the dictionary");
+
+            json["oldUsername"] = updateData.Keys.FirstOrDefault();
+            json["type"] = Type.ToString();
+            AddToJson(json, user.ToJson());
+
+            return json;
+        }
+
+        private Dictionary<string, User> ParseUpdateUser(JsonObject json)
+        {
+            string oldUsername = json["oldUsername"]?.ToString() ?? throw new ArgumentNullException(nameof(oldUsername));
+            Dictionary<string, User> updateData = new Dictionary<string, User>();
+            updateData[oldUsername] = User.ParseJson(json);
+            return updateData;
         }
 
         public string ToJson()
         {
-            return JsonSerializer.Serialize(Json, new JsonSerializerOptions { WriteIndented = true });
+            string json = JsonSerializer.Serialize(Json, new JsonSerializerOptions { WriteIndented = true });
+            return json;
+        }
+
+        public string ToJsonNoImage()
+        {
+            JsonObject json = Json;
+            json["imageData"] = Json["imageData"] == null ? "Has Image" : "No Image";
+            return JsonSerializer.Serialize(json, new JsonSerializerOptions { WriteIndented = true });
         }
 
         private static MessageType ToMessageType(string? type)
@@ -225,6 +261,14 @@ namespace SchoolworkOrganizerUtils
                     throw new ArgumentException("Invalid DataType");
             }
             
+        }
+
+        private void AddToJson(JsonObject to, JsonObject from)
+        {
+            foreach (var item in from)
+            {
+                to[item.Key] = item.Value?.DeepClone();
+            }
         }
 
     }

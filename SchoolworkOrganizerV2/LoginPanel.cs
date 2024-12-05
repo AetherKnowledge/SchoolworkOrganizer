@@ -40,7 +40,7 @@ namespace SchoolworkOrganizer
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
-            
+            Program.client.Disconnect();
         }
 
         private async void ButtonLogIn_Click(object sender, EventArgs e)
@@ -107,10 +107,10 @@ namespace SchoolworkOrganizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (User user in User.Users)
-            {
-                user.AddToDatabase();
-            }
+            //foreach (User user in User.Users)
+            //{
+            //    user.AddToDatabase();
+            //}
         }
     }
 }

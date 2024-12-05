@@ -47,7 +47,7 @@ namespace SchoolworkOrganizer
             }
         }
 
-        private void RegisterBtn_Click(object sender, EventArgs e)
+        private async void RegisterBtn_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text;
             string username = txtUsername.Text;
@@ -55,19 +55,20 @@ namespace SchoolworkOrganizer
             string verifyPass = txtVerify.Text;
             SKImage? userImage = uploadPicture.Image == Properties.Resources.user ? Utilities.ConvertToSKImage(uploadPicture.Image) : null;
 
-            if (User.DoesUserExist(username))
-            {
-                MessageBox.Show("User already exists", "Error");
-                return;
-            }
-
             if (password != verifyPass)
             {
                 MessageBox.Show("Password does not match", "Error");
                 return;
             }
 
-            User.Users.Add(new User(email, username, password, userImage));
+            User user = new User(email, username, password, userImage);
+            bool registerSuccess = await Program.client.Register(user);
+            if (!registerSuccess)
+            {
+                MessageBox.Show("User already exists", "Error");
+                return;
+            }
+
             MessageBox.Show("Register Successful", "Success");
             this.Hide();
             OpenPanels.loginPage.Show();

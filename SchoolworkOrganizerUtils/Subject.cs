@@ -17,7 +17,7 @@ namespace SchoolworkOrganizerUtils
 
                 _name = value;
                 string newPath = "Data/" + User.Username + "/" + value;
-                Utilities.RenameFolder(FolderPath, newPath);
+                if (FolderPath != null) Utilities.RenameFolder(FolderPath, newPath);
                 FolderPath = newPath;
             }
         }

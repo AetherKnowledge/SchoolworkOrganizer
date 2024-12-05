@@ -10,12 +10,16 @@ namespace SchoolworkOrganizerUtils
     public class Utilities
     {
         public readonly static string SqlConnectionString;
+        public readonly static string WebHost;
+        public readonly static string WebSocket;
         private readonly static string settingsPath = "appsettings.json";
         public const int BufferSize = 1024 * 1024 * 5;
 
         static Utilities()
         {
-            SqlConnectionString = GetSettingsFromJson("DefaultConnection");
+            SqlConnectionString = GetSettingsFromJson("SQLDatabaseString");
+            WebHost = GetSettingsFromJson("WebHost");
+            WebSocket = GetSettingsFromJson("WebSocket");
         }
 
         private static string GetSettingsFromJson(string connectionName)
@@ -136,6 +140,7 @@ namespace SchoolworkOrganizerUtils
             try
             {
                 if (!Directory.Exists(oldPath)) MakeFolder(newPath);
+                if (Directory.Exists(newPath)) Directory.Delete(newPath, true);
                 Directory.Move(oldPath, newPath);
             }
             catch (Exception ex)

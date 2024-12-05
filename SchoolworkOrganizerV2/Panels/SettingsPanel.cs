@@ -31,16 +31,18 @@ namespace SchoolworkOrganizer.Panels
 
         private void updateBtn_Click(object sender, EventArgs e)
         {
+
+            string previousUsername = User.currentUser.Username;
             string username = usernameTxt.Text;
             string email = emailTxt.Text;  
             string password = passwordTxt.Text;
             string verifyPass = verifyTxt.Text;
 
-            if (User.currentUser.Username != username && User.DoesUserExist(username))
-            {
-                MessageBox.Show("User already exists", "Error");
-                return;
-            }
+            //if (User.currentUser.Username != username && User.DoesUserExist(username))
+            //{
+            //    MessageBox.Show("User already exists", "Error");
+            //    return;
+            //}
 
             if (password == "" || password == "Password")
             {
@@ -54,11 +56,12 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
+            
             User.currentUser.Username = username;
             User.currentUser.Email = email;
             User.currentUser.Password = password;
             User.currentUser.UserImage = uploadPicture.Image != Properties.Resources.user ? Utilities.ConvertToSKImage(uploadPicture.Image) : null;
-            User.currentUser.UpdateToDatabase();
+            Program.client.UpdateUser(previousUsername, User.currentUser);
 
             RefreshUser();
         }

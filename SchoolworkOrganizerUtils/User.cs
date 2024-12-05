@@ -3,6 +3,7 @@ using SkiaSharp;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace SchoolworkOrganizerUtils
@@ -10,7 +11,7 @@ namespace SchoolworkOrganizerUtils
     [Serializable]
     public class User
     {
-        
+
         public static readonly List<User> Users = new List<User>();
         public static User? currentUser = null;
 
@@ -20,19 +21,20 @@ namespace SchoolworkOrganizerUtils
         public string Email;
 
         private string _username = "";
-        public string previousUsername = "";
+        //public string previousUsername = "";
 
         [JsonPropertyName("username")]
-        public string Username {
+        public string Username
+        {
             get { return _username; }
             set
             {
-                if (previousUsername == "") previousUsername = value;
-                else if (previousUsername != _username) previousUsername = _username;
+                //if (previousUsername == "") previousUsername = value;
+                //else if (previousUsername != _username) previousUsername = _username;
 
                 _username = value;
                 string newPath = "Data/" + value;
-                Utilities.RenameFolder(UserPath, newPath);
+                if (UserPath != null) Utilities.RenameFolder(UserPath, newPath);
                 UserPath = newPath;
             }
         }
@@ -43,7 +45,7 @@ namespace SchoolworkOrganizerUtils
 
         private SKImage? _userImage;
 
-        
+
         public SKImage? UserImage
         {
             get { return _userImage; }
@@ -65,7 +67,6 @@ namespace SchoolworkOrganizerUtils
             this.Password = Password;
             this.UserImage = UserImage;
             UserPath = "Data/" + Username;
-
         }
 
         public void RemoveSubject(Subject selectedSubject)
@@ -75,18 +76,6 @@ namespace SchoolworkOrganizerUtils
             Subjects.Remove(selectedSubject);
         }
 
-        public static bool DoesUserExist(string username)
-        {
-            foreach (User user in Users)
-            {
-                if (user.Username == username)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
         public void CheckForFiles()
         {
             foreach (Subject subject in Subjects)
@@ -171,63 +160,6 @@ namespace SchoolworkOrganizerUtils
             //}
         }
 
-        public async void AddToDatabase()
-        {
-            //try
-            //{
-            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-            //    {
-            //        await connection.OpenAsync();
-            //        string query = "INSERT INTO `users` (username, password, email, imageData) VALUES (@Username, @Password, @Email, @ImageData)";
-            //        using (MySqlCommand command = new MySqlCommand(query, connection))
-            //        {
-            //            command.Parameters.AddWithValue("@Username", Username);
-            //            command.Parameters.AddWithValue("@Password", Password);
-            //            command.Parameters.AddWithValue("@Email", Email);
-            //            command.Parameters.AddWithValue("@ImageData", UserImage != null ? await Utilities.SKImageToByteArrayAsync(UserImage) : DBNull.Value);
-
-            //            await command.ExecuteNonQueryAsync();
-            //        }
-            //    }
-
-            //    LoadUsers(true);
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Console.WriteLine(e.Message, "Error");
-            //}
-
-
-        }
-
-        public async void UpdateToDatabase()
-        {
-            //try
-            //{
-            //    using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-            //    {
-            //        await connection.OpenAsync();
-            //        string query = "UPDATE `users` SET username = @Username, password = @Password, email = @Email, imageData = @ImageData WHERE username = @OldUsername";
-            //        using (MySqlCommand command = new MySqlCommand(query, connection))
-            //        {
-            //            command.Parameters.AddWithValue("@Username", Username);
-            //            command.Parameters.AddWithValue("@Password", Password);
-            //            command.Parameters.AddWithValue("@Email", Email);
-            //            command.Parameters.AddWithValue("@ImageData", UserImage != null ? await Utilities.SKImageToByteArrayAsync(UserImage) : DBNull.Value);
-            //            command.Parameters.AddWithValue("@OldUsername", previousUsername);
-
-            //            await command.ExecuteNonQueryAsync();
-            //        }
-            //    }
-
-            //    LoadUsers(true);
-            //}
-            //catch (MySqlException e)
-            //{
-            //    Console.WriteLine(e.Message, "Error");
-            //}
-        }
-
         public async void DeleteFromDatabase()
         {
             //try
@@ -252,5 +184,54 @@ namespace SchoolworkOrganizerUtils
             //}
         }
 
+        public JsonObject ToJson()
+        {
+            JsonObject json = new JsonObject();
+            json.Add("username", Username);
+            json.Add("password", Password);
+            json.Add("email", Email);
+            json.Add("imageData", UserImage != null ? Convert.ToBase64String(Utilities.SKImageToByteArray(UserImage)) : null);
+            return json;
+        }
+
+        public static User ParseJson(JsonObject json)
+        {
+            string username = json["username"]?.ToString() ?? throw new ArgumentNullException(nameof(username));
+            string password = json["password"]?.ToString() ?? throw new ArgumentNullException(nameof(password));
+            string email = json["email"]?.ToString() ?? throw new ArgumentNullException(nameof(email));
+            string imageDataBase64 = json["imageData"]?.ToString() ?? string.Empty;
+            byte[] imageData = Convert.FromBase64String(imageDataBase64);
+            SKImage? userImage;
+
+            if (imageData != null) userImage = (Utilities.ByteArrayToSKImage(imageData)) ?? null;
+            else userImage = null;
+
+            return new User(email, username, password, userImage);
+
+        }
+
+        //public static async Task<User> ParseJsonAsync(JsonObject json)
+        //{
+        //    try
+        //    {
+        //        string username = json["username"]?.ToString() ?? throw new ArgumentNullException(nameof(username));
+        //        string password = json["password"]?.ToString() ?? throw new ArgumentNullException(nameof(password));
+        //        string email = json["email"]?.ToString() ?? throw new ArgumentNullException(nameof(email));
+        //        string imageDataBase64 = json["imageData"]?.ToString() ?? throw new ArgumentNullException("imageData");
+        //        byte[] imageData = Convert.FromBase64String(imageDataBase64);
+        //        SKImage? userImage;
+
+        //        if (imageData != null) userImage = (await Utilities.ByteArrayToSKImageAsync(imageData)) ?? null;
+        //        else userImage = null;
+
+        //        return new User(email, username, password, userImage);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        return null;
+
+        //    }
+        //}
     }
 }

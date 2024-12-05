@@ -5,8 +5,7 @@ namespace SchoolworkOrganizer
 {
     internal static class Program
     {
-        private readonly static Uri uri = new Uri("ws://localhost:5000/ws");
-        public static Client client = new Client(uri);
+        public static Client client = new Client(new Uri(Utilities.WebSocket));
 
         /// <summary>
         ///  The main entry point for the application.
