@@ -1,21 +1,23 @@
 ﻿using MySqlConnector;
+using Newtonsoft.Json.Linq;
+using SchoolworkOrganizerUtils.MessageTypes;
 
 namespace SchoolworkOrganizerUtils
 {
     [Serializable]
     public class Subject
     {
-        private string _name;
+        private string _subjectName;
         private string previousName = "";
-        public string Name
+        public string SubjectName
         {
-            get { return _name; }
+            get { return _subjectName; }
             set
             {
                 if (previousName == "") previousName = value;
-                else if (previousName != _name) previousName = _name;
+                else if (previousName != _subjectName) previousName = _subjectName;
 
-                _name = value;
+                _subjectName = value;
                 string newPath = "Data/" + User.Username + "/" + value;
                 if (FolderPath != null) Utilities.RenameFolder(FolderPath, newPath);
                 FolderPath = newPath;
@@ -30,9 +32,9 @@ namespace SchoolworkOrganizerUtils
         public Subject(User user, string subjectName)
         {
             User = user;
-            _name = subjectName;
-            Name = subjectName;
-            FolderPath = "Data/" + User.Username + "/" + Name;
+            _subjectName = subjectName;
+            SubjectName = subjectName;
+            FolderPath = "Data/" + User.Username + "/" + SubjectName;
         }
 
         public void DeleteFolder()
@@ -100,170 +102,30 @@ namespace SchoolworkOrganizerUtils
             }
             
         }
-
-        //internal async void LoadActivities()
-        //{
-        //    try
-        //    {
-        //        using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-        //        {
-        //            await connection.OpenAsync();
-        //            string query = "SELECT name, dueDate, status, filename FROM `activities` WHERE username = @Username AND subject = @Subject";
-        //            using (MySqlCommand command = new MySqlCommand(query, connection))
-        //            {
-        //                command.Parameters.AddWithValue("@Username", User.Username);
-        //                command.Parameters.AddWithValue("@Subject", Name);
-        //                using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-        //                {
-        //                    while (await reader.ReadAsync())
-        //                    {
-        //                        string name = reader.GetString("name");
-        //                        DateTime dueDate = reader.GetDateTime("dueDate");
-        //                        string status = reader.GetString("status");
-        //                        string filename = reader.GetString("filename");
-        //                        string filePath = FolderPath + "/Activity/" + filename;
-
-        //                        if (Activities.Count > 0 && Activities.Any(activity => activity.FilePath == filePath))
-        //                        {
-        //                            Activity activity = Activities.First(activity => activity.Name == name && activity.FilePath == filePath);
-        //                            activity.DueDate = dueDate;
-        //                            activity.Status = status;
-        //                            activity.Name = name;
-        //                        }
-        //                        else
-        //                        {
-        //                            Activity activity = new Activity(name, this, filename, dueDate, status);
-        //                            Activities.Add(activity);
-        //                        }
-
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        CheckForActivities();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message, "Error");
-        //    }
-        //}
-
-        //internal async void LoadReviewers()
-        //{
-        //    try
-        //    {
-        //        using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-        //        {
-        //            await connection.OpenAsync();
-        //            string query = "SELECT name, filename FROM `reviewers` WHERE username = @Username AND subject = @Subject";
-        //            using (MySqlCommand command = new MySqlCommand(query, connection))
-        //            {
-        //                command.Parameters.AddWithValue("@Username", User.Username);
-        //                command.Parameters.AddWithValue("@Subject", Name);
-        //                using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-        //                {
-        //                    while (await reader.ReadAsync())
-        //                    {
-        //                        string name = reader.GetString("name");
-        //                        string filename = reader.GetString("filename");
-        //                        string filePath = FolderPath + "/Reviewer/" + filename;
-        //                        if (Reviewers.Count > 0 && Reviewers.Any(reviewer => reviewer.FilePath == filePath))
-        //                        {
-        //                            Reviewer reviewer = Reviewers.First(reviewer => reviewer.Name == name && reviewer.Subject.Name == Name);
-        //                            reviewer.Name = name;
-        //                        }
-        //                        else
-        //                        {
-        //                            Reviewer reviewer = new Reviewer(name, this, filename);
-        //                            Reviewers.Add(reviewer);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        CheckForReviewers();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message, "Error");
-        //    }
-        //}
-
-        public async void AddToDatabase()
+        public void AddToDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "INSERT INTO `subjects` (username, name) VALUES (@Username, @Name)";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", User.Username);
-                        command.Parameters.AddWithValue("@Name", Name);
-
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
-            
+            SubjectMessage message = new SubjectMessage(MessageType.AddSubject, SubjectName, User.Username);
+            Client.SendMessageAsync(message);
         }
 
-        public async void UpdateToDatabase()
+        public void UpdateToDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "UPDATE `subjects` SET name = @Name WHERE username = @Username AND name = @OldName";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Name", Name);
-                        command.Parameters.AddWithValue("@Username", User.Username);
-                        command.Parameters.AddWithValue("@OldName", previousName);
-
-                        await command.ExecuteNonQueryAsync();
-                    }
-
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            SubjectMessage message = new SubjectMessage(MessageType.UpdateSubject, SubjectName, User.Username, previousName);
+            Client.SendMessageAsync(message);
         }
 
-        public async void DeleteFromDatabase()
+        public void DeleteFromDatabase()
         {
-            foreach (var reviewer in Reviewers) reviewer.DeleteFromDatabase();
-            foreach (var activity in Activities) activity.DeleteFromDatabase();
+            SubjectMessage message = new SubjectMessage(MessageType.DeleteSubject, SubjectName, User.Username);
+            Client.SendMessageAsync(message);
+        }
 
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "DELETE FROM `subjects` WHERE username = @Username AND name = @Name";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", User.Username);
-                        command.Parameters.AddWithValue("@Name", Name);
-
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+        public JObject ToJson(List<string> subjects, string username)
+        {
+            JObject json = new JObject();
+            json.Add("username", username);
+            json.Add("subjects", new JArray(subjects));
+            return json;
         }
     }
 }

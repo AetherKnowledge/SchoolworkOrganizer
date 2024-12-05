@@ -5,6 +5,7 @@ using MySqlConnector;
 using SchoolworkOrganizerUtils;
 using SkiaSharp;
 using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
 
 namespace SchoolworkOrganizerServer
 {
@@ -13,13 +14,14 @@ namespace SchoolworkOrganizerServer
         
         static void Main(string[] args)
         {
-            UserHandler.LoadUsers().Wait();
             StartServer();
             string? command = "";
             while (command != "stop")
             {
                 command = Console.ReadLine();
             }
+
+
         }
         private async static void StartServer()
         {
@@ -39,7 +41,10 @@ namespace SchoolworkOrganizerServer
                     WebSocket webSocket = webSocketContext.WebSocket;
                     ClientHandler client = new ClientHandler(webSocket);
                     Console.WriteLine("Client" + client.socketID + " has connected");
-                    await client.Start();
+                    ThreadPool.QueueUserWorkItem(async _ =>
+                    {
+                        await client.Start();
+                    });
                 }
                 else
                 {

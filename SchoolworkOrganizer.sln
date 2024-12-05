@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolworkOrganizerServer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolworkOrganizerUtils", "SchoolworkOrganizerUtils\SchoolworkOrganizerUtils.csproj", "{EB6C9EA3-B278-470F-98F2-D5E70D34E797}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{026940EB-3AD1-4729-B57D-37DB3A5784FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EB6C9EA3-B278-470F-98F2-D5E70D34E797}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB6C9EA3-B278-470F-98F2-D5E70D34E797}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB6C9EA3-B278-470F-98F2-D5E70D34E797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{026940EB-3AD1-4729-B57D-37DB3A5784FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{026940EB-3AD1-4729-B57D-37DB3A5784FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{026940EB-3AD1-4729-B57D-37DB3A5784FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{026940EB-3AD1-4729-B57D-37DB3A5784FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

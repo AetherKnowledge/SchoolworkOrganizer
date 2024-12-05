@@ -55,7 +55,7 @@ namespace SchoolworkOrganizer.Panels
             {
                 DataGridViewRow row = new DataGridViewRow();
 
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Name });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.SubjectName });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Reviewers.Count });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Activities.Count });
 
@@ -99,7 +99,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            if(User.currentUser.Subjects.Any(subject => subject.Name == subjectName))
+            if(User.currentUser.Subjects.Any(subject => subject.SubjectName == subjectName))
             {
                 MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -116,7 +116,7 @@ namespace SchoolworkOrganizer.Panels
         private void saveBtn_Click(object sender, EventArgs e)
         {
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
 
             if (selectedSubject == null)
             {
@@ -124,7 +124,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            if (selectedSubject.Name != subjectTxtBox.Text && User.currentUser.Subjects.Any(subject => subject.Name == subjectTxtBox.Text))
+            if (selectedSubject.SubjectName != subjectTxtBox.Text && User.currentUser.Subjects.Any(subject => subject.SubjectName == subjectTxtBox.Text))
             {
                 MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -136,7 +136,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            selectedSubject.Name = subjectTxtBox.Text;
+            selectedSubject.SubjectName = subjectTxtBox.Text;
             selectedSubject.UpdateToDatabase();
             RefreshTable();
             Clear();
@@ -145,7 +145,7 @@ namespace SchoolworkOrganizer.Panels
         private void deleteBtn_Click(object sender, EventArgs e)
         {
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
 
             if (selectedSubject == null)
             {
@@ -153,7 +153,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the product '{selectedSubject.Name}'?",
+            var confirmResult = MessageBox.Show($"Are you sure you want to delete the product '{selectedSubject.SubjectName}'?",
                                                 "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {

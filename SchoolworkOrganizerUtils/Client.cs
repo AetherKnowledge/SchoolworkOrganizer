@@ -1,4 +1,5 @@
 ﻿using SchoolworkOrganizerUtils;
+using SchoolworkOrganizerUtils.MessageTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,67 +8,54 @@ using System.Security.Policy;
 using System.Text;
 using Message = SchoolworkOrganizerUtils.Message;
 
-namespace SchoolworkOrganizer
+namespace SchoolworkOrganizerUtils
 {
-    internal class Client
+    public static class Client
     {
-        private readonly ClientWebSocket socket = new ClientWebSocket();
-        private readonly Uri uri;
-        private TaskCompletionSource<bool>? loginTcs;
-        private TaskCompletionSource<bool>? registerTcs;
+        private static readonly ClientWebSocket socket = new ClientWebSocket();
+        private static readonly Uri uri = new Uri(Utilities.WebSocket);
+        private static TaskCompletionSource<bool>? loginTcs;
+        private static TaskCompletionSource<bool>? registerTcs;
 
-        public Client(Uri uri)
-        {
-            this.uri = uri;
-        }
-
-        public async Task ConnectAsync()
+        public static async Task ConnectAsync()
         {
             await socket.ConnectAsync(uri, default);
             Console.WriteLine("Connected to the server.");
             await ReceiveMessagesAsync();
         }
 
-        public async Task<bool> Login(string username, string password)
+        public static async Task<bool> Login(string username, string password)
         {
             loginTcs = new TaskCompletionSource<bool>();
-
-            Dictionary<string, string> loginData = new Dictionary<string, string>();
-            loginData["username"] = username;
-            loginData["password"] = password;
-
-            Message message = new Message(MessageType.Login, loginData);
+            Message message = new LoginMessage(username, password);
             SendMessageAsync(message);
 
             return await loginTcs.Task;
         }
 
-        public async Task<bool> Register(User user)
+        public static async Task<bool> Register(User user)
         {
             registerTcs = new TaskCompletionSource<bool>();
 
-            Message message = new Message(MessageType.Register, user);
+            Message message = new UserMessage(MessageType.Register, user);
             SendMessageAsync(message);
 
             return await registerTcs.Task;
         }
 
-        public void UpdateUser(string oldUsername, User user)
+        public static void UpdateUser(string oldUsername, User user)
         {
-            Dictionary<string, User> updateData = new Dictionary<string, User>();
-            updateData[oldUsername] = user;
-
-            Message message = new Message(MessageType.UpdateUser, updateData);
+            Message message = new UserMessage(MessageType.UpdateUser, user, oldUsername);
             SendMessageAsync(message);
         }
 
-        private async void SendMessageAsync(Message message)
+        internal static async void SendMessageAsync(Message message)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(message.ToJson());
+            byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
             await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
-        private async Task ReceiveMessagesAsync()
+        private static async Task ReceiveMessagesAsync()
         {
             try
             {
@@ -88,10 +76,10 @@ namespace SchoolworkOrganizer
                     receivedMessage = receivedMessageBuilder.ToString();
                     if (receivedMessage == "") continue;
                     
-                    Message message = new Message(receivedMessage);
+                    Message? message = Message.Parse(receivedMessage);
                     if (message != null)
                     {
-                        HandleMessageAsync(message);
+                        await Task.Run(() => HandleMessageAsync(message));
                     }
                 }
 
@@ -109,7 +97,7 @@ namespace SchoolworkOrganizer
 
         }
 
-        public void Disconnect()
+        public static void Disconnect()
         {
             try
             {
@@ -121,7 +109,7 @@ namespace SchoolworkOrganizer
             }
         }
 
-        private async void HandleMessageAsync(Message message)
+        private static void HandleMessageAsync(Message message)
         {
             switch (message.Type)
             {
@@ -129,26 +117,28 @@ namespace SchoolworkOrganizer
                     HandleStatus(message);
                     break;
                 case MessageType.FetchUser:
-                    await HandleFetchUser(message);
+                    HandleFetchUser(message);
                     break;
-                // Handle other message types here
+                case MessageType.FetchUserData:
+                    HandleFetchUserData(message);
+                    break;
                 default:
                     break;
             }
         }
 
-        private async void HandleStatus(Message message)
+        private static void HandleStatus(Message message)
         {
-            if (message.Data is Status status)
+            if (message is StatusMessage statusMessage)
             {
                 if (loginTcs != null)
                 {
-                    loginTcs.SetResult(status == Status.Success);
+                    loginTcs.SetResult(statusMessage.Status == Status.Success);
                     loginTcs = null;
                 }
                 if (registerTcs != null)
                 {
-                    registerTcs.SetResult(status == Status.Success);
+                    registerTcs.SetResult(statusMessage.Status == Status.Success);
                     registerTcs = null;
                 }
 
@@ -156,12 +146,22 @@ namespace SchoolworkOrganizer
             }
         }
 
-        private async Task HandleFetchUser(Message message)
+        private static void HandleFetchUser(Message message)
         {
-            if (message.Data is User user)
-            {
-                User.currentUser = user;
-            }
+            if (message is not UserMessage) return;
+            if (message.Type != MessageType.FetchUser) return;
+            UserMessage userMessage = (UserMessage)message;
+
+            User.currentUser = userMessage.GetUser();
+        }
+
+        private static void HandleFetchUserData(Message message)
+        {
+            if (User.currentUser == null) return;
+            if (message is not UserDataMessage) return;
+            UserDataMessage userDataMessage = (UserDataMessage)message;
+
+            User.currentUser.Subjects = userDataMessage.Subjects;
         }
     }
 }

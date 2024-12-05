@@ -107,7 +107,7 @@ namespace SchoolworkOrganizerUtils
                     {
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
                         command.Parameters.AddWithValue("@FileName", FileName);
 
                         await command.ExecuteNonQueryAsync();
@@ -132,7 +132,7 @@ namespace SchoolworkOrganizerUtils
                     {
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
                         command.Parameters.AddWithValue("@FileName", FileName);
 
                         await command.ExecuteNonQueryAsync();
@@ -156,7 +156,7 @@ namespace SchoolworkOrganizerUtils
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
                         command.Parameters.AddWithValue("@Name", Name);
 
                         await command.ExecuteNonQueryAsync();

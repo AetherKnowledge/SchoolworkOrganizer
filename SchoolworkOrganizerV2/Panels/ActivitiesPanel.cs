@@ -57,8 +57,8 @@ namespace SchoolworkOrganizer.Panels
 
             foreach (Subject subject in User.currentUser.Subjects)
             {
-                subjectCBox.Items.Add(subject.Name);
-                editSubjectCBox.Items.Add(subject.Name);
+                subjectCBox.Items.Add(subject.SubjectName);
+                editSubjectCBox.Items.Add(subject.SubjectName);
             }
 
             if (subjectCBox.Items.Count > 0) subjectCBox.SelectedIndex = 0;
@@ -73,7 +73,7 @@ namespace SchoolworkOrganizer.Panels
             string subjectName = subjectCBox.Text;
             if (subjectName == null) return;
 
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             if (selectedSubject == null) return;
 
             foreach (Activity activity in selectedSubject.Activities)
@@ -89,7 +89,7 @@ namespace SchoolworkOrganizer.Panels
                 }
                 
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Name });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Subject.Name });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Subject.SubjectName });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.FilePath });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.DueDate.ToString("MM/dd/yyyy hh:mm tt") });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = daysUntilDue });
@@ -143,7 +143,7 @@ namespace SchoolworkOrganizer.Panels
         {
             string reviewerName = reviewerTxtBox.Text;
             string subjectName = editSubjectCBox.Text;
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             string filePath = selectedFilePath;
             DateTime dueDate = dueDatePicker.Value;
             string status = statusCBox.Text;
@@ -181,11 +181,11 @@ namespace SchoolworkOrganizer.Panels
             DateTime newDueDate = dueDatePicker.Value;
             string newStatus = statusCBox.Text;
 
-            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == oldSubjectName);
+            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == oldSubjectName);
             Activity selectedActivity = oldSelectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == oldFilePath);
 
             string newSubjectName = editSubjectCBox.Text;
-            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == newSubjectName);
+            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == newSubjectName);
 
 
             if (newActivityName == "")
@@ -220,7 +220,7 @@ namespace SchoolworkOrganizer.Panels
         {
             string filePath = selectedFilePath;
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             Activity selectedActivity = selectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == filePath);
 
             if (selectedActivity == null)
@@ -229,7 +229,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.Name}'?",
+            var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
                                                 "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {

@@ -13,6 +13,9 @@ namespace SchoolworkOrganizerUtils
         Login,
         Logout,
         Register,
+        AddSubject,
+        AddActivity,
+        AddReviewer,
         UpdateUser,
         UpdateSubject,
         UpdateActivity,
@@ -20,7 +23,7 @@ namespace SchoolworkOrganizerUtils
         DeleteSubject,
         DeleteActivity,
         FetchUser,
-        FetchSubjects,
+        FetchUserData,
         FetchActivities,
         Status
     }

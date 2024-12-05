@@ -61,7 +61,7 @@ namespace SchoolworkOrganizer.Panels
             User.currentUser.Email = email;
             User.currentUser.Password = password;
             User.currentUser.UserImage = uploadPicture.Image != Properties.Resources.user ? Utilities.ConvertToSKImage(uploadPicture.Image) : null;
-            Program.client.UpdateUser(previousUsername, User.currentUser);
+            Client.UpdateUser(previousUsername, User.currentUser);
 
             RefreshUser();
         }

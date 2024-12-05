@@ -15,7 +15,6 @@ namespace SchoolworkOrganizer
             FormUtilities.InitializeTextBoxWithPlaceholder(txtUsername);
             FormUtilities.InitializeTextBoxWithPlaceholder(txtPassword);
 
-            User.LoadUsers();
             this.FormClosing += MyFormClosing;
 
             OpenPanels.loginPage = this;
@@ -40,7 +39,7 @@ namespace SchoolworkOrganizer
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
-            Program.client.Disconnect();
+            Client.Disconnect();
         }
 
         private async void ButtonLogIn_Click(object sender, EventArgs e)
@@ -54,7 +53,7 @@ namespace SchoolworkOrganizer
                 return;
             }
 
-            bool loginSuccess = await Program.client.Login(username, password);
+            bool loginSuccess = await Client.Login(username, password);
 
             if (!loginSuccess)
             {

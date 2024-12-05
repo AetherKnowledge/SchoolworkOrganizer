@@ -76,6 +76,16 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
+        public Activity(string name, Subject subject, DateTime dueDate, string status, string fileName)
+        {
+            Name = name;
+            _subject = subject;
+            Subject = subject;
+            DueDate = dueDate;
+            Status = status;
+            FileName = fileName;
+        }
+
         public void ChangeFile(string sourcePath)
         {
             try
@@ -117,7 +127,7 @@ namespace SchoolworkOrganizerUtils
                     {
                         command.Parameters.AddWithValue("@Name", Name);
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
                         command.Parameters.AddWithValue("@DueDate", DueDate);
                         command.Parameters.AddWithValue("@Status", Status);
                         command.Parameters.AddWithValue("@FileName", FileName);
@@ -148,7 +158,7 @@ namespace SchoolworkOrganizerUtils
                         command.Parameters.AddWithValue("@Status", Status);
                         command.Parameters.AddWithValue("@FileName", FileName);
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
 
                         await command.ExecuteNonQueryAsync();
                     }
@@ -171,7 +181,7 @@ namespace SchoolworkOrganizerUtils
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.Name);
+                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
                         command.Parameters.AddWithValue("@Name", Name);
 
                         await command.ExecuteNonQueryAsync();

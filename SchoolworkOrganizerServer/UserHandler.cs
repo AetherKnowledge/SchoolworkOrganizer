@@ -4,52 +4,15 @@ using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Xml.Linq;
 using System.Text.Json.Nodes;
+using SchoolworkOrganizerUtils.MessageTypes;
 
 namespace SchoolworkOrganizerServer
 {
     internal class UserHandler
     {
-        private static bool isUpdating = false;
-        internal static async Task LoadUsers(bool hasUpdated = false)
-        {
-            if (isUpdating && !hasUpdated) return;
-
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "SELECT username, password, email, imageData FROM `users`";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-                        {
-                            User.Users.Clear();
-                            while (await reader.ReadAsync())
-                            {
-                                string username = reader.GetString("username");
-                                string password = reader.GetString("password");
-                                string email = reader.GetString("email");
-                                byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
-                                SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
-
-                                User user = new User(email, username, password, userImage);
-                                User.Users.Add(user);
-                                LoadSubjects(user);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
-        }
-
-
         internal static async void LoadSubjects(User user)
         {
+            user.Subjects.Clear();
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
@@ -81,6 +44,7 @@ namespace SchoolworkOrganizerServer
 
         private static async void LoadActivities(Subject subject)
         {
+            subject.Activities.Clear();
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
@@ -90,7 +54,7 @@ namespace SchoolworkOrganizerServer
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Username", subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", subject.Name);
+                        command.Parameters.AddWithValue("@Subject", subject.SubjectName);
                         using (MySqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
@@ -127,8 +91,45 @@ namespace SchoolworkOrganizerServer
             }
         }
 
+        internal static async Task<User?> GetUser(string username)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    await connection.OpenAsync();
+                    string query = "SELECT username, password, email, imageData FROM `users` WHERE username = @Username";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Username", username);
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                string password = reader.GetString("password");
+                                string email = reader.GetString("email");
+                                byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
+                                SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
+
+                                User user = new User(email, username, password, userImage);
+                                LoadSubjects(user);
+                                return user;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message, "Error");
+            }
+
+            return null;
+        }
+
         private static async void LoadReviewers(Subject subject)
         {
+            subject.Reviewers.Clear();
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
@@ -138,7 +139,7 @@ namespace SchoolworkOrganizerServer
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Username", subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", subject.Name);
+                        command.Parameters.AddWithValue("@Subject", subject.SubjectName);
                         using (MySqlDataReader reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
@@ -148,7 +149,7 @@ namespace SchoolworkOrganizerServer
                                 string filePath = subject.FolderPath + "/Reviewer/" + filename;
                                 if (subject.Reviewers.Count > 0 && subject.Reviewers.Any(reviewer => reviewer.FilePath == filePath))
                                 {
-                                    Reviewer reviewer = subject.Reviewers.First(reviewer => reviewer.Name == name && reviewer.Subject.Name == subject.Name);
+                                    Reviewer reviewer = subject.Reviewers.First(reviewer => reviewer.Name == name && reviewer.Subject.SubjectName == subject.SubjectName);
                                     reviewer.Name = name;
                                 }
                                 else
@@ -170,7 +171,7 @@ namespace SchoolworkOrganizerServer
 
         }
 
-        public static async void AddToDatabase(User user)
+        public static async void AddToDatabase(UserMessage user)
         {
             try
             {
@@ -183,13 +184,12 @@ namespace SchoolworkOrganizerServer
                         command.Parameters.AddWithValue("@Username", user.Username);
                         command.Parameters.AddWithValue("@Password", user.Password);
                         command.Parameters.AddWithValue("@Email", user.Email);
-                        command.Parameters.AddWithValue("@ImageData", user.UserImage != null ? await Utilities.SKImageToByteArrayAsync(user.UserImage) : DBNull.Value);
+                        command.Parameters.AddWithValue("@ImageData", user.UserImageData);
 
                         await command.ExecuteNonQueryAsync();
                     }
                 }
 
-                await LoadUsers(true);
             }
             catch (MySqlException e)
             {
@@ -197,7 +197,7 @@ namespace SchoolworkOrganizerServer
             }
         }
 
-        public static async Task<bool> UpdateToDatabase(User user, string previousUsername)
+        public static async Task<bool> UpdateToDatabase(UserMessage user)
         {
             try
             {
@@ -210,14 +210,13 @@ namespace SchoolworkOrganizerServer
                         command.Parameters.AddWithValue("@Username", user.Username);
                         command.Parameters.AddWithValue("@Password", user.Password);
                         command.Parameters.AddWithValue("@Email", user.Email);
-                        command.Parameters.AddWithValue("@ImageData", user.UserImage != null ? await Utilities.SKImageToByteArrayAsync(user.UserImage) : DBNull.Value);
-                        command.Parameters.AddWithValue("@OldUsername", previousUsername);
+                        command.Parameters.AddWithValue("@ImageData", user.UserImageData);
+                        command.Parameters.AddWithValue("@OldUsername", user.PreviousUsername);
 
                         await command.ExecuteNonQueryAsync();
                     }
                 }
 
-                await LoadUsers(true);
                 return true;
             }
             catch (MySqlException e)
@@ -227,18 +226,73 @@ namespace SchoolworkOrganizerServer
             }
         }
 
-        public static bool DoesUserExist(string username)
+        public static async Task<bool> DoesUserExist(string username)
         {
-            foreach (User user in User.Users)
+            try
             {
-                if (user.Username == username)
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
                 {
-                    return true;
+                    await connection.OpenAsync();
+                    string query = "SELECT username FROM `users`";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                if (reader.GetString("username") == username) return true;
+                            }
+                        }
+
+                        await command.ExecuteNonQueryAsync();
+                    }
                 }
+
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message, "Error");
             }
 
             return false;
         }
 
+        public static async Task<User?> AttemptLogin(string username, string password)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    await connection.OpenAsync();
+                    string query = "SELECT * FROM `users`";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                if (reader.GetString("username") == username && reader.GetString("password") == password)
+                                {
+                                    string email = reader.GetString("email");
+                                    byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
+                                    SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
+                                    return new User(email, username, password, userImage);
+                                }
+                            }
+                        }
+
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message, "Error");
+            }
+
+            return null;
+
+        }
     }
 }

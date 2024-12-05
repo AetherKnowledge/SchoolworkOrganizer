@@ -5,15 +5,13 @@ namespace SchoolworkOrganizer
 {
     internal static class Program
     {
-        public static Client client = new Client(new Uri(Utilities.WebSocket));
-
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            _ = client.ConnectAsync();
+            _ = Client.ConnectAsync();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             var materialSkinManager = MaterialSkinManager.Instance;

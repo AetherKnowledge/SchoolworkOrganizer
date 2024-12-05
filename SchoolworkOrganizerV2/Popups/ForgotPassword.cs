@@ -41,12 +41,12 @@ namespace SchoolworkOrganizer.Popups
 
         private void sendBtn_Click(object sender, EventArgs e)
         {
-            string email = employeeIDTxtBox.Text;
-            if (!doesUserExist(email))
-            {
-                MessageBox.Show("Employee does not exist", "Error");
-                return;
-            }
+            //string email = employeeIDTxtBox.Text;
+            //if (!doesUserExist(email))
+            //{
+            //    MessageBox.Show("Employee does not exist", "Error");
+            //    return;
+            //}
 
             Random random = new Random();
             code = random.Next(100001,999999).ToString();
@@ -95,26 +95,6 @@ namespace SchoolworkOrganizer.Popups
             //}
             ////hanggang dine kung ayaw mo muna mag gmail shit
 
-        }
-
-        private bool doesUserExist(string email)
-        {
-            foreach (User employee in User.Users)
-            {
-                if(employee.Email == email) return true;
-            }
-
-            return false;
-        }
-
-        private User getEmployee(string email)
-        {
-            foreach (User employee in User.Users)
-            {
-                if (employee.Email == email) return employee;
-            }
-
-            return null;
         }
 
         private void proceedBtn_Click(object sender, EventArgs e)

@@ -55,8 +55,8 @@ namespace SchoolworkOrganizer.Panels
 
             foreach (Subject subject in User.currentUser.Subjects)
             {
-                subjectCBox.Items.Add(subject.Name);
-                editSubjectCBox.Items.Add(subject.Name);
+                subjectCBox.Items.Add(subject.SubjectName);
+                editSubjectCBox.Items.Add(subject.SubjectName);
             }
 
             if (subjectCBox.Items.Count > 0) subjectCBox.SelectedIndex = 0;
@@ -71,7 +71,7 @@ namespace SchoolworkOrganizer.Panels
             string subjectName = subjectCBox.Text;
             if (subjectName == null) return;
 
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             if (selectedSubject == null) return;
 
             foreach (Reviewer reviewer in selectedSubject.Reviewers)
@@ -79,7 +79,7 @@ namespace SchoolworkOrganizer.Panels
                 DataGridViewRow row = new DataGridViewRow();
 
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Name });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Subject.Name });
+                row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Subject.SubjectName });
                 row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.FilePath });
 
                 table.Rows.Add(row);
@@ -122,7 +122,7 @@ namespace SchoolworkOrganizer.Panels
         {
             string reviewerName = reviewerTxtBox.Text;
             string subjectName = editSubjectCBox.Text;
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             string filePath = selectedFilePath;
 
             if (subjectName == "")
@@ -156,11 +156,11 @@ namespace SchoolworkOrganizer.Panels
 
             string newReviewerName = reviewerTxtBox.Text;
 
-            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == oldSubjectName);
+            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == oldSubjectName);
             Reviewer selectedReviewer = oldSelectedSubject.Reviewers.FirstOrDefault(reviewer => reviewer.FilePath == filePath);
 
             string newSubjectName = editSubjectCBox.Text;
-            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == newSubjectName);
+            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == newSubjectName);
             
 
             if (newReviewerName == "")
@@ -193,7 +193,7 @@ namespace SchoolworkOrganizer.Panels
         {
             string filePath = selectedFilePath;
             string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.Name == subjectName);
+            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             Reviewer selectedReviewer = selectedSubject.Reviewers.FirstOrDefault(reviewer => reviewer.FilePath == filePath);
 
             if (selectedReviewer == null)
@@ -202,7 +202,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.Name}'?",
+            var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
                                                 "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
