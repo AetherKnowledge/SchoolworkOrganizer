@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SchoolworkOrganizerUtils.MessageTypes;
 using System.Text.Json.Nodes;
 
-namespace SchoolworkOrganizerUtils
+namespace SchoolworkOrganizerUtils.MessageTypes
 {
     public abstract class Message
     {
@@ -65,7 +64,17 @@ namespace SchoolworkOrganizerUtils
         public string ToJsonNoData()
         {
             JObject json = ToJson();
-            json["userImageData"] = json["userImageData"] != null ? "Has Image" : "No Image";
+            if (json.ContainsKey("password")) json["password"] = "Hidden";
+            if (json.ContainsKey("userImageData")) json["userImageData"] = json["userImageData"] != null ? "Has Image" : "No Image";
+
+            if (this is UserDataMessage)
+            {
+                JObject userData = new JObject();
+                userData.Add("type", json.GetValue("type"));
+                userData.Add("username", json.GetValue("username"));
+                return JsonConvert.SerializeObject(userData, Formatting.Indented);
+            }
+
             return JsonConvert.SerializeObject(json, Formatting.Indented);
         }
 

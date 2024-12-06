@@ -18,13 +18,16 @@ namespace SchoolworkOrganizerUtils
             {
                 await socket.ConnectAsync(uri, default);
                 if (connectionTcs != null) connectionTcs.SetResult(true);
+                connectionTcs = null;
 
                 Console.WriteLine("Connected to the server.");
                 await ReceiveMessagesAsync();
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
+                socket.Dispose();
                 Thread.Sleep(5000);
                 socket = new ClientWebSocket();
                 ConnectAsync().Wait();
@@ -102,10 +105,13 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
+                
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
-                Thread.Sleep(5000);
-                socket = new ClientWebSocket();
-                ConnectAsync().Wait();
+                //socket.Dispose();
+                //Thread.Sleep(5000);
+                //socket = new ClientWebSocket();
+                //ConnectAsync().Wait();
             }
 
         }
@@ -118,6 +124,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
             }
         }

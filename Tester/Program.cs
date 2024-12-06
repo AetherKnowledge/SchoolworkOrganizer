@@ -8,7 +8,7 @@ namespace Tester
         static void Main(string[] args)
         {
             _ = Client.ConnectAsync();
-            Console.WriteLine("Connected to the server.");
+            Console.WriteLine($"Connecting to the server at {Utilities.WebSocket}");
             _ = Client.Login("test", "test");
 
             string input = "";

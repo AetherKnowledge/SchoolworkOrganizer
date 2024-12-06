@@ -46,7 +46,7 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public User(string Email, string Username, string Password, SKImage? UserImage)
+        public User(string Email, string Username, string Password, SKImage? UserImage, bool startTimer = true)
         {
             this.Email = Email;
             this.Username = Username;
@@ -54,9 +54,12 @@ namespace SchoolworkOrganizerUtils
             this.UserImage = UserImage;
             UserPath = "Data/" + Username;
 
-            updateTimer.Elapsed += OnTimedEvent;
-            updateTimer.AutoReset = true;
-            updateTimer.Enabled = true;
+            if (startTimer)
+            {
+                updateTimer.Elapsed += OnTimedEvent;
+                updateTimer.AutoReset = true;
+                updateTimer.Enabled = true;
+            }
         }
 
         public void RemoveSubject(Subject selectedSubject)

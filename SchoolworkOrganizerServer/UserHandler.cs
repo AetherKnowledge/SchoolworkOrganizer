@@ -276,7 +276,7 @@ namespace SchoolworkOrganizerServer
                                     string email = reader.GetString("email");
                                     byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
                                     SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
-                                    return new User(email, username, password, userImage);
+                                    return new User(email, username, password, userImage, false);
                                 }
                             }
                         }

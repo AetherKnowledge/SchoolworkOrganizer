@@ -25,6 +25,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
             }
         }
@@ -65,6 +66,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
             }
 
@@ -96,6 +98,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 Message statusMessage = new StatusMessage(Status.Failure);
                 await Send(statusMessage);
