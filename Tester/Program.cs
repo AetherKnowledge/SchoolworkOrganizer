@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SchoolworkOrganizerUtils;
 
 namespace Tester
 {
@@ -6,16 +7,20 @@ namespace Tester
     {
         static void Main(string[] args)
         {
-            Dictionary<string, int> subjects = new Dictionary<string, int>();
-            subjects.Add("Math", 1);
-            subjects.Add("Science", 2);
-            subjects.Add("History", 3);
-            subjects.Add("English", 4);
+            _ = Client.ConnectAsync();
+            Console.WriteLine("Connected to the server.");
+            _ = Client.Login("test", "test");
 
-            JObject json = new JObject();
-            json.Add("username", "JohnDoe");
-            json.Add("subjects", JObject.FromObject(subjects));
-            Console.WriteLine(json.ToString());
+            string input = "";
+            while(input != "stop")
+            {
+                input = Console.ReadLine() ?? "";
+
+                if (input == "login")
+                {
+                    _ = Client.Login("test", "test");
+                }
+            }
 
         }
     }

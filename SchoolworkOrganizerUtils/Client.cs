@@ -1,27 +1,35 @@
-﻿using SchoolworkOrganizerUtils;
-using SchoolworkOrganizerUtils.MessageTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SchoolworkOrganizerUtils.MessageTypes;
 using System.Net.WebSockets;
-using System.Security.Policy;
 using System.Text;
-using Message = SchoolworkOrganizerUtils.Message;
 
 namespace SchoolworkOrganizerUtils
 {
     public static class Client
     {
-        private static readonly ClientWebSocket socket = new ClientWebSocket();
+        private static ClientWebSocket socket = new ClientWebSocket();
         private static readonly Uri uri = new Uri(Utilities.WebSocket);
         private static TaskCompletionSource<bool>? loginTcs;
         private static TaskCompletionSource<bool>? registerTcs;
+        private static TaskCompletionSource<bool>? connectionTcs;
 
         public static async Task ConnectAsync()
         {
-            await socket.ConnectAsync(uri, default);
-            Console.WriteLine("Connected to the server.");
-            await ReceiveMessagesAsync();
+            try
+            {
+                await socket.ConnectAsync(uri, default);
+                if (connectionTcs != null) connectionTcs.SetResult(true);
+
+                Console.WriteLine("Connected to the server.");
+                await ReceiveMessagesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Thread.Sleep(5000);
+                socket = new ClientWebSocket();
+                ConnectAsync().Wait();
+            }
+            
         }
 
         public static async Task<bool> Login(string username, string password)
@@ -51,6 +59,13 @@ namespace SchoolworkOrganizerUtils
 
         internal static async void SendMessageAsync(Message message)
         {
+            if (socket.State != WebSocketState.Open) {
+                Console.WriteLine("Please wait while trying to connect");
+
+                connectionTcs = new TaskCompletionSource<bool>();
+                await connectionTcs.Task;
+            }
+
             byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
             await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
@@ -88,11 +103,9 @@ namespace SchoolworkOrganizerUtils
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                socket.Abort();
-            }
-            finally
-            {
-                socket.Dispose();
+                Thread.Sleep(5000);
+                socket = new ClientWebSocket();
+                ConnectAsync().Wait();
             }
 
         }
@@ -134,6 +147,7 @@ namespace SchoolworkOrganizerUtils
                 if (loginTcs != null)
                 {
                     loginTcs.SetResult(statusMessage.Status == Status.Success);
+                    Console.WriteLine("Logged in.");
                     loginTcs = null;
                 }
                 if (registerTcs != null)

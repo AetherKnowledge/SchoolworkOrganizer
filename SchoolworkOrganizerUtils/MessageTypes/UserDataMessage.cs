@@ -45,8 +45,10 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                     DateTime dueDate = activityJson.Value["DueDate"]?.ToObject<DateTime>() ?? throw new ArgumentNullException(nameof(dueDate));
                     string status = activityJson.Value["Status"]?.ToString() ?? throw new ArgumentNullException(nameof(status));
                     string fileName = activityJson.Value["FileName"]?.ToString() ?? throw new ArgumentNullException(nameof(fileName));
+                    DateTime lastUpdated = activityJson.Value["LastUpdated"]?.ToObject<DateTime>() ?? throw new ArgumentNullException(nameof(lastUpdated));
+                    byte[] fileData = Convert.FromBase64String(activityJson.Value["FileData"]?.ToString() ?? throw new ArgumentNullException(nameof(fileData)));
 
-                    Activity activity = new Activity(name, subject, dueDate, status, fileName);
+                    Activity activity = new Activity(name, subject, fileName, dueDate, status, lastUpdated, fileData);
                     subject.Activities.Add(activity);
                 }
 
@@ -55,8 +57,10 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                 {
                     string name = reviewerJson.Name;
                     string fileName = reviewerJson.Value["FileName"]?.ToString() ?? throw new ArgumentNullException(nameof(fileName));
+                    DateTime lastUpdated = reviewerJson.Value["LastUpdated"]?.ToObject<DateTime>() ?? throw new ArgumentNullException(nameof(lastUpdated));
+                    byte[] fileData = Convert.FromBase64String(reviewerJson.Value["FileData"]?.ToString() ?? throw new ArgumentNullException(nameof(fileData)));
 
-                    Reviewer reviewer = new Reviewer(name, subject, fileName);
+                    Reviewer reviewer = new Reviewer(name, subject, fileName, lastUpdated, fileData);
                     subject.Reviewers.Add(reviewer);
                 }
 

@@ -181,7 +181,7 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            User.currentUser.CheckForFiles();
+            User.currentUser.CheckForUpdates();
             RefreshTable();
         }
     }

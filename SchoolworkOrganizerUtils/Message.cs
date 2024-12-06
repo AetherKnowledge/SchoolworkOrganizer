@@ -24,27 +24,29 @@ namespace SchoolworkOrganizerUtils
                 case MessageType.AddSubject:
                     return new SubjectMessage(json);
                 case MessageType.AddActivity:
-                    return null;
+                    return new ActivityMessage(json);
                 case MessageType.AddReviewer:
-                    return null;
+                    return new ReviewerMessage(json);
                 case MessageType.UpdateUser:
                     return new UserMessage(json);
                 case MessageType.UpdateSubject:
                     return new SubjectMessage(json);
                 case MessageType.UpdateActivity:
-                    return null;
+                    return new ActivityMessage(json);
+                case MessageType.UpdateReviewer:
+                    return new ReviewerMessage(json);
                 case MessageType.DeleteUser:
-                    return null;
+                    return new ReviewerMessage(json);
                 case MessageType.DeleteSubject:
                     return new SubjectMessage(json);
                 case MessageType.DeleteActivity:
-                    return null;
+                    return new ActivityMessage(json);
+                case MessageType.DeleteReviewer:
+                    return new ReviewerMessage(json);
                 case MessageType.FetchUser:
                     return new UserMessage(json);
                 case MessageType.FetchUserData:
                     return new UserDataMessage(json);
-                case MessageType.FetchActivities:
-                    return null;
                 case MessageType.Status:
                     return new StatusMessage(json);
                 default:
@@ -60,7 +62,7 @@ namespace SchoolworkOrganizerUtils
             return JsonConvert.SerializeObject(ToJson(), Formatting.None);
         }
 
-        public string ToJsonNoImage()
+        public string ToJsonNoData()
         {
             JObject json = ToJson();
             json["userImageData"] = json["userImageData"] != null ? "Has Image" : "No Image";
@@ -74,6 +76,5 @@ namespace SchoolworkOrganizerUtils
                 to[item.Key] = item.Value?.DeepClone();
             }
         }
-
     }
 }

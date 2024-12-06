@@ -83,7 +83,7 @@ namespace SchoolworkOrganizerServer
                     }
                 }
 
-                subject.CheckForActivities();
+                subject.CheckForNewActivities();
             }
             catch (Exception e)
             {
@@ -162,7 +162,7 @@ namespace SchoolworkOrganizerServer
                     }
                 }
 
-                subject.CheckForReviewers();
+                subject.CheckForNewReviewers();
             }
             catch (Exception e)
             {

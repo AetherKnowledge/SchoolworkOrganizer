@@ -5,7 +5,7 @@ namespace SchoolworkOrganizer.Panels
 {
     public partial class ActivitiesPanel : Template
     {
-        string selectedFilePath = null;
+        string selectedFilePath = string.Empty;
         public ActivitiesPanel()
         {
             InitializeComponent();
@@ -52,6 +52,8 @@ namespace SchoolworkOrganizer.Panels
 
         private void RefreshData()
         {
+            if (User.currentUser == null) return;
+
             subjectCBox.Items.Clear();
             editSubjectCBox.Items.Clear();
 
@@ -68,12 +70,14 @@ namespace SchoolworkOrganizer.Panels
 
         private void RefreshTable()
         {
+            if (User.currentUser == null) return;
+
             table.Rows.Clear();
 
             string subjectName = subjectCBox.Text;
             if (subjectName == null) return;
 
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
+            Subject? selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             if (selectedSubject == null) return;
 
             foreach (Activity activity in selectedSubject.Activities)
@@ -104,7 +108,7 @@ namespace SchoolworkOrganizer.Panels
             }
         }
 
-        private void table_SelectionChanged(object sender, EventArgs e)
+        private void table_SelectionChanged(object? sender, EventArgs e)
         {
             if (table.SelectedRows.Count > 0)
             {
@@ -141,9 +145,11 @@ namespace SchoolworkOrganizer.Panels
 
         private void addBtn_Click(object sender, EventArgs e)
         {
+            if (User.currentUser == null) return;
+
             string reviewerName = reviewerTxtBox.Text;
             string subjectName = editSubjectCBox.Text;
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
+            Subject? selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
             string filePath = selectedFilePath;
             DateTime dueDate = dueDatePicker.Value;
             string status = statusCBox.Text;
@@ -204,12 +210,13 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
+            string oldName = selectedActivity.Name;
             selectedActivity.Name = newActivityName;
             selectedActivity.Subject = newSelectedSubject;
             selectedActivity.ChangeFile(selectedFilePath);
             selectedActivity.DueDate = newDueDate;
             selectedActivity.Status = newStatus;
-            selectedActivity.UpdateToDatabase();
+            selectedActivity.UpdateToDatabase(oldName);
 
             RefreshTable();
 
@@ -218,10 +225,19 @@ namespace SchoolworkOrganizer.Panels
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
+            if (User.currentUser == null) return;
+
             string filePath = selectedFilePath;
-            string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-            Activity selectedActivity = selectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == filePath);
+            string? subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
+            Subject? selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
+
+            if (selectedSubject == null)
+            {
+                MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Activity? selectedActivity = selectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == filePath);
 
             if (selectedActivity == null)
             {
@@ -274,7 +290,7 @@ namespace SchoolworkOrganizer.Panels
             table.ClearSelection();
             editSubjectCBox.Text = "";
             reviewerTxtBox.Text = "";
-            selectedFilePath = null;
+            selectedFilePath = string.Empty;
             selectedFileLabel.Text = "";
 
             saveBtn.Enabled = false;
@@ -289,7 +305,9 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            User.currentUser.CheckForFiles();
+            if (User.currentUser == null) return;
+
+            User.currentUser.CheckForUpdates();
             RefreshTable();
         }
     }

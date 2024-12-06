@@ -178,11 +178,11 @@ namespace SchoolworkOrganizer.Panels
                 MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
+            string oldReviewerName = selectedReviewer.Name;
             selectedReviewer.Name = newReviewerName;
             selectedReviewer.Subject = newSelectedSubject;
             selectedReviewer.ChangeFile(selectedFilePath);
-            selectedReviewer.UpdateToDatabase();
+            selectedReviewer.UpdateToDatabase(oldReviewerName);
 
             RefreshTable();
 
@@ -262,7 +262,7 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            User.currentUser.CheckForFiles();
+            User.currentUser.CheckForUpdates();
             RefreshTable();
         }
     }

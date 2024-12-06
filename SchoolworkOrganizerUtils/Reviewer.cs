@@ -1,13 +1,19 @@
 ﻿
 using MySqlConnector;
+using SchoolworkOrganizerUtils.MessageTypes;
+using System.IO;
+using System.Xml.Linq;
 
 namespace SchoolworkOrganizerUtils
 {
     [Serializable]
     public class Reviewer
     {
-        public string Name { get; set; }
+        public string FileName { get; private set; }
         private Subject _subject;
+        public DateTime LastUpdated { get; private set; }
+        public string Name;
+
         public Subject Subject 
         {
             get { return _subject; }
@@ -15,7 +21,7 @@ namespace SchoolworkOrganizerUtils
             {
                 if (value == _subject) return;
 
-                string oldFileName = null;
+                string oldFileName = "";
                 if (FilePath == null) Path.GetFileName(FilePath);
                 
                 Subject oldSubject = _subject;
@@ -34,35 +40,71 @@ namespace SchoolworkOrganizerUtils
         {
             get 
             {
-                if (Subject == null) return null;
+                if (Subject == null) return "";
                 return Subject.FolderPath + "/Reviewer"; 
             }
         }
-
-        public string FileName { get; private set; }
 
         public string FilePath
         {
             get
             {
-                if (FolderPath == null) return null;
+                if (FolderPath == null) return "";
                 return FolderPath + "/" + FileName;
             }
         }
 
-        public Reviewer(string name, Subject subject, string sourcePath)
+        public Reviewer(string name, Subject subject, string path, bool isFileName = false)
         {
             Name = name;
             _subject = subject;
             Subject = subject;
 
-            string fileName = Path.GetFileName(sourcePath);
-            FileName = fileName;
-
-            if (sourcePath != FilePath)
+            if (isFileName) FileName = path;
+            else
             {
-                Utilities.CopyFile(sourcePath, FolderPath + "/" + fileName);
+                string fileName = Path.GetFileName(path);
+                FileName = fileName;
+
+                if (path != FilePath)
+                {
+                    Utilities.CopyFile(path, FolderPath + "/" + fileName);
+                }
             }
+
+            if (!File.Exists(FilePath)) LastUpdated = DateTime.MinValue;
+            else LastUpdated = File.GetLastWriteTime(FilePath);
+        }
+
+        public Reviewer(string name, Subject subject, string fileName, DateTime lastUpdated, byte[] fileData)
+        {
+            Name = name;
+            _subject = subject;
+            Subject = subject;
+            FileName = fileName;
+            LastUpdated = lastUpdated;
+
+            if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
+
+            if (!File.Exists(FilePath)) File.WriteAllBytes(FilePath, fileData);
+            else if (File.Exists(FilePath) && lastUpdated > File.GetLastWriteTime(FilePath)) File.WriteAllBytes(FilePath, fileData);
+            else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath)) UpdateToDatabase(Name);
+        }
+
+        public Reviewer(ReviewerMessage message)
+        {
+            if (User.currentUser == null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
+            Subject subject = User.currentUser.Subjects.FirstOrDefault(s => s.SubjectName == message.Subject) ?? throw new InvalidOperationException("Invalid Subject");
+
+            Name = message.Name;
+            _subject = subject;
+            Subject = subject;
+            FileName = message.FileName;
+
+            if (message.FileData == null || !message.WithFile) return;
+            if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
+            if (!File.Exists(FilePath)) File.WriteAllBytes(FilePath, message.FileData);
+            else if (message.LastUpdated > LastUpdated) File.WriteAllBytes(FilePath, message.FileData);
         }
 
         public void ChangeFile(string sourcePath)
@@ -95,78 +137,29 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public async void AddToDatabase()
+        public void AddToDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "INSERT INTO `reviewers` (name, username, subject, filename) VALUES (@Name, @Username, @Subject, @FileName)";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Name", Name);
-                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
-                        command.Parameters.AddWithValue("@FileName", FileName);
-
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            ReviewerMessage message = new ReviewerMessage(MessageType.AddReviewer, this, Name, true);
+            Client.SendMessageAsync(message);
         }
 
-        public async void UpdateToDatabase()
+        public void UpdateToDatabase(string previousName)
         {
-            try
+            bool withFile = false;
+            if (File.Exists(FilePath) && LastUpdated < File.GetLastWriteTime(FilePath))
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "UPDATE `reviewers` SET name = @Name, filename = @FileName WHERE username = @Username AND subject = @Subject";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Name", Name);
-                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
-                        command.Parameters.AddWithValue("@FileName", FileName);
+                withFile = true;
+                LastUpdated = File.GetLastWriteTime(FilePath);
+            }
 
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            ReviewerMessage message = new ReviewerMessage(MessageType.UpdateReviewer, this, previousName, withFile);
+            Client.SendMessageAsync(message);
         }
 
-        public async void DeleteFromDatabase()
+        public void DeleteFromDatabase()
         {
-            try
-            {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
-                {
-                    await connection.OpenAsync();
-                    string query = "DELETE FROM `reviewers` WHERE username = @Username AND subject = @Subject AND name = @Name";
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Username", Subject.User.Username);
-                        command.Parameters.AddWithValue("@Subject", Subject.SubjectName);
-                        command.Parameters.AddWithValue("@Name", Name);
-
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            catch (MySqlException e)
-            {
-                Console.WriteLine(e.Message, "Error");
-            }
+            ReviewerMessage message = new ReviewerMessage(MessageType.DeleteReviewer, this);
+            Client.SendMessageAsync(message);
         }
     }
 }

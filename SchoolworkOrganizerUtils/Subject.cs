@@ -56,13 +56,29 @@ namespace SchoolworkOrganizerUtils
             Activities.Remove(selectedActivity);
         }
 
-        public void CheckForFiles()
+        public void CheckForUpdates()
         {
-            CheckForActivities();
-            CheckForReviewers();
+            CheckForNewActivities();
+            CheckForNewReviewers();
+
+            foreach (Activity activity in Activities)
+            {
+                if (File.Exists(activity.FilePath))
+                {
+                    if (File.GetLastWriteTime(activity.FilePath) > activity.LastUpdated) activity.UpdateToDatabase(activity.Name);
+                }
+            }
+
+            foreach (Reviewer reviewer in Reviewers)
+            {
+                if (File.Exists(reviewer.FilePath))
+                {
+                    if (File.GetLastWriteTime(reviewer.FilePath) > reviewer.LastUpdated) reviewer.UpdateToDatabase(reviewer.Name);
+                }
+            }
         }
 
-        public void CheckForActivities()
+        public void CheckForNewActivities()
         {
             string activityPath = FolderPath + "/Activity";
             if (!Directory.Exists(activityPath)) Directory.CreateDirectory(activityPath);
@@ -82,7 +98,7 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public void CheckForReviewers()
+        public void CheckForNewReviewers()
         {
             string reviewerPath = FolderPath + "/Reviewer";
             if (!Directory.Exists(reviewerPath)) Directory.CreateDirectory(reviewerPath);

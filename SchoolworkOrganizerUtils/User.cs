@@ -1,11 +1,9 @@
-﻿using MySqlConnector;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using SkiaSharp;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.Versioning;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace SchoolworkOrganizerUtils
 {
@@ -13,12 +11,12 @@ namespace SchoolworkOrganizerUtils
     public class User
     {
         public static User? currentUser = null;
-        private static readonly string UserDataPath = "UserData.data";
         public string UserPath;
         public string Email;
         private string _username = "";
         public Image? WinformImage { get; private set; }
         private SKImage? _userImage;
+        private Timer updateTimer = new Timer(5000);
 
         [JsonPropertyName("username")]
         public string Username
@@ -34,11 +32,7 @@ namespace SchoolworkOrganizerUtils
         }
         [JsonPropertyName("password")]
         public string Password;
-        private byte[]? UserImageData;
         public List<Subject> Subjects = new List<Subject>();
-
-      
-
 
         public SKImage? UserImage
         {
@@ -52,8 +46,6 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        
-
         public User(string Email, string Username, string Password, SKImage? UserImage)
         {
             this.Email = Email;
@@ -61,6 +53,10 @@ namespace SchoolworkOrganizerUtils
             this.Password = Password;
             this.UserImage = UserImage;
             UserPath = "Data/" + Username;
+
+            updateTimer.Elapsed += OnTimedEvent;
+            updateTimer.AutoReset = true;
+            updateTimer.Enabled = true;
         }
 
         public void RemoveSubject(Subject selectedSubject)
@@ -70,12 +66,18 @@ namespace SchoolworkOrganizerUtils
             Subjects.Remove(selectedSubject);
         }
 
-        public void CheckForFiles()
+        public void CheckForUpdates()
         {
             foreach (Subject subject in Subjects)
             {
-                subject.CheckForFiles();
+                subject.CheckForUpdates();
             }
+        }
+
+        private void OnTimedEvent(object? sender, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Checking for updates...");
+            CheckForUpdates();
         }
 
         public static void Logout()

@@ -19,12 +19,13 @@ namespace SchoolworkOrganizerUtils
         UpdateUser,
         UpdateSubject,
         UpdateActivity,
+        UpdateReviewer,
         DeleteUser,
         DeleteSubject,
         DeleteActivity,
+        DeleteReviewer,
         FetchUser,
         FetchUserData,
-        FetchActivities,
         Status
     }
 

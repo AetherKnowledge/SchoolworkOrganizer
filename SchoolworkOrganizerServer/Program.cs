@@ -11,7 +11,7 @@ namespace SchoolworkOrganizerServer
 {
     internal class Program
     {
-        
+
         static void Main(string[] args)
         {
             StartServer();
@@ -19,9 +19,24 @@ namespace SchoolworkOrganizerServer
             while (command != "stop")
             {
                 command = Console.ReadLine();
+                switch (command)
+                {
+                    case "stop":
+                        Console.WriteLine("Stopping server...");
+                        break;
+                    case "clear":
+                        Console.Clear();
+                        break;
+                    case "sql":
+                        Console.Write("Enter SQL query: ");
+                        MakeSqlQuery(Console.ReadLine());
+                        break;
+                    default:
+                        Console.WriteLine("Unknown command");
+                        break;
+                }
+
             }
-
-
         }
         private async static void StartServer()
         {
@@ -29,7 +44,7 @@ namespace SchoolworkOrganizerServer
 
             HttpListener httpListener = new HttpListener();
             httpListener.Prefixes.Add(Utilities.WebHost);
-            httpListener.Start();
+            await Task.Run(() => httpListener.Start());
             Console.WriteLine($"WebSocket server started at {Utilities.WebHost}");
 
             while (true)
@@ -54,5 +69,35 @@ namespace SchoolworkOrganizerServer
             }
         }
 
+        private static async void MakeSqlQuery(string? query)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                {
+                    await connection.OpenAsync();
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    Console.Write(reader[i] + " ");
+                                }
+                                Console.WriteLine();
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (MySqlException e)
+            {
+                Console.WriteLine(e.Message, "Error");
+            }
+
+        }
     }
 }

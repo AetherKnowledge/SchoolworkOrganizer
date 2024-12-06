@@ -5,6 +5,7 @@ using SchoolworkOrganizerUtils.MessageTypes;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Nodes;
@@ -78,10 +79,14 @@ namespace SchoolworkOrganizerServer
                                 DateTime dueDate = reader.GetDateTime("dueDate");
                                 string status = reader.GetString("status");
                                 string fileName = reader.GetString("filename");
+                                DateTime lastUpdated = reader.GetDateTime("lastUpdated");
+                                byte[]? fileData = reader.IsDBNull(reader.GetOrdinal("fileData")) ? null : (byte[])reader["fileData"];
 
                                 activity.Add("DueDate", dueDate);
                                 activity.Add("Status", status);
                                 activity.Add("FileName", fileName);
+                                activity.Add("LastUpdated", lastUpdated);
+                                activity.Add("FileData", Convert.ToBase64String(fileData ?? new byte[0]));
 
                                 json.Add(name, activity);
                             }
@@ -121,8 +126,12 @@ namespace SchoolworkOrganizerServer
 
                                 string name = reader.GetString("name");
                                 string fileName = reader.GetString("filename");
+                                DateTime lastUpdated = reader.GetDateTime("lastUpdated");
+                                byte[]? fileData = reader.IsDBNull(reader.GetOrdinal("fileData")) ? null : (byte[])reader["fileData"];
 
                                 reviewer.Add("FileName", fileName);
+                                reviewer.Add("LastUpdated", lastUpdated);
+                                reviewer.Add("FileData", Convert.ToBase64String(fileData ?? new byte[0]));
 
                                 json.Add(name, reviewer);
                             }
@@ -140,7 +149,7 @@ namespace SchoolworkOrganizerServer
             return json;
         }
 
-        public static async void AddToDatabase(User user, SubjectMessage message)
+        public static async void AddToDatabase(SubjectMessage message)
         {
             try
             {
@@ -155,7 +164,6 @@ namespace SchoolworkOrganizerServer
 
                         await command.ExecuteNonQueryAsync();
                     }
-                    UserHandler.LoadSubjects(user);
                 }
             }
             catch (MySqlException e)
@@ -165,7 +173,7 @@ namespace SchoolworkOrganizerServer
 
         }
 
-        public static async void UpdateToDatabase(User user, SubjectMessage message)
+        public static async void UpdateToDatabase(SubjectMessage message)
         {
             try
             {
@@ -181,7 +189,6 @@ namespace SchoolworkOrganizerServer
 
                         await command.ExecuteNonQueryAsync();
                     }
-                    UserHandler.LoadSubjects(user);
                 }
             }
             catch (MySqlException e)

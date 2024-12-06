@@ -1,21 +1,18 @@
 ﻿using Newtonsoft.Json.Linq;
 using SchoolworkOrganizerUtils;
 using SchoolworkOrganizerUtils.MessageTypes;
-using System.Linq;
-using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Text;
-using Object = System.Object;
 
 namespace SchoolworkOrganizerServer
 {
-    internal class ClientHandler
+    internal partial class ClientHandler
     {
         private List<ClientHandler> handlers = new List<ClientHandler>();
 
         private WebSocket socket;
         internal string socketID;
-        private User? currentUser;
+        private string? currentUsername;
 
         public ClientHandler(WebSocket socket)
         {
@@ -50,7 +47,7 @@ namespace SchoolworkOrganizerServer
                     {
                         await Task.Run(() => HandleMessage(message));
                         Console.WriteLine($"Sent to {socketID}: " + message.Type);
-                        Console.WriteLine(message.ToJsonNoImage());
+                        Console.WriteLine(message.ToJsonNoData());
                     }
                 }
 
@@ -72,7 +69,7 @@ namespace SchoolworkOrganizerServer
         internal async Task Send(Message message)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
-            Console.WriteLine(message.ToJsonNoImage());
+            Console.WriteLine(message.ToJsonNoData());
             await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
@@ -98,158 +95,26 @@ namespace SchoolworkOrganizerServer
                 case MessageType.DeleteSubject:
                     HandleDeleteSubject(message);
                     break;
-                // Handle other message types here
+                case MessageType.AddActivity:
+                    HandleAddActivity(message);
+                    break;
+                case MessageType.UpdateActivity:
+                    HandleUpdateActivity(message);
+                    break;
+                case MessageType.DeleteActivity:
+                    HandleDeleteActivity(message);
+                    break;
+                case MessageType.AddReviewer:
+                    HandleAddReviewer(message);
+                    break;
+                case MessageType.UpdateReviewer:
+                    HandleUpdateReviewer(message);
+                    break;
+                case MessageType.DeleteReviewer:
+                    HandleDeleteReviewer(message);
+                    break;
                 default:
                     break;
-            }
-        }
-
-        private async void HandleUpdateUser(Message message)
-        {
-            try
-            {
-                if (message == null) throw new ArgumentNullException(nameof(message));
-                else if (message is not UserMessage) throw new ArgumentException("Invalid message type");
-                else if (message.Type != MessageType.UpdateUser) throw new ArgumentException("Invalid message type");
-                UserMessage updateMessage = (UserMessage)message;
-
-                if (this.currentUser == null || updateMessage.PreviousUsername != this.currentUser.Username) throw new ArgumentException("Cannot update if different users");
-                await UserHandler.UpdateToDatabase(updateMessage);
-                currentUser = await UserHandler.GetUser(updateMessage.Username);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        private async void HandleLogin(Message message)
-        {
-            try
-            {
-                if (message == null) throw new ArgumentNullException(nameof(message));
-                if (message is not LoginMessage) throw new ArgumentException("Invalid message type");
-                LoginMessage loginData = (LoginMessage) message;
-
-                string username = loginData.Username;
-                string password = loginData.Password;
-
-                User? user = await UserHandler.AttemptLogin(username, password);
-
-                if (user != null)
-                {
-                    currentUser = await UserHandler.GetUser(username);
-                    Message statusMessage = new StatusMessage(Status.Success);
-                    Message userInfoMessage = new UserMessage(MessageType.FetchUser, user);
-                    Message userDataMessage = new UserDataMessage(username, await SubjectHandler.GetSubjects(username));
-
-                    await Send(statusMessage);
-                    Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
-                    await Send(userInfoMessage);
-                    Console.WriteLine($"Sent to {socketID}: " + userInfoMessage.Type);
-                    await Send(userDataMessage);
-                    Console.WriteLine($"Sent to {socketID}: " + userDataMessage.Type);
-                }
-                else
-                {
-                    Message statusMessage = new StatusMessage(Status.Failure);
-                    await Send(statusMessage);
-                    Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            
-        }
-
-        private async void HandleRegister(Message message)
-        {
-            try
-            {
-                if (message == null) throw new ArgumentNullException(nameof(message));
-                else if (message is not UserMessage) throw new ArgumentException("Invalid message type");
-                else if (message.Type != MessageType.Register) throw new ArgumentException("Invalid message type");
-                UserMessage registerMessage = (UserMessage)message;
-
-                if (!(await UserHandler.DoesUserExist(registerMessage.Username)))
-                {
-                    UserHandler.AddToDatabase(registerMessage);
-                    Message statusMessage = new StatusMessage(Status.Success);
-                    await Send(statusMessage);
-                    Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
-                }
-                else
-                {
-                    Message statusMessage = new StatusMessage(Status.Failure);
-                    await Send(statusMessage);
-                    Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Message statusMessage = new StatusMessage(Status.Failure);
-                await Send(statusMessage);
-                Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
-            }
-
-        }
-
-        private void HandleAddSubject(Message message)
-        {
-            try
-            {
-                if (message == null) throw new ArgumentNullException(nameof(message));
-                else if (message is not SubjectMessage) throw new ArgumentException("Invalid data type");
-
-                SubjectMessage subjectMessage = (SubjectMessage)message;
-
-                if (this.currentUser == null || subjectMessage.Username != this.currentUser.Username) throw new ArgumentException("Cannot add subject to different user");
-                SubjectHandler.AddToDatabase(currentUser, subjectMessage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-        }
-
-        private void HandleUpdateSubject(Message message)
-        {
-            try
-            {
-                if (message == null) throw new ArgumentNullException(nameof(message));
-                else if (message is not SubjectMessage) throw new ArgumentException("Invalid data type");
-                
-                SubjectMessage subjectMessage = (SubjectMessage)message;
-                if (this.currentUser == null || subjectMessage.Username != this.currentUser.Username) throw new ArgumentException("Cannot update subject of different user");
-                
-                SubjectHandler.UpdateToDatabase(currentUser, subjectMessage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        private void HandleDeleteSubject(Message message)
-        {
-            try
-            {
-                if (message == null) throw new ArgumentNullException(nameof(message));
-                else if (message is not SubjectMessage) throw new ArgumentException("Invalid data type");
-
-                SubjectMessage subjectMessage = (SubjectMessage)message;
-                if (this.currentUser == null || subjectMessage.Username != this.currentUser.Username) throw new ArgumentException("Cannot delete subject of different user");
-
-                SubjectHandler.DeleteFromDatabase(subjectMessage);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
             }
         }
 
