@@ -11,7 +11,7 @@ namespace SchoolworkOrganizerServer
 {
     internal class Program
     {
-
+        //dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer -c Release
         static void Main(string[] args)
         {
             StartServer();
@@ -44,7 +44,7 @@ namespace SchoolworkOrganizerServer
 
             HttpListener httpListener = new HttpListener();
             httpListener.Prefixes.Add(Utilities.WebHost);
-            await Task.Run(() => httpListener.Start());
+            httpListener.Start();
             Console.WriteLine($"WebSocket server started at {Utilities.WebHost}");
 
             while (true)

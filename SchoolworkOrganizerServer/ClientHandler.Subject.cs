@@ -1,5 +1,4 @@
 ﻿using SchoolworkOrganizerUtils.MessageTypes;
-using SchoolworkOrganizerUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +24,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
             }
 
@@ -44,6 +44,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
             }
         }
@@ -62,6 +63,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
             }
 

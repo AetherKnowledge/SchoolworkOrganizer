@@ -95,14 +95,33 @@ namespace SchoolworkOrganizerUtils
 
         public static async Task<SKImage?> ByteArrayToSKImageAsync(byte[] byteArray)
         {
-            if (byteArray == null) return null;
-            return await Task.Run(() =>
+            try
             {
-                using (var ms = new MemoryStream(byteArray))
+                if (byteArray == null || byteArray.Length == 0)
                 {
-                    return SKImage.FromEncodedData(ms);
+                    Console.WriteLine("Byte array is null or empty.");
+                    return null;
                 }
-            });
+
+                return await Task.Run(() =>
+                {
+                    using (var ms = new MemoryStream(byteArray))
+                    {
+                        var skImage = SKImage.FromEncodedData(ms);
+                        if (skImage == null)
+                        {
+                            Console.WriteLine("Failed to create SKImage from byte array.");
+                        }
+                        return skImage;
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception in ByteArrayToSKImageAsync: {e.Message}");
+                Console.WriteLine(e.StackTrace);
+                return null;
+            }
         }
 
         public static SKImage? ByteArrayToSKImage(byte[] byteArray)
@@ -118,6 +137,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 return null;
             }
