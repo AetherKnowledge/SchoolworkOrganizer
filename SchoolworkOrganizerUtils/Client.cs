@@ -59,6 +59,7 @@ namespace SchoolworkOrganizerUtils
         public static void UpdateUser(string oldUsername, User user)
         {
             Message message = new UserMessage(MessageType.UpdateUser, user, oldUsername);
+            if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
             SendMessageAsync(message);
         }
 
@@ -99,6 +100,7 @@ namespace SchoolworkOrganizerUtils
                     Message? message = Message.Parse(receivedMessage);
                     if (message != null)
                     {
+                        if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
                         await Task.Run(() => HandleMessageAsync(message));
                     }
                 }

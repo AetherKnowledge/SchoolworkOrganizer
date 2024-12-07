@@ -1,4 +1,5 @@
 ﻿using SchoolWorkOrganizerServer.Handlers;
+using SchoolworkOrganizerUtils;
 using SchoolworkOrganizerUtils.MessageTypes;
 
 namespace SchoolworkOrganizerServer

@@ -75,10 +75,10 @@ namespace SchoolworkOrganizerServer
 
             while (running)
             {
-                command = Console.In.ReadLine();
-                switch (command)
+                command = Console.In.ReadLine() ?? "";
+                switch (command.ToLower())
                 {
-                    case "stop" or "close":
+                    case "stop" or "exit":
                         running = false;
                         Console.WriteLine("Stopping server...");
                         if (app != null) app?.StopAsync();
@@ -94,6 +94,19 @@ namespace SchoolworkOrganizerServer
                     case "debug":
                         Utilities.Debug = !Utilities.Debug;
                         Console.WriteLine($"Debug mode is now {Utilities.Debug}");
+                        break;
+                    case "datastream":
+                        Utilities.ShowDataStream = !Utilities.ShowDataStream;
+                        Console.WriteLine($"Data stream is now {Utilities.ShowDataStream}");
+                        break;
+                    case "help":
+                        Console.WriteLine("Commands: " +
+                            "stop/exit - Stops the server" +
+                            "clear - Clears the console" +
+                            "sql - Executes an SQL query" +
+                            "debug - Shows stack trace" +
+                            "datastream - Shows incoming and outgoing data" +
+                            "help - Shows all commands");
                         break;
                     default:
                         Console.WriteLine("Unknown command");

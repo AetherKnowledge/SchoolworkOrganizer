@@ -12,13 +12,18 @@ namespace Tester
             Console.WriteLine($"Connecting to the server at {Utilities.WebSocket}");
             _ = Client.Login("wew", "test");
 
+            bool running = true;
             string input = "";
-            while(input != "stop")
+            while(running)
             {
                 input = Console.ReadLine() ?? "";
 
                 switch (input.ToLower())
                 {
+                    case "stop":
+                    case "exit":
+                        running = false;
+                        break;
                     case "login":
                         _ = Client.Login("test", "test");
                         break;
@@ -34,6 +39,24 @@ namespace Tester
                     case "debug":
                         Utilities.Debug = !Utilities.Debug;
                         Console.WriteLine($"Debug mode is now {Utilities.Debug}");
+                        break;
+                    case "datastream":
+                        Utilities.ShowDataStream = !Utilities.ShowDataStream;
+                        Console.WriteLine($"Data stream is now {Utilities.ShowDataStream}");
+                        break;
+                    case "clear":
+                        Console.Clear();
+                        break;
+                    case "help":
+                        Console.WriteLine("Commands: " +
+                            "login - Attempt login" +
+                            "logout - Logout" +
+                            "register - Register random accounts must put ammount" +
+                            "debug - Shows stack trace" +
+                            "datastream - Shows incoming and outgoing data" +
+                            "help - Shows all commands" +
+                            "stop/exit - Exits program " +
+                            "clear - Clears the console");
                         break;
                     default:
                         Console.WriteLine("Invalid command");

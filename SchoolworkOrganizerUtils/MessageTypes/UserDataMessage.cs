@@ -13,7 +13,7 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         public readonly string Username;
         public readonly List<Subject> Subjects = new List<Subject>();
         public readonly JObject Json;
-
+        
         public UserDataMessage (string username, JObject json)
         {
             Username = username;

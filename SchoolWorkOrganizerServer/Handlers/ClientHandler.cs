@@ -47,7 +47,7 @@ namespace SchoolworkOrganizerServer
                     {
                         await Task.Run(() => HandleMessage(message));
                         Console.WriteLine($"Sent to {socketID}: " + message.Type);
-                        Console.WriteLine(message.ToJsonNoData());
+                        if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
                     }
                 }
 
@@ -70,7 +70,7 @@ namespace SchoolworkOrganizerServer
         internal async Task Send(Message message)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
-            Console.WriteLine(message.ToJsonNoData());
+            if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
             await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
         }
 
