@@ -369,3 +369,7 @@ FodyWeavers.xsd
 /SchoolworkOrganizerV2/connection.json
 /SchoolworkOrganizerV2/connection.json
 /SchoolWorkOrganizerServerV2/connection.json
+/SchoolworkOrganizer/connection.json
+/SchoolWorkOrganizerServer/connection.json
+/SchoolWorkOrganizerServer/Properties/launchSettings.json
+/SchoolWorkOrganizerServer/Properties/launchSettings.json
