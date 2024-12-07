@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolWorkOrganizerServerV2.Handlers;
 
 namespace SchoolworkOrganizerServer
 {
@@ -41,13 +42,13 @@ namespace SchoolworkOrganizerServer
                 string username = loginData.Username;
                 string password = loginData.Password;
 
-                User? user = await UserHandler.AttemptLogin(username, password);
+                UserMessage? userMessage = await UserHandler.AttemptLogin(username, password);
 
-                if (user != null)
+                if (userMessage != null)
                 {
                     currentUsername = username;
                     Message statusMessage = new StatusMessage(Status.Success);
-                    Message userInfoMessage = new UserMessage(MessageType.FetchUser, user);
+                    Message userInfoMessage = userMessage;
                     Message userDataMessage = new UserDataMessage(username, await SubjectHandler.GetSubjects(username));
 
                     await Send(statusMessage);

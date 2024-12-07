@@ -11,7 +11,7 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         public static Message? Parse(string rawData)
         {
             JObject json = JObject.Parse(rawData);
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type"));
+            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type of recieved json is null"));
             switch (type)
             {
                 case MessageType.Login:

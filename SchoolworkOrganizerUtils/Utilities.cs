@@ -12,7 +12,7 @@ namespace SchoolworkOrganizerUtils
         public readonly static string SqlConnectionString;
         public readonly static string WebHost;
         public readonly static string WebSocket;
-        private readonly static string settingsPath = "appsettings.json";
+        private readonly static string connectionsPath = "connection.json";
         public const int BufferSize = 1024 * 1024 * 5;
 
         static Utilities()
@@ -26,7 +26,7 @@ namespace SchoolworkOrganizerUtils
         {
             try
             {
-                var json = File.ReadAllText(settingsPath);
+                var json = File.ReadAllText(connectionsPath);
                 using (JsonDocument doc = JsonDocument.Parse(json))
                 {
                     var root = doc.RootElement;
@@ -35,7 +35,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while reading the connection string: {ex.Message}");
+                Console.WriteLine($"An error occurred while reading the connection string: {ex.Message} {connectionName}");
                 return string.Empty;
             }
         }

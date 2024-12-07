@@ -1,17 +1,10 @@
 ﻿using MySqlConnector;
 using Newtonsoft.Json.Linq;
+using SchoolworkOrganizerServerV2;
 using SchoolworkOrganizerUtils;
 using SchoolworkOrganizerUtils.MessageTypes;
-using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
-namespace SchoolworkOrganizerServer
+namespace SchoolWorkOrganizerServerV2.Handlers
 {
     internal class SubjectHandler
     {
@@ -24,7 +17,7 @@ namespace SchoolworkOrganizerServer
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT * FROM `subjects` WHERE username = @Username";
@@ -37,7 +30,7 @@ namespace SchoolworkOrganizerServer
                             {
                                 string subjectName = reader.GetString("subjectName");
                                 JObject subjectJson = new JObject();
-                                
+
                                 subjectJson.Add("Activities", await LoadActivities(username, subjectName));
                                 subjectJson.Add("Reviewers", await LoadReviewers(username, subjectName));
                                 json.Add(subjectName, subjectJson);
@@ -61,7 +54,7 @@ namespace SchoolworkOrganizerServer
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT * FROM `activities` WHERE username = @Username AND subjectName = @SubjectName";
@@ -110,7 +103,7 @@ namespace SchoolworkOrganizerServer
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT * FROM `reviewers` WHERE username = @Username AND subjectName = @SubjectName";
@@ -153,7 +146,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "INSERT INTO `subjects` (username, subjectName) VALUES (@Username, @SubjectName)";
@@ -177,7 +170,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "UPDATE `subjects` SET subjectName = @SubjectName WHERE username = @Username AND subjectName = @OldSubjectName";
@@ -204,7 +197,7 @@ namespace SchoolworkOrganizerServer
 
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "DELETE FROM `subjects` WHERE username = @Username AND subjectName = @SubjectName";

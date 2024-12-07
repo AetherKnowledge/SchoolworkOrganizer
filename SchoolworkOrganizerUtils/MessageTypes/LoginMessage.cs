@@ -20,14 +20,14 @@ namespace SchoolworkOrganizerUtils.MessageTypes
 
         public LoginMessage(JObject json)
         {
-            if (!json.ContainsKey("type") || !json.ContainsKey("username") || !json.ContainsKey("password")) throw new ArgumentNullException("Invalid Login Message Data");
+            if (!json.ContainsKey("type") || !json.ContainsKey("username") || !json.ContainsKey("password")) throw new ArgumentException("Invalid Login Message Data");
             if (json.Count != 3) throw new ArgumentException("Invalid key count in json");
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type"));
+            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (type != MessageType.Login) throw new ArgumentException("Invalid type for LoginMessage");
 
             Type = type;
-            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentException("username");
-            Password = json.GetValue("password")?.ToString() ?? throw new ArgumentException("password");
+            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
+            Password = json.GetValue("password")?.ToString() ?? throw new ArgumentNullException("password in " + this.GetType());
         }
 
         public override JObject ToJson()

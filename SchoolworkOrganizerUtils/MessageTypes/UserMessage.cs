@@ -16,7 +16,7 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         public readonly byte[]? UserImageData;
         public readonly string PreviousUsername;
 
-        public UserMessage(MessageType type, string Username, string Password, string Email, byte[] UserImageData, string previousUsername = "")
+        public UserMessage(MessageType type, string Username, string Password, string Email, byte[]? UserImageData, string previousUsername = "")
         {
             this.Type = type;
             this.Username = Username;
@@ -38,7 +38,7 @@ namespace SchoolworkOrganizerUtils.MessageTypes
 
         public User GetUser()
         {
-            return new User(Email, Username, Password, UserImageData != null ? Utilities.ByteArrayToSKImage(UserImageData) : null);
+            return new User(this);
         }
 
         public UserMessage(JObject json)
@@ -46,15 +46,15 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             if (!json.ContainsKey("type") || !json.ContainsKey("username") || !json.ContainsKey("password") || !json.ContainsKey("email") || !json.ContainsKey("userImageData")) throw new ArgumentNullException("Invalid User Message Data");
             if (json.Count != 6) throw new ArgumentException("Invalid key count in json");
 
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type"));
+            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (type != MessageType.FetchUser && type != MessageType.Register && type != MessageType.UpdateUser && type != MessageType.DeleteUser) throw new ArgumentException("Invalid type for UserMessage");
             if (type == MessageType.UpdateUser && !json.ContainsKey("previousUsername")) throw new ArgumentException("Invalid key count in json");
 
             Type = type;
-            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentException("username");
-            Password = json.GetValue("password")?.ToString() ?? throw new ArgumentException("password");
-            Email = json.GetValue("email")?.ToString() ?? throw new ArgumentException("email");
-            UserImageData = json.GetValue("userImageData")?.ToObject<byte[]>() ?? throw new ArgumentException("userImageData");
+            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("usernamel in " + this.GetType());
+            Password = json.GetValue("password")?.ToString() ?? throw new ArgumentNullException("password in " + this.GetType());
+            Email = json.GetValue("email")?.ToString() ?? throw new ArgumentNullException("email in " + this.GetType());
+            UserImageData = json.GetValue("userImageData")?.ToObject<byte[]>() ?? Array.Empty<byte>();
             PreviousUsername = json.GetValue("previousUsername")?.ToString() ?? "";
         }
 

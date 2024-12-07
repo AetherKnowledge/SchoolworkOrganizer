@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SchoolworkOrganizerUtils.MessageTypes;
 using SkiaSharp;
 using System.Drawing;
 using System.Text.Json.Serialization;
@@ -52,6 +53,22 @@ namespace SchoolworkOrganizerUtils
             this.Username = Username;
             this.Password = Password;
             this.UserImage = UserImage;
+            UserPath = "Data/" + Username;
+
+            if (startTimer)
+            {
+                updateTimer.Elapsed += OnTimedEvent;
+                updateTimer.AutoReset = true;
+                updateTimer.Enabled = true;
+            }
+        }
+
+        public User(UserMessage message, bool startTimer = true)
+        {
+            this.Email = message.Email;
+            this.Username = message.Username;
+            this.Password = message.Password;
+            this.UserImage = message.UserImageData != null ? Utilities.ByteArrayToSKImage(message.UserImageData) : null;
             UserPath = "Data/" + Username;
 
             if (startTimer)

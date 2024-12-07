@@ -5,8 +5,9 @@ using System.Collections.Concurrent;
 using System.Xml.Linq;
 using System.Text.Json.Nodes;
 using SchoolworkOrganizerUtils.MessageTypes;
+using SchoolworkOrganizerServerV2;
 
-namespace SchoolworkOrganizerServer
+namespace SchoolWorkOrganizerServerV2.Handlers
 {
     internal class UserHandler
     {
@@ -15,7 +16,7 @@ namespace SchoolworkOrganizerServer
             user.Subjects.Clear();
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT name FROM `subjects` WHERE username = @Username";
@@ -47,7 +48,7 @@ namespace SchoolworkOrganizerServer
             subject.Activities.Clear();
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT name, dueDate, status, filename FROM `activities` WHERE username = @Username AND subject = @Subject";
@@ -95,7 +96,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT username, password, email, imageData FROM `users` WHERE username = @Username";
@@ -132,7 +133,7 @@ namespace SchoolworkOrganizerServer
             subject.Reviewers.Clear();
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT name, filename FROM `reviewers` WHERE username = @Username AND subject = @Subject";
@@ -175,7 +176,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "INSERT INTO `users` (username, password, email, imageData) VALUES (@Username, @Password, @Email, @ImageData)";
@@ -201,7 +202,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "UPDATE `users` SET username = @Username, password = @Password, email = @Email, imageData = @ImageData WHERE username = @OldUsername";
@@ -230,7 +231,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT username FROM `users`";
@@ -257,11 +258,11 @@ namespace SchoolworkOrganizerServer
             return false;
         }
 
-        public static async Task<User?> AttemptLogin(string username, string password)
+        public static async Task<UserMessage?> AttemptLogin(string username, string password)
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "SELECT * FROM `users`";
@@ -275,8 +276,7 @@ namespace SchoolworkOrganizerServer
                                 {
                                     string email = reader.GetString("email");
                                     byte[]? imageData = reader.IsDBNull(reader.GetOrdinal("imageData")) ? null : (byte[])reader["imageData"];
-                                    SKImage? userImage = imageData != null ? await Utilities.ByteArrayToSKImageAsync(imageData) : null;
-                                    return new User(email, username, password, userImage, false);
+                                    return new UserMessage(MessageType.FetchUser, username, password, email, imageData, username);
                                 }
                             }
                         }

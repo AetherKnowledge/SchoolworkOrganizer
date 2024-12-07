@@ -41,17 +41,17 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                 !json.ContainsKey("lastUpdated")) throw new ArgumentNullException("Invalid Reviewer Message Data");
 
             if (json.Count != 9) throw new ArgumentException("Invalid key count in json");
-            Type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type"));
+            Type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (Type != MessageType.AddReviewer && Type != MessageType.UpdateReviewer && Type != MessageType.DeleteReviewer && Type != MessageType.DeleteReviewer) throw new ArgumentException("Invalid type for ReviewerMessage");
 
-            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentException("username");
-            Name = json.GetValue("name")?.ToString() ?? throw new ArgumentException("name");
-            Subject = json.GetValue("subject")?.ToString() ?? throw new ArgumentException("subject");
-            FileName = json.GetValue("fileName")?.ToString() ?? throw new ArgumentException("fileName");
-            PreviousName = json.GetValue("previousName")?.ToString() ?? throw new ArgumentException("previousName");
+            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
+            Name = json.GetValue("name")?.ToString() ?? throw new ArgumentNullException("name in " + this.GetType());
+            Subject = json.GetValue("subject")?.ToString() ?? throw new ArgumentNullException("subject in " + this.GetType());
+            FileName = json.GetValue("fileName")?.ToString() ?? throw new ArgumentNullException("fileName in " + this.GetType());
+            PreviousName = json.GetValue("previousName")?.ToString() ?? throw new ArgumentNullException("previousName in " + this.GetType());
             WithFile = json.GetValue("withFile")?.ToString() == "True";
             FileData = Convert.FromBase64String(json.GetValue("fileData")?.ToString() ?? string.Empty);
-            LastUpdated = DateTime.Parse(json.GetValue("lastUpdated")?.ToString() ?? throw new ArgumentException("lastUpdated"));
+            LastUpdated = DateTime.Parse(json.GetValue("lastUpdated")?.ToString() ?? throw new ArgumentNullException("lastUpdated in " + this.GetType()));
         }
 
         public override JObject ToJson()

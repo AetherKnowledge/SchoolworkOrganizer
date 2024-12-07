@@ -51,21 +51,21 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                 !json.ContainsKey("withFile") ||
                 !json.ContainsKey("fileData") ||
                 !json.ContainsKey("lastUpdated"))
-                throw new ArgumentNullException("Invalid Activity Message Data");
+                throw new ArgumentException("Invalid Activity Message Data");
             if (json.Count != 11) throw new ArgumentException("Invalid key count in json");
 
-            Type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type"));
+            Type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (Type != MessageType.AddActivity && Type != MessageType.UpdateActivity && Type != MessageType.DeleteActivity && Type != MessageType.DeleteActivity) throw new ArgumentException("Invalid type for ActivityMessage");
-            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentException("username");
-            Name = json.GetValue("name")?.ToString() ?? throw new ArgumentException("name");
-            Subject = json.GetValue("subject")?.ToString() ?? throw new ArgumentException("subject");
-            FileName = json.GetValue("fileName")?.ToString() ?? throw new ArgumentException("fileName");
-            DueDate = DateTime.Parse(json.GetValue("dueDate")?.ToString() ?? throw new ArgumentException("dueDate"));
-            Status = json.GetValue("status")?.ToString() ?? throw new ArgumentException("status");
-            PreviousName = json.GetValue("previousName")?.ToString() ?? throw new ArgumentException("previousName");
+            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
+            Name = json.GetValue("name")?.ToString() ?? throw new ArgumentNullException("name in " + this.GetType());
+            Subject = json.GetValue("subject")?.ToString() ?? throw new ArgumentNullException("subject in " + this.GetType());
+            FileName = json.GetValue("fileName")?.ToString() ?? throw new ArgumentNullException("fileName in " + this.GetType());
+            DueDate = DateTime.Parse(json.GetValue("dueDate")?.ToString() ?? throw new ArgumentNullException("dueDate in " + this.GetType()));
+            Status = json.GetValue("status")?.ToString() ?? throw new ArgumentNullException("status in " + this.GetType());
+            PreviousName = json.GetValue("previousName")?.ToString() ?? throw new ArgumentNullException("previousName in " + this.GetType());
             WithFile = json.GetValue("withFile")?.ToString() == "True";
             FileData = Convert.FromBase64String(json.GetValue("fileData")?.ToString() ?? string.Empty);
-            LastUpdated = DateTime.Parse(json.GetValue("lastUpdated")?.ToString() ?? throw new ArgumentException("lastUpdated"));
+            LastUpdated = DateTime.Parse(json.GetValue("lastUpdated")?.ToString() ?? throw new ArgumentNullException("lastUpdated in " + this.GetType()));
         }
 
         public override JObject ToJson()

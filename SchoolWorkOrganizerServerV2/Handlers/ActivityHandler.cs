@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolworkOrganizerServerV2;
 
-namespace SchoolworkOrganizerServer
+namespace SchoolWorkOrganizerServerV2.Handlers
 {
     internal class ActivityHandler
     {
@@ -15,7 +16,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "INSERT INTO `activities` (username, name, subjectName, filename, dueDate, status, lastUpdated, fileData) VALUES (@Username, @Name, @SubjectName, @FileName, @DueDate, @Status, @LastUpdated, @FileData)";
@@ -44,7 +45,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "UPDATE `activities` SET name = @Name, filename = @FileName, dueDate = @DueDate, status = @Status, lastUpdated = @LastUpdated WHERE username = @Username AND subjectName = @SubjectName AND name = @PreviousName";
@@ -75,7 +76,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "UPDATE `activities` SET fileData = @FileData, lastUpdated = @LastUpdated WHERE username = @Username AND subjectName = @SubjectName AND name = @PreviousName";
@@ -101,7 +102,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "DELETE FROM `activities` WHERE username = @Username AND subjectName = @SubjectName AND name = @Name";

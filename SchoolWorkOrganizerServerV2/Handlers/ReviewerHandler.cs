@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolworkOrganizerServerV2;
 
-namespace SchoolworkOrganizerServer
+namespace SchoolWorkOrganizerServerV2.Handlers
 {
     internal class ReviewerHandler
     {
@@ -15,7 +16,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "INSERT INTO `reviewers` (username, name, subjectName, filename, lastUpdated, fileData) VALUES (@Username, @Name, @SubjectName, @FileName, @LastUpdated, @FileData)";
@@ -42,7 +43,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "UPDATE `reviewers` SET name = @Name, filename = @FileName WHERE username = @Username AND subjectName = @SubjectName AND name = @PreviousName";
@@ -70,7 +71,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "UPDATE `reviewers` SET fileData = @FileData, lastUpdated = @LastUpdated WHERE username = @Username AND subjectName = @SubjectName AND name = @PreviousName";
@@ -96,7 +97,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(Utilities.SqlConnectionString))
+                using (MySqlConnection connection = new MySqlConnection(Program.SqlConnectionString))
                 {
                     await connection.OpenAsync();
                     string query = "DELETE FROM `reviewers` WHERE username = @Username AND subjectName = @SubjectName AND name = @Name";

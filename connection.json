@@ -1,0 +1,5 @@
+{
+  "SQLDatabaseString": "Server=localhost;Port=3306;Database=schoolworkorganizer;User Id=root;Password=root;",
+  "WebHost": "https://0.0.0.0:5000/",
+  "WebSocket": "wss://ws.buyitproperties.uk/"
+}

@@ -25,14 +25,14 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         {
             if (!json.ContainsKey("type") || !json.ContainsKey("username") || !json.ContainsKey("subjectName")) throw new ArgumentNullException("Invalid Subject Message Data");
             if (json.Count > 4) throw new ArgumentException("Invalid key count in json");
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type"));
-            if (type != MessageType.AddSubject && type != MessageType.DeleteSubject && type != MessageType.UpdateSubject) throw new ArgumentException("Invalid type for SubjectMessage");
-            if (type == MessageType.UpdateSubject && !json.ContainsKey("previousSubjectName")) throw new ArgumentException("Invalid key count in json");
+            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
+            if (type != MessageType.AddSubject && type != MessageType.DeleteSubject && type != MessageType.UpdateSubject) throw new ArgumentNullException("Invalid type for SubjectMessage");
+            if (type == MessageType.UpdateSubject && !json.ContainsKey("previousSubjectName")) throw new ArgumentNullException("Invalid key count in json");
 
             Type = type;
 
-            SubjectName = json.GetValue("subjectName")?.ToString() ?? throw new ArgumentException("subjectName");
-            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentException("username");
+            SubjectName = json.GetValue("subjectName")?.ToString() ?? throw new ArgumentNullException("subjectName in " + this.GetType());
+            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
             PreviousSubjectName = json.GetValue("previousSubjectName")?.ToString() ?? "";
         }
 
