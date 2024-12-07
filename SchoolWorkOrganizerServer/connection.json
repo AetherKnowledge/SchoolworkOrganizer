@@ -1,0 +1,4 @@
+{
+  "SQLDatabaseString": "Server=localhost;Port=3306;Database=schoolworkorganizer;User Id=root;Password=root;",
+  "WebHost": "http://0.0.0.0:5000/"
+}

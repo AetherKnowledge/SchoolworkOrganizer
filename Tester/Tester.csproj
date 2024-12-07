@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SchoolworkOrganizerV2\SchoolworkOrganizer.csproj" />
+    <ProjectReference Include="..\SchoolworkOrganizer\SchoolworkOrganizer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,6 +22,7 @@ namespace SchoolworkOrganizerUtils.MessageTypes
 
         public UserDataMessage(JObject json)
         {
+            this.Json = json;
             if (!json.ContainsKey("username") || !json.ContainsKey("type")) throw new ArgumentNullException("Invalid User Data Message Data");
             MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (type != MessageType.FetchUserData) throw new ArgumentException("Invalid type for UserDataMessage");
@@ -66,7 +67,6 @@ namespace SchoolworkOrganizerUtils.MessageTypes
 
                 Subjects.Add(subject);
             }
-            this.Json = json;
         }
 
         public override JObject ToJson()

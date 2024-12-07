@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35431.28
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolworkOrganizer", "SchoolworkOrganizerV2\SchoolworkOrganizer.csproj", "{10291DD0-C230-42FC-A74D-1EE46814AE86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolworkOrganizer", "SchoolworkOrganizer\SchoolworkOrganizer.csproj", "{10291DD0-C230-42FC-A74D-1EE46814AE86}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolworkOrganizerUtils", "SchoolworkOrganizerUtils\SchoolworkOrganizerUtils.csproj", "{EB6C9EA3-B278-470F-98F2-D5E70D34E797}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{026940EB-3AD1-4729-B57D-37DB3A5784FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolWorkOrganizerServer", "SchoolWorkOrganizerServerV2\SchoolWorkOrganizerServer.csproj", "{3F77C0F0-D70C-4EE4-9785-CD492E700E7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolWorkOrganizerServer", "SchoolWorkOrganizerServer\SchoolWorkOrganizerServer.csproj", "{3F77C0F0-D70C-4EE4-9785-CD492E700E7B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EB6C9EA3-B278-470F-98F2-D5E70D34E797} = {EB6C9EA3-B278-470F-98F2-D5E70D34E797}
 	EndProjectSection
