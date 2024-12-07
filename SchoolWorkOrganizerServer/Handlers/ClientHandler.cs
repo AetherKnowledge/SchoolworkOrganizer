@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using SchoolworkOrganizerUtils;
+﻿using SchoolworkOrganizerUtils;
 using SchoolworkOrganizerUtils.MessageTypes;
 using System.Net.WebSockets;
 using System.Text;
@@ -9,7 +8,6 @@ namespace SchoolworkOrganizerServer
     internal partial class ClientHandler
     {
         private List<ClientHandler> handlers = new List<ClientHandler>();
-
         private WebSocket socket;
         internal string socketID;
         private string? currentUsername;
@@ -18,6 +16,8 @@ namespace SchoolworkOrganizerServer
         {
             this.socket = socket;
             this.socketID = Guid.NewGuid().ToString();
+            handlers.Add(this);
+            Console.WriteLine("Client count is now " + handlers.Count);
         }
 
         internal async Task Start()
@@ -55,7 +55,7 @@ namespace SchoolworkOrganizerServer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 socket.Abort();
             }
@@ -118,7 +118,6 @@ namespace SchoolworkOrganizerServer
                     break;
             }
         }
-
     }
 
 }

@@ -11,7 +11,7 @@ namespace SchoolworkOrganizerUtils
     [Serializable]
     public class User
     {
-        public static User? currentUser = null;
+        public static User? currentUser { get; private set; } = null;
         public string UserPath;
         public string Email;
         private string _username = "";
@@ -47,7 +47,7 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public User(string Email, string Username, string Password, SKImage? UserImage, bool startTimer = true)
+        public User(string Email, string Username, string Password, SKImage? UserImage)
         {
             this.Email = Email;
             this.Username = Username;
@@ -55,15 +55,9 @@ namespace SchoolworkOrganizerUtils
             this.UserImage = UserImage;
             UserPath = "Data/" + Username;
 
-            if (startTimer)
-            {
-                updateTimer.Elapsed += OnTimedEvent;
-                updateTimer.AutoReset = true;
-                updateTimer.Enabled = true;
-            }
         }
 
-        public User(UserMessage message, bool startTimer = true)
+        public User(UserMessage message)
         {
             this.Email = message.Email;
             this.Username = message.Username;
@@ -71,12 +65,6 @@ namespace SchoolworkOrganizerUtils
             this.UserImage = message.UserImageData != null ? Utilities.ByteArrayToSKImage(message.UserImageData) : null;
             UserPath = "Data/" + Username;
 
-            if (startTimer)
-            {
-                updateTimer.Elapsed += OnTimedEvent;
-                updateTimer.AutoReset = true;
-                updateTimer.Enabled = true;
-            }
         }
 
         public void RemoveSubject(Subject selectedSubject)
@@ -102,7 +90,19 @@ namespace SchoolworkOrganizerUtils
 
         public static void Logout()
         {
+            currentUser?.updateTimer.Close();
             currentUser = null;
+
+        }
+
+        public static void Login(User user)
+        {
+            currentUser = user;
+            user.updateTimer.Start();
+
+            user.updateTimer.Elapsed += user.OnTimedEvent;
+            user.updateTimer.AutoReset = true;
+            user.updateTimer.Enabled = true;
         }
         public JObject ToJson()
         {

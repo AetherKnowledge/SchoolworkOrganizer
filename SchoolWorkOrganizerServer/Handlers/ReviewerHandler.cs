@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SchoolworkOrganizerServer;
 
-namespace SchoolWorkOrganizerServerV2.Handlers
+namespace SchoolWorkOrganizerServer.Handlers
 {
     internal class ReviewerHandler
     {
@@ -35,7 +35,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -63,7 +64,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -89,7 +91,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -113,7 +116,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
     }

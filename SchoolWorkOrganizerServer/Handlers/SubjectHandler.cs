@@ -4,7 +4,7 @@ using SchoolworkOrganizerServer;
 using SchoolworkOrganizerUtils;
 using SchoolworkOrganizerUtils.MessageTypes;
 
-namespace SchoolWorkOrganizerServerV2.Handlers
+namespace SchoolWorkOrganizerServer.Handlers
 {
     internal class SubjectHandler
     {
@@ -43,7 +43,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
                 return json;
             }
         }
@@ -90,7 +91,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
 
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
 
             }
 
@@ -135,7 +137,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
 
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
 
             }
 
@@ -161,7 +164,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
 
         }
@@ -186,7 +190,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -212,7 +217,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message);
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
     }

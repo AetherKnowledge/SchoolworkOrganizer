@@ -6,7 +6,7 @@ WORKDIR /src
 COPY *.sln ./
 COPY SchoolworkOrganizerServer/SchoolworkOrganizerServer.csproj SchoolworkOrganizerServer/
 COPY SchoolworkOrganizerUtils/SchoolworkOrganizerUtils.csproj SchoolworkOrganizerUtils/
-COPY SchoolworkOrganizerV2/SchoolworkOrganizer.csproj SchoolworkOrganizerV2/
+COPY SchoolworkOrganizer/SchoolworkOrganizer.csproj SchoolworkOrganizer/
 COPY Tester/Tester.csproj Tester/
 RUN dotnet restore /p:EnableWindowsTargeting=true
 

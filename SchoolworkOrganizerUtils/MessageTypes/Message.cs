@@ -67,7 +67,7 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             if (json.ContainsKey("password")) json["password"] = "Hidden";
             if (json.ContainsKey("userImageData")) json["userImageData"] = json["userImageData"] != null ? "Has Image" : "No Image";
 
-            if (this is UserDataMessage)
+            if (this.Type is MessageType.FetchUserData)
             {
                 JObject userData = new JObject();
                 userData.Add("type", json.GetValue("type"));

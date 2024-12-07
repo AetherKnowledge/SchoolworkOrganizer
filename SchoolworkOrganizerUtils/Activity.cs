@@ -101,7 +101,7 @@ namespace SchoolworkOrganizerUtils
 
         public Activity(ActivityMessage message)
         {
-            if (User.currentUser == null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
+            if (User.currentUser != null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
             Subject subject = User.currentUser.Subjects.FirstOrDefault(s => s.SubjectName == message.Subject) ?? throw new InvalidOperationException("Invalid Subject");
 
             Name = message.Name;

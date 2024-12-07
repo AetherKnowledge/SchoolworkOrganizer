@@ -1,20 +1,15 @@
-﻿using SchoolWorkOrganizerServerV2.Handlers;
+﻿using SchoolWorkOrganizerServer.Handlers;
 using SchoolworkOrganizerUtils.MessageTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolworkOrganizerServer
 {
     internal partial class ClientHandler
     {
-
         private void HandleAddReviewer(Message message)
         {
             try
             {
+                Console.WriteLine("Attempting to add a reviewer");
                 if (message == null) throw new ArgumentNullException(nameof(message));
                 else if (message is not ReviewerMessage) throw new ArgumentException("Invalid data type");
 
@@ -22,10 +17,11 @@ namespace SchoolworkOrganizerServer
 
                 if (this.currentUsername == null || reviewerMessage.Username != this.currentUsername) throw new ArgumentException("Cannot add reviewer to different user");
                 ReviewerHandler.AddToDatabase(reviewerMessage);
+                Console.WriteLine($"Added reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Name}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
                 Console.WriteLine(e.Message);
             }
         }
@@ -34,6 +30,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
+                Console.WriteLine("Attempting to update a reviewer");
                 if (message == null) throw new ArgumentNullException(nameof(message));
                 else if (message is not ReviewerMessage) throw new ArgumentException("Invalid data type");
 
@@ -41,10 +38,11 @@ namespace SchoolworkOrganizerServer
                 if (this.currentUsername == null || reviewerMessage.Username != this.currentUsername) throw new ArgumentException("Cannot update reviewer of different user");
 
                 ReviewerHandler.UpdateToDatabase(reviewerMessage);
+                Console.WriteLine($"Updated reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Name}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
                 Console.WriteLine(e.Message);
             }
         }
@@ -53,6 +51,7 @@ namespace SchoolworkOrganizerServer
         {
             try
             {
+                Console.WriteLine("Attempting to delete a reviewer");
                 if (message == null) throw new ArgumentNullException(nameof(message));
                 else if (message is not ReviewerMessage) throw new ArgumentException("Invalid data type");
 
@@ -60,13 +59,13 @@ namespace SchoolworkOrganizerServer
                 if (this.currentUsername == null || reviewerMessage.Username != this.currentUsername) throw new ArgumentException("Cannot delete reviewer of different user");
 
                 ReviewerHandler.DeleteFromDatabase(reviewerMessage);
+                Console.WriteLine($"Deleted reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Name}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
                 Console.WriteLine(e.Message);
             }
         }
-
     }
 }

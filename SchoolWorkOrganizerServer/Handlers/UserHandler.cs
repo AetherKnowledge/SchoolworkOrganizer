@@ -7,7 +7,7 @@ using System.Text.Json.Nodes;
 using SchoolworkOrganizerUtils.MessageTypes;
 using SchoolworkOrganizerServer;
 
-namespace SchoolWorkOrganizerServerV2.Handlers
+namespace SchoolWorkOrganizerServer.Handlers
 {
     internal class UserHandler
     {
@@ -39,7 +39,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -88,7 +89,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -122,7 +124,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
 
             return null;
@@ -167,7 +170,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
 
         }
@@ -194,7 +198,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
         }
 
@@ -222,7 +227,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
                 return false;
             }
         }
@@ -252,7 +258,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
 
             return false;
@@ -288,7 +295,8 @@ namespace SchoolWorkOrganizerServerV2.Handlers
             }
             catch (MySqlException e)
             {
-                Console.WriteLine(e.Message, "Error");
+                Console.WriteLine(e.Message); 
+                if (Utilities.Debug) Console.WriteLine(e.StackTrace);
             }
 
             return null;

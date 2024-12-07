@@ -91,6 +91,10 @@ namespace SchoolworkOrganizerServer
                         string result = await MakeSqlQuery(Console.ReadLine() ?? "");
                         Console.WriteLine(result);
                         break;
+                    case "debug":
+                        Utilities.Debug = !Utilities.Debug;
+                        Console.WriteLine($"Debug mode is now {Utilities.Debug}");
+                        break;
                     default:
                         Console.WriteLine("Unknown command");
                         break;

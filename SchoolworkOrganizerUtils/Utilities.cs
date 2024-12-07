@@ -1,6 +1,7 @@
 ﻿using SkiaSharp;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq.Expressions;
 using System.Runtime.Versioning;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
@@ -13,16 +14,27 @@ namespace SchoolworkOrganizerUtils
         public readonly static string WebHost;
         public readonly static string WebSocket;
         private readonly static string connectionsPath = "connection.json";
+        private readonly static string settingsPath = "settings.json";
         public const int BufferSize = 1024 * 1024 * 5;
+        public static bool Debug;
+        public static bool ShowDataStream;
 
         static Utilities()
         {
-            SqlConnectionString = GetSettingsFromJson("SQLDatabaseString");
-            WebHost = GetSettingsFromJson("WebHost");
-            WebSocket = GetSettingsFromJson("WebSocket");
+            string? debugString = Environment.GetEnvironmentVariable("DebugSWO");
+            if (debugString == "true" || debugString == "false") Debug = debugString == "true";
+            else Debug = GetSettingsFromJson("Debug", settingsPath) == "true";
+
+            string? showDataStreamString = Environment.GetEnvironmentVariable("ShowDataStreamSWO");
+            if (showDataStreamString == "true" || showDataStreamString == "false") ShowDataStream = showDataStreamString == "true";
+            else ShowDataStream = GetSettingsFromJson("ShowDataStream", settingsPath) == "true";
+
+            SqlConnectionString = GetSettingsFromJson("SqlConnectionString", connectionsPath);
+            WebHost = GetSettingsFromJson("WebHost", connectionsPath);
+            WebSocket = GetSettingsFromJson("WebSocket", connectionsPath);
         }
 
-        private static string GetSettingsFromJson(string connectionName)
+        private static string GetSettingsFromJson(string settingsName, string jsonPath)
         {
             try
             {
@@ -30,12 +42,12 @@ namespace SchoolworkOrganizerUtils
                 using (JsonDocument doc = JsonDocument.Parse(json))
                 {
                     var root = doc.RootElement;
-                    return root.GetProperty(connectionName).GetString() ?? throw new ArgumentNullException(nameof(connectionName));
+                    return root.GetProperty(settingsName).GetString() ?? throw new ArgumentNullException(nameof(settingsName));
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while reading the connection string: {ex.Message} {connectionName}");
+                Console.WriteLine($"An error occurred while reading the connection string: {ex.Message} {settingsName}");
                 return string.Empty;
             }
         }
@@ -143,6 +155,16 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
+        [SupportedOSPlatform("windows")]
+        public static byte[] ImageToByteArray(System.Drawing.Image image)
+        {
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, image.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
         public static void MakeFolder(string path)
         {
             try
@@ -234,7 +256,5 @@ namespace SchoolworkOrganizerUtils
             }
             Process.Start(new ProcessStartInfo(Path.GetFullPath(path)) { UseShellExecute = true });
         }
-
-
     }
 }

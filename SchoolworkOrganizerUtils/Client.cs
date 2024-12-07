@@ -16,6 +16,7 @@ namespace SchoolworkOrganizerUtils
         {
             try
             {
+                Console.WriteLine($"Connecting to the server at {uri.ToString()}");
                 await socket.ConnectAsync(uri, default);
                 if (connectionTcs != null) connectionTcs.SetResult(true);
                 connectionTcs = null;
@@ -25,6 +26,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
+                User.Logout();
                 Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 socket.Dispose();
@@ -105,7 +107,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
-                
+                User.Logout();
                 Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 //socket.Dispose();
@@ -172,8 +174,7 @@ namespace SchoolworkOrganizerUtils
             if (message is not UserMessage) return;
             if (message.Type != MessageType.FetchUser) return;
             UserMessage userMessage = (UserMessage)message;
-
-            User.currentUser = userMessage.GetUser();
+            User.Login(userMessage.GetUser());
         }
 
         private static void HandleFetchUserData(Message message)
