@@ -1,4 +1,5 @@
 ﻿using SchoolworkOrganizerUtils;
+using SchoolworkOrganizerUtils.MessageTypes;
 using SkiaSharp;
 using System.Drawing;
 
@@ -6,11 +7,12 @@ namespace Tester
 {
     internal class Program
     {
+        private static Client client = new Client();
         static void Main(string[] args)
         {
-            _ = Client.ConnectAsync();
+            _ = client.ConnectAsync();
             Console.WriteLine($"Connecting to the server at {Utilities.WebSocket}");
-            _ = Client.Login("wew", "test");
+            _ = client.Login("wew", "test");
 
             bool running = true;
             string input = "";
@@ -25,16 +27,16 @@ namespace Tester
                         running = false;
                         break;
                     case "login":
-                        _ = Client.Login("test", "test");
+                        _ = client.Login("test", "test");
                         break;
                     case "logout":
-                        User.Logout();
+                        client.Logout();
                         break;
                     case "register":
                         Console.Write("How many users would you like to register? : ");
                         int count;
                         if (!int.TryParse(Console.ReadLine(), out count)) count = 1;
-                        _ = RegisterMultiple(count);
+                        RegisterMultiple(count);
                         break;
                     case "debug":
                         Utilities.Debug = !Utilities.Debug;
@@ -65,16 +67,25 @@ namespace Tester
             }
         }
 
-        private async static Task RegisterMultiple(int count)
+        private static void RegisterMultiple(double count)
         {
+            double completed = 0;
+
             for (int i = 0; i < count; i++)
             {
-                await Task.Run(() => Register());
+                new Thread(async () =>
+                {
+                    await Register();
+                    completed++;
+                    Console.WriteLine($"Completed {completed} in {count} : {(completed/count)*100}%");
+                }).Start();
             }
         }
 
-        private async static void Register()
+        private static async Task Register()
         {
+            Client client = new Client();
+            await client.ConnectAsync();
             Random random = new Random();
 
             string randText = "test" + random.Next(1000, 9999);
@@ -83,7 +94,10 @@ namespace Tester
             SKImage? skImage = bytes != null ? Utilities.ByteArrayToSKImage(bytes) : null;
 
             User user = new User(randText, randText, randText, skImage);
-            await Client.Register(user);
+            UserMessage message = new UserMessage(MessageType.Register, user);
+
+            await client.SendMessageAsync(message);
         }
+
     }
 }

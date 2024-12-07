@@ -23,7 +23,7 @@ namespace SchoolworkOrganizer
         public new void Show()
         {
             base.Show();
-            User.Logout();
+            Program.Logout();
             this.Size = Template.size;
             this.Location = Template.location;
             this.WindowState = Template.windowState;
@@ -39,7 +39,7 @@ namespace SchoolworkOrganizer
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
-            Client.Disconnect();
+            Program.client.Disconnect();
         }
 
         private async void ButtonLogIn_Click(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace SchoolworkOrganizer
                 return;
             }
 
-            bool loginSuccess = await Client.Login(username, password);
+            bool loginSuccess = await Program.client.Login(username, password);
 
             if (!loginSuccess)
             {

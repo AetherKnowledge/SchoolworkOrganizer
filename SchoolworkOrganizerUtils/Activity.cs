@@ -1,24 +1,25 @@
-﻿using MySqlConnector;
-using SchoolworkOrganizerUtils.MessageTypes;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace SchoolworkOrganizerUtils
+﻿namespace SchoolworkOrganizerUtils
 {
     [Serializable]
     public class Activity
     {
-        public DateTime LastUpdated { get; private set; }
+        public DateTime LastUpdated { get; internal set; }
         public string Name;
         private Subject _subject;
-        public string FileName { get; private set; }
+        private string _fileName;
+        public string FileName {
+            get => _fileName;
+            private set 
+            {
+                if (value == _fileName) return;
+                string oldPath = FilePath;
+                _fileName = value;
+                if (File.Exists(FilePath)) Utilities.MoveFile(oldPath, FilePath);
+            } 
+        }
         public DateTime DueDate { get; set; }
         public string Status { get; set; }
+        public Client? client => Subject.client;
 
         public Subject Subject
         {
@@ -63,15 +64,14 @@ namespace SchoolworkOrganizerUtils
         {
             Name = name;
             _subject = subject;
-            Subject = subject;
             DueDate = dueDate;
             Status = status;
 
-            if (isFileName) FileName = path;
+            if (isFileName) _fileName = path;
             else
             {
                 string fileName = Path.GetFileName(path);
-                FileName = fileName;
+                _fileName = fileName;
 
                 if (path != FilePath)
                 {
@@ -87,10 +87,9 @@ namespace SchoolworkOrganizerUtils
         {
             Name = name;
             _subject = subject;
-            Subject = subject;
             DueDate = dueDate;
             Status = status;
-            FileName = fileName;
+            _fileName = fileName;
             LastUpdated = lastUpdated;
 
             if (!Directory.Exists(subject.FolderPath + "/Activity")) Directory.CreateDirectory(subject.FolderPath + "/Activity");
@@ -107,37 +106,9 @@ namespace SchoolworkOrganizerUtils
             }
             else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath))
             {
-                UpdateToDatabase(Name);
+                _ = UpdateActivity(this);
             }
         }
-
-        public Activity(ActivityMessage message)
-        {
-            if (User.currentUser == null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
-            Subject subject = User.currentUser.Subjects.FirstOrDefault(s => s.SubjectName == message.Subject) ?? throw new InvalidOperationException("Invalid Subject");
-
-            Name = message.Name;
-            _subject = subject;
-            Subject = subject;
-            FileName = message.FileName;
-            DueDate = message.DueDate;
-            Status = message.Status;
-            LastUpdated = message.LastUpdated;
-
-            if (message.FileData == null || !message.WithFile) return;
-            if (!Directory.Exists(subject.FolderPath + "/Activity")) Directory.CreateDirectory(subject.FolderPath + "/Activity");
-            if (!File.Exists(FilePath))
-            {
-                File.WriteAllBytes(FilePath, message.FileData);
-                File.SetLastWriteTime(FilePath, message.LastUpdated);
-            }
-            else if (message.LastUpdated > LastUpdated)
-            {
-                File.WriteAllBytes(FilePath, message.FileData);
-                File.SetLastWriteTime(FilePath, message.LastUpdated);
-            }
-        }
-
         public void ChangeFile(string sourcePath)
         {
             try
@@ -146,7 +117,7 @@ namespace SchoolworkOrganizerUtils
                 if (!File.Exists(sourcePath)) return;
                 File.Delete(FilePath);
                 string fileName = Path.GetFileName(sourcePath);
-                FileName = fileName;
+                _fileName = fileName;
                 Utilities.CopyFile(sourcePath, FolderPath + "/" + fileName);
             }
             catch (Exception ex)
@@ -167,29 +138,40 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public void AddToDatabase()
+        public async Task<bool> AddActivity()
         {
-            ActivityMessage message = new ActivityMessage(MessageType.AddActivity, this, Name, true);
-            Client.SendMessageAsync(message);
+            if (client == null) return false;
+            bool success = await client.AddActivity(this);
+            if (success) Subject.Activities.Add(this);
+            return success;
         }
 
-        public void UpdateToDatabase(string previousName)
+        public async Task<bool> UpdateActivity(Activity newActivity)
         {
-            bool withFile = false;
-            if (File.Exists(FilePath) && LastUpdated < File.GetLastWriteTime(FilePath))
+            if (client == null) return false;
+            bool success = await client.UpdateActivity(newActivity, Name);
+            if (success)
             {
-                withFile = true;
-                LastUpdated = File.GetLastWriteTime(FilePath);
+                this.Subject = newActivity.Subject;
+                this.Name = newActivity.Name;
+                this.FileName = newActivity.FileName;
+                this.DueDate = newActivity.DueDate;
+                this.Status = newActivity.Status;
+                this.LastUpdated = newActivity.LastUpdated;
             }
-
-            ActivityMessage message = new ActivityMessage(MessageType.UpdateActivity, this, previousName, withFile);
-            Client.SendMessageAsync(message);
+            return success;
         }
 
-        public void DeleteFromDatabase()
+        public async Task<bool> DeleteActivity()
         {
-            ActivityMessage message = new ActivityMessage(MessageType.DeleteActivity, this);
-            Client.SendMessageAsync(message);
+            if (client == null) return false;
+            bool success = await client.DeleteActivity(this);
+            if (success)
+            {
+                this.DeleteFile();
+                Subject.Activities.Remove(this);
+            }
+            return await client.DeleteActivity(this);
         }
     }
 }

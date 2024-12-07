@@ -62,7 +62,7 @@ namespace SchoolworkOrganizer
             }
 
             User user = new User(email, username, password, userImage);
-            bool registerSuccess = await Client.Register(user);
+            bool registerSuccess = await Program.client.Register(user);
             if (!registerSuccess)
             {
                 MessageBox.Show("User already exists", "Error");

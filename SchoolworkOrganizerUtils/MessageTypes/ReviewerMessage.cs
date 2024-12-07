@@ -12,9 +12,8 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         public readonly DateTime LastUpdated;
         public readonly bool WithFile;
         public readonly byte[]? FileData;
-        public ReviewerMessage(MessageType type, Reviewer reviewer, string currentName = "", bool withFile = false)
+        public ReviewerMessage(MessageType type, Reviewer reviewer, bool withFile = false, string currentName = "") : base(type)
         {
-            this.Type = type;
             Username = reviewer.Subject.User.Username;
             Name = reviewer.Name;
             Subject = reviewer.Subject.SubjectName;
@@ -29,10 +28,9 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             }
         }
 
-        public ReviewerMessage(JObject json)
+        public ReviewerMessage(JObject json) : base(TypeFromJson(json))
         {
-            if (!json.ContainsKey("type") ||
-                !json.ContainsKey("username") ||
+            if (!json.ContainsKey("username") ||
                 !json.ContainsKey("name") || 
                 !json.ContainsKey("subject") || 
                 !json.ContainsKey("fileName") || 
@@ -41,7 +39,6 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                 !json.ContainsKey("lastUpdated")) throw new ArgumentNullException("Invalid Reviewer Message Data");
 
             if (json.Count != 9) throw new ArgumentException("Invalid key count in json");
-            Type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (Type != MessageType.AddReviewer && Type != MessageType.UpdateReviewer && Type != MessageType.DeleteReviewer && Type != MessageType.DeleteReviewer) throw new ArgumentException("Invalid type for ReviewerMessage");
 
             Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
@@ -67,11 +64,6 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             json.Add("fileData", Convert.ToBase64String(FileData ?? new byte[0]));
             json.Add("lastUpdated", LastUpdated.ToString());
             return json;
-        }
-
-        public Reviewer GetReviewer()
-        {
-            return new Reviewer(this);
         }
     }
 }

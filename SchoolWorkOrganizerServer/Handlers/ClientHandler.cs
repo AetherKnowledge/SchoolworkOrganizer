@@ -7,7 +7,7 @@ namespace SchoolworkOrganizerServer
 {
     internal partial class ClientHandler
     {
-        private List<ClientHandler> handlers = new List<ClientHandler>();
+        private static List<ClientHandler> handlers = new List<ClientHandler>();
         private WebSocket socket;
         internal string socketID;
         private string? currentUsername;
@@ -61,13 +61,14 @@ namespace SchoolworkOrganizerServer
             }
             finally
             {
-                Console.WriteLine($"Client {socketID} has disconnected");
-                socket.Dispose();
+                if (socket.State == WebSocketState.Open) socket.Dispose();
                 handlers.Remove(this);
+                Console.WriteLine($"Client {socketID} has disconnected");
+                Console.WriteLine("Client count is now " + handlers.Count);
             }
         }
 
-        internal async Task Send(Message message)
+        internal async Task SendAsync(Message message)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
             if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());

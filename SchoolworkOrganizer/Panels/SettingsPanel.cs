@@ -29,41 +29,46 @@ namespace SchoolworkOrganizer.Panels
             }
         }
 
-        private void updateBtn_Click(object sender, EventArgs e)
+        private async void updateBtn_Click(object sender, EventArgs e)
         {
-
-            string previousUsername = User.currentUser.Username;
-            string username = usernameTxt.Text;
-            string email = emailTxt.Text;  
-            string password = passwordTxt.Text;
-            string verifyPass = verifyTxt.Text;
-
-            //if (User.currentUser.Username != username && User.DoesUserExist(username))
-            //{
-            //    MessageBox.Show("User already exists", "Error");
-            //    return;
-            //}
-
-            if (password == "" || password == "Password")
+            try
             {
-                MessageBox.Show("Please Enter a password", "Error");
-                return;
-            }
+                if (Program.client == null)
+                {
+                    MessageBox.Show("Please login to update user", "Error");
+                    return;
+                }
 
-            if (password != verifyPass)
+                if (Program.user == null) return;
+                string previousUsername = Program.user.Username;
+                string username = usernameTxt.Text;
+                string email = emailTxt.Text;
+                string password = passwordTxt.Text;
+                string verifyPass = verifyTxt.Text;
+
+                if (password == "" || password == "Password")
+                {
+                    MessageBox.Show("Please Enter a password", "Error");
+                    return;
+                }
+                if (password != verifyPass)
+                {
+                    MessageBox.Show("Password does not match", "Error");
+                    return;
+                }
+
+                User user = new User(email, username, password, Utilities.ConvertToSKImage(uploadPicture.Image));
+                bool success = await Program.user.UpdateUser(user);
+                if (success) MessageBox.Show("User updated successfully", "Success");
+                MessageBox.Show("User update failed", "Error");
+                RefreshUser();
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("Password does not match", "Error");
-                return;
+                MessageBox.Show(ex.Message, "Error");
+                if (Program.user == null) return;
+
             }
-
-            
-            User.currentUser.Username = username;
-            User.currentUser.Email = email;
-            User.currentUser.Password = password;
-            User.currentUser.UserImage = uploadPicture.Image != Properties.Resources.user ? Utilities.ConvertToSKImage(uploadPicture.Image) : null;
-            Client.UpdateUser(previousUsername, User.currentUser);
-
-            RefreshUser();
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
@@ -74,11 +79,11 @@ namespace SchoolworkOrganizer.Panels
         protected new void RefreshUser()
         {
             base.RefreshUser();
-            if (User.currentUser == null) return;
+            if (Program.user == null) return;
 
-            usernameTxt.Text = User.currentUser.Username;
-            emailTxt.Text = User.currentUser.Email;
-            if (uploadPicture.Image != User.currentUser.WinformImage) uploadPicture.Image = User.currentUser.WinformImage ?? Properties.Resources.user; ;
+            usernameTxt.Text = Program.user.Username;
+            emailTxt.Text = Program.user.Email;
+            if (uploadPicture.Image != Program.user.WinformImage) uploadPicture.Image = Program.user.WinformImage ?? Properties.Resources.user; ;
         }
     }
 

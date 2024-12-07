@@ -52,12 +52,12 @@ namespace SchoolworkOrganizer.Panels
 
         private void RefreshData()
         {
-            if (User.currentUser == null) return;
+            if (Program.user == null) return;
 
             subjectCBox.Items.Clear();
             editSubjectCBox.Items.Clear();
 
-            foreach (Subject subject in User.currentUser.Subjects)
+            foreach (Subject subject in Program.user.Subjects)
             {
                 subjectCBox.Items.Add(subject.SubjectName);
                 editSubjectCBox.Items.Add(subject.SubjectName);
@@ -70,192 +70,234 @@ namespace SchoolworkOrganizer.Panels
 
         private void RefreshTable()
         {
-            if (User.currentUser == null) return;
-
-            table.Rows.Clear();
-
-            string subjectName = subjectCBox.Text;
-            if (subjectName == null) return;
-
-            Subject? selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-            if (selectedSubject == null) return;
-
-            foreach (Activity activity in selectedSubject.Activities)
+            try
             {
-                DataGridViewRow row = new DataGridViewRow();
+                if (Program.user == null) return;
 
-                String status = activity.Status;
-                int daysUntilDue = Convert.ToInt32(activity.DueDate.Subtract(DateTime.Now).TotalDays);
-                if (daysUntilDue <= 0) 
+                table.Rows.Clear();
+
+                string subjectName = subjectCBox.Text;
+                if (subjectName == null) return;
+
+                Subject selectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current User is null");
+                if (selectedSubject == null) return;
+
+                foreach (Activity activity in selectedSubject.Activities)
                 {
-                    if (status == "Incomplete") status = "Work is Due";
-                    daysUntilDue = 0; 
+                    DataGridViewRow row = new DataGridViewRow();
+
+                    String status = activity.Status;
+                    int daysUntilDue = Convert.ToInt32(activity.DueDate.Subtract(DateTime.Now).TotalDays);
+                    if (daysUntilDue <= 0)
+                    {
+                        if (status == "Incomplete") status = "Work is Due";
+                        daysUntilDue = 0;
+                    }
+
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Name });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Subject.SubjectName });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.FilePath });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.DueDate.ToString("MM/dd/yyyy hh:mm tt") });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = daysUntilDue });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = status });
+
+                    table.Rows.Add(row);
                 }
-                
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Name });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.Subject.SubjectName });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.FilePath });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = activity.DueDate.ToString("MM/dd/yyyy hh:mm tt") });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = daysUntilDue });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = status });
 
-                table.Rows.Add(row);
+                foreach (DataGridViewColumn column in table.Columns)
+                {
+                    column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
             }
-
-            foreach (DataGridViewColumn column in table.Columns)
+            catch (Exception ex)
             {
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
             }
+
         }
 
         private void table_SelectionChanged(object? sender, EventArgs e)
         {
-            if (table.SelectedRows.Count > 0)
+            try
             {
-
-                DataGridViewRow selectedRow = table.SelectedRows[0];
-                if (selectedRow.Index > table.RowCount - 1)
+                if (table.SelectedRows.Count > 0)
                 {
-                    Clear();
+                    DataGridViewRow selectedRow = table.SelectedRows[0];
+                    if (selectedRow.Index > table.RowCount - 1)
+                    {
+                        Clear();
+                        return;
+                    }
+
+                    string name = selectedRow.Cells["ActivityName"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row activity name cannot be found");
+                    string subject = selectedRow.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+                    string path = selectedRow.Cells["FilePath"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row file path cannot be found");
+                    string dueDateStr = selectedRow.Cells["DueDate"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row due date cannot be found");
+                    string status = selectedRow.Cells["Status"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row status cannot be found");
+
+                    string format = "MM/dd/yyyy hh:mm tt";
+                    DateTime dueDate = DateTime.ParseExact(dueDateStr, format, System.Globalization.CultureInfo.InvariantCulture);
+                    if (status == "Work is Due") status = "Incomplete";
+
+                    reviewerTxtBox.Text = name;
+                    editSubjectCBox.Text = subject;
+                    dueDatePicker.Value = dueDate;
+                    statusCBox.Text = status;
+
+                    selectedFileLabel.Text = path;
+                    selectedFilePath = path;
+
+                    addBtn.Enabled = false;
+                    saveBtn.Enabled = true;
+                    deleteBtn.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private async void addBtn_Click(object sender, EventArgs e)
+        {
+            try 
+            {
+                if (Program.client.IsLoggedIn) return;
+
+                string reviewerName = reviewerTxtBox.Text;
+                string subjectName = editSubjectCBox.Text;
+                Subject selectedSubject = Program.user?.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current User is null");
+                string filePath = selectedFilePath;
+                DateTime dueDate = dueDatePicker.Value;
+                string status = statusCBox.Text;
+
+                if (subjectName == "")
+                {
+                    MessageBox.Show("Please add subject name.", "Error");
+                    return;
+                }
+                else if (selectedSubject == null)
+                {
+                    MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (selectedFilePath == null)
+                {
+                    MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                string name = selectedRow.Cells["ActivityName"].Value.ToString();
-                string subject = selectedRow.Cells["Subject"].Value.ToString();
-                string path = selectedRow.Cells["FilePath"].Value.ToString();
-                string dueDateStr = selectedRow.Cells["DueDate"].Value.ToString();
-                string format = "MM/dd/yyyy hh:mm tt";
-                DateTime dueDate = DateTime.ParseExact(dueDateStr, format, System.Globalization.CultureInfo.InvariantCulture);
-                string status = selectedRow.Cells["Status"].Value.ToString();
-                if (status == "Work is Due") status = "Incomplete";
+                Activity activity = new Activity(reviewerName, selectedSubject, selectedFilePath, dueDate, status);
+                if (await activity.AddActivity()) MessageBox.Show(Text = "Activity added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("Failed to add activity.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                reviewerTxtBox.Text = name;
-                editSubjectCBox.Text = subject;
-                dueDatePicker.Value = dueDate;
-                statusCBox.Text = status;
-
-                selectedFileLabel.Text = path;
-                selectedFilePath = path;
-
-                addBtn.Enabled = false;
-                saveBtn.Enabled = true;
-                deleteBtn.Enabled = true;
-            }
-        }
-
-        private void addBtn_Click(object sender, EventArgs e)
-        {
-            if (User.currentUser == null) return;
-
-            string reviewerName = reviewerTxtBox.Text;
-            string subjectName = editSubjectCBox.Text;
-            Subject? selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-            string filePath = selectedFilePath;
-            DateTime dueDate = dueDatePicker.Value;
-            string status = statusCBox.Text;
-
-            if (subjectName == "")
-            {
-                MessageBox.Show("Please add subject name.", "Error");
-                return;
-            }
-            else if (selectedSubject == null)
-            {
-                MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else if (selectedFilePath == null)
-            {
-                MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Activity activities = new Activity(reviewerName, selectedSubject, selectedFilePath, dueDate, status);
-            selectedSubject.Activities.Add(activities);
-            activities.AddToDatabase();
-
-            RefreshTable();
-            Clear();
-        }
-
-        private void saveBtn_Click(object sender, EventArgs e)
-        {
-            string oldSubjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            string oldFilePath = table.SelectedRows[0].Cells["FilePath"].Value.ToString();
-
-            string newActivityName = reviewerTxtBox.Text;
-            DateTime newDueDate = dueDatePicker.Value;
-            string newStatus = statusCBox.Text;
-
-            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == oldSubjectName);
-            Activity selectedActivity = oldSelectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == oldFilePath);
-
-            string newSubjectName = editSubjectCBox.Text;
-            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == newSubjectName);
-
-
-            if (newActivityName == "")
-            {
-                MessageBox.Show("Please add activity name.", "Error");
-                return;
-            }
-            else if (newSelectedSubject == null)
-            {
-                MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else if (selectedFilePath == null)
-            {
-                MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            string oldName = selectedActivity.Name;
-            selectedActivity.Name = newActivityName;
-            selectedActivity.Subject = newSelectedSubject;
-            selectedActivity.ChangeFile(selectedFilePath);
-            selectedActivity.DueDate = newDueDate;
-            selectedActivity.Status = newStatus;
-            selectedActivity.UpdateToDatabase(oldName);
-
-            RefreshTable();
-
-            Clear();
-        }
-
-        private void deleteBtn_Click(object sender, EventArgs e)
-        {
-            if (User.currentUser == null) return;
-
-            string filePath = selectedFilePath;
-            string? subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject? selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-
-            if (selectedSubject == null)
-            {
-                MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Activity? selectedActivity = selectedSubject.Activities.FirstOrDefault(activity => activity.FilePath == filePath);
-
-            if (selectedActivity == null)
-            {
-                MessageBox.Show("Activity not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
-                                                "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
-            {
-                selectedActivity.DeleteFromDatabase();
-                selectedSubject.RemoveActivity(selectedActivity);
                 RefreshTable();
-                MessageBox.Show("Activity deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Clear();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
 
-            Clear();
+        private async void saveBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string oldSubjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+                string oldFilePath = table.SelectedRows[0]?.Cells["FilePath"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row file path cannot be found");
+
+                string newActivityName = reviewerTxtBox.Text;
+                DateTime newDueDate = dueDatePicker.Value;
+                string newStatus = statusCBox.Text;
+
+                Subject oldSelectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == oldSubjectName) ?? throw new ArgumentNullException("Current user is null");
+                Activity selectedActivity = oldSelectedSubject.Activities.First(activity => activity.FilePath == oldFilePath);
+
+                string newSubjectName = editSubjectCBox.Text;
+                Subject newSelectedSubject = Program.user.Subjects.First(subject => subject.SubjectName == newSubjectName);
+
+
+                if (newActivityName == "")
+                {
+                    MessageBox.Show("Please add activity name.", "Error");
+                    return;
+                }
+                else if (newSelectedSubject == null)
+                {
+                    MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (selectedFilePath == null)
+                {
+                    MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (selectedActivity == null)
+                {
+                    MessageBox.Show("Activity not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Activity activity = new Activity(newActivityName, newSelectedSubject, selectedFilePath, newDueDate, newStatus);
+                bool success = await selectedActivity.UpdateActivity(activity);
+
+                if (success) MessageBox.Show("Activity updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("Failed to update activity.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+
+                RefreshTable();
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private async void deleteBtn_Click(object sender, EventArgs e)
+        {
+            try {
+                if (Program.client.IsLoggedIn) return;
+
+                string filePath = selectedFilePath;
+                string subjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+                Subject selectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current user is null");
+
+                if (selectedSubject == null)
+                {
+                    MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Activity selectedActivity = selectedSubject.Activities.First(activity => activity.FilePath == filePath);
+
+                if (selectedActivity == null)
+                {
+                    MessageBox.Show("Activity not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
+                                                    "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    bool success = await selectedActivity.DeleteActivity();
+
+                    if (success) MessageBox.Show("Activity deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else MessageBox.Show("Failed to delete activity.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                RefreshTable();
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
         }
 
         private void editFileBtn_Click(object sender, EventArgs e)
@@ -305,9 +347,9 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            if (User.currentUser == null) return;
+            if (Program.client.IsLoggedIn) return;
 
-            User.currentUser.CheckForUpdates();
+            Program.client.CheckForUpdates();
             RefreshTable();
         }
     }

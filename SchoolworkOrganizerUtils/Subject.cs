@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using Newtonsoft.Json.Linq;
 using SchoolworkOrganizerUtils.MessageTypes;
+using System.Diagnostics;
 
 namespace SchoolworkOrganizerUtils
 {
@@ -8,15 +9,11 @@ namespace SchoolworkOrganizerUtils
     public class Subject
     {
         private string _subjectName;
-        private string previousName = "";
         public string SubjectName
         {
             get { return _subjectName; }
             set
             {
-                if (previousName == "") previousName = value;
-                else if (previousName != _subjectName) previousName = _subjectName;
-
                 _subjectName = value;
                 string newPath = "Data/" + User.Username + "/" + value;
                 if (FolderPath != null) Utilities.RenameFolder(FolderPath, newPath);
@@ -28,6 +25,7 @@ namespace SchoolworkOrganizerUtils
         public string FolderPath;
         public List<Reviewer> Reviewers = new List<Reviewer>();
         public List<Activity> Activities = new List<Activity>();
+        public Client? client => User.client;
 
         public Subject(User user, string subjectName)
         {
@@ -36,49 +34,39 @@ namespace SchoolworkOrganizerUtils
             SubjectName = subjectName;
             FolderPath = "Data/" + User.Username + "/" + SubjectName;
         }
-
-        public void DeleteFolder()
+        private void DeleteFolder()
         {
             Utilities.DeleteFolder(FolderPath);
         }
 
-        public void RemoveReviewer(Reviewer selectedReviewer)
+        public async void CheckForUpdates()
         {
-            selectedReviewer.DeleteFile();
-            selectedReviewer.DeleteFromDatabase();
-            Reviewers.Remove(selectedReviewer);
-        }
-
-        public void RemoveActivity(Activity selectedActivity)
-        {
-            selectedActivity.DeleteFile();
-            selectedActivity.DeleteFromDatabase();
-            Activities.Remove(selectedActivity);
-        }
-
-        public void CheckForUpdates()
-        {
+            if (client == null)
+            {
+                Console.WriteLine("Client is null");
+                return;
+            }
             CheckForNewActivities();
             CheckForNewReviewers();
 
             foreach (Activity activity in Activities)
             {
-                if (File.Exists(activity.FilePath))
-                {
-                    if (File.GetLastWriteTime(activity.FilePath) > activity.LastUpdated) activity.UpdateToDatabase(activity.Name);
-                }
+                if (!File.Exists(activity.FilePath)) continue;
+                if (File.GetLastWriteTime(activity.FilePath) <= activity.LastUpdated) continue;
+                if (await client.UpdateActivity(activity)) Console.WriteLine("Updated activity: " + activity.Name);
+                else Console.WriteLine("Failed to update activity: " + activity.Name);
             }
 
             foreach (Reviewer reviewer in Reviewers)
             {
-                if (File.Exists(reviewer.FilePath))
-                {
-                    if (File.GetLastWriteTime(reviewer.FilePath) > reviewer.LastUpdated) reviewer.UpdateToDatabase(reviewer.Name);
-                }
+                if (!File.Exists(reviewer.FilePath)) continue;
+                if (File.GetLastWriteTime(reviewer.FilePath) <= reviewer.LastUpdated) continue;
+                if (await client.UpdateReviewer(reviewer)) Console.WriteLine("Updated reviewer: " + reviewer.Name);
+                else Console.WriteLine("Failed to update reviewer: " + reviewer.Name);
             }
         }
 
-        public void CheckForNewActivities()
+        public async void CheckForNewActivities()
         {
             string activityPath = FolderPath + "/Activity";
             if (!Directory.Exists(activityPath)) Directory.CreateDirectory(activityPath);
@@ -92,13 +80,13 @@ namespace SchoolworkOrganizerUtils
                 if (!Activities.Any(activity => filePath == activity.FilePath))
                 {
                     Activity activity = new Activity(name, this, file, DateTime.Now, "Incomplete");
-                    Activities.Add(activity);
-                    activity.AddToDatabase();
+                    if(await activity.AddActivity()) Console.WriteLine("Added activity: " + activity.Name);
+                    else Console.WriteLine("Failed to add activity: " + activity.Name);
                 }
             }
         }
 
-        public void CheckForNewReviewers()
+        public async void CheckForNewReviewers()
         {
             string reviewerPath = FolderPath + "/Reviewer";
             if (!Directory.Exists(reviewerPath)) Directory.CreateDirectory(reviewerPath);
@@ -111,37 +99,47 @@ namespace SchoolworkOrganizerUtils
                 if (!Reviewers.Any(reviewer => filePath == reviewer.FilePath))
                 {
                     Reviewer reviewer = new Reviewer(name, this, file);
-                    Reviewers.Add(reviewer);
-                    reviewer.AddToDatabase();
+                    if (await reviewer.AddReviewer()) Console.WriteLine("Added reviewer: " + reviewer.Name);
+                    else Console.WriteLine("Failed to add reviewer: " + reviewer.Name);
                 }
 
             }
             
         }
-        public void AddToDatabase()
+
+        public async Task<bool> AddSubject()
         {
-            SubjectMessage message = new SubjectMessage(MessageType.AddSubject, SubjectName, User.Username);
-            Client.SendMessageAsync(message);
+            if (client == null) return false;
+            bool success = await client.AddSubject(this);
+            if (success) User.Subjects.Add(this);
+            return success;
         }
 
-        public void UpdateToDatabase()
+        public async Task<bool> UpdateSubject(Subject newSubject)
         {
-            SubjectMessage message = new SubjectMessage(MessageType.UpdateSubject, SubjectName, User.Username, previousName);
-            Client.SendMessageAsync(message);
+            if (client == null) return false;
+            bool success = await client.UpdateSubject(newSubject, SubjectName);
+            if (success)
+            {
+                this.SubjectName = newSubject.SubjectName;
+                this.FolderPath = newSubject.FolderPath;
+                this.Reviewers = newSubject.Reviewers;
+                this.Activities = newSubject.Activities;
+            }
+            return success;
         }
 
-        public void DeleteFromDatabase()
+        public async Task<bool> DeleteSubject()
         {
-            SubjectMessage message = new SubjectMessage(MessageType.DeleteSubject, SubjectName, User.Username);
-            Client.SendMessageAsync(message);
+            if (client == null) return false;
+            bool success = await client.DeleteSubject(this);
+            if (success)
+            {
+                this.DeleteFolder();
+                User.Subjects.Remove(this);
+            }
+            return success;
         }
 
-        public JObject ToJson(List<string> subjects, string username)
-        {
-            JObject json = new JObject();
-            json.Add("username", username);
-            json.Add("subjects", new JArray(subjects));
-            return json;
-        }
     }
 }

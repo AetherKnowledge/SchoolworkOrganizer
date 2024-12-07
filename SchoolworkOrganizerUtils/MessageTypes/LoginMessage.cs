@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolworkOrganizerUtils.MessageTypes
 {
@@ -11,21 +6,18 @@ namespace SchoolworkOrganizerUtils.MessageTypes
     {
         public readonly string Username;
         public readonly string Password;
-        public LoginMessage(string Username, string Password)
+        public LoginMessage(string Username, string Password) : base(MessageType.Login)
         {
-            this.Type = MessageType.Login;
             this.Username = Username;
             this.Password = Password;
         }
 
-        public LoginMessage(JObject json)
+        public LoginMessage(JObject json) : base(TypeFromJson(json))
         {
-            if (!json.ContainsKey("type") || !json.ContainsKey("username") || !json.ContainsKey("password")) throw new ArgumentException("Invalid Login Message Data");
+            if (!json.ContainsKey("username") || !json.ContainsKey("password")) throw new ArgumentException("Invalid Login Message Data");
             if (json.Count != 3) throw new ArgumentException("Invalid key count in json");
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
-            if (type != MessageType.Login) throw new ArgumentException("Invalid type for LoginMessage");
+            if (Type != MessageType.Login) throw new ArgumentException("Invalid type for LoginMessage");
 
-            Type = type;
             Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
             Password = json.GetValue("password")?.ToString() ?? throw new ArgumentNullException("password in " + this.GetType());
         }

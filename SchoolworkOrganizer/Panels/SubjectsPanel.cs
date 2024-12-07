@@ -37,131 +37,176 @@ namespace SchoolworkOrganizer.Panels
             addBtn.Paint += FormUtilities.customButtonPaint;
             deleteBtn.Paint += FormUtilities.customButtonPaint;
             cancelBtn.Paint += FormUtilities.customButtonPaint;
-
         }
 
         public new void Show()
         {
             base.Show();
-            RefreshTable();
             Clear();
+            RefreshTable();
         }
 
         private void RefreshTable()
         {
-            table.Rows.Clear();
-
-            foreach (Subject subject in User.currentUser.Subjects)
+            try
             {
-                DataGridViewRow row = new DataGridViewRow();
+                if (Program.user == null) return;
 
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.SubjectName });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Reviewers.Count });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Activities.Count });
+                table.Rows.Clear();
 
-                table.Rows.Add(row);
+                foreach (Subject subject in Program.user.Subjects)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.SubjectName });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Reviewers.Count });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = subject.Activities.Count });
+
+                    table.Rows.Add(row);
+                }
+
+                foreach (DataGridViewColumn column in table.Columns)
+                {
+                    column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
             }
-
-            foreach (DataGridViewColumn column in table.Columns)
+            catch (Exception ex)
             {
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
             }
         }
 
         private void table_SelectionChanged(object? sender, EventArgs e)
         {
-            if (table.SelectedRows.Count > 0)
+            try
             {
-
-                DataGridViewRow selectedRow = table.SelectedRows[0];
-                if (selectedRow.Index > table.RowCount - 1)
+                if (table.SelectedRows.Count > 0)
                 {
-                    Clear();
+                    DataGridViewRow selectedRow = table.SelectedRows[0];
+                    if (selectedRow.Index > table.RowCount - 1)
+                    {
+                        Clear();
+                        return;
+                    }
+
+                    string itemName = selectedRow.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+
+                    subjectTxtBox.Text = itemName;
+
+                    addBtn.Enabled = false;
+                    saveBtn.Enabled = true;
+                    deleteBtn.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private async void addBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Program.user == null) throw new ArgumentNullException("Current user is null");
+
+                string subjectName = subjectTxtBox.Text;
+                if (subjectName == "")
+                {
+                    MessageBox.Show("Please add subject name.", "Error");
                     return;
                 }
 
-                string itemName = selectedRow.Cells["Subject"].Value.ToString();
+                if (Program.user.Subjects.Any(subject => subject.SubjectName == subjectName))
+                {
+                    MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-                subjectTxtBox.Text = itemName;
+                Subject subject = new Subject(Program.user, subjectName);
+                if (await subject.AddSubject()) MessageBox.Show("Subject added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("Failed to add subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                addBtn.Enabled = false;
-                saveBtn.Enabled = true;
-                deleteBtn.Enabled = true;
-            }
-        }
-
-        private void addBtn_Click(object sender, EventArgs e)
-        {
-            string subjectName = subjectTxtBox.Text;
-            if (subjectName == "")
-            {
-                MessageBox.Show("Please add subject name.", "Error");
-                return;
-            }
-
-            if(User.currentUser.Subjects.Any(subject => subject.SubjectName == subjectName))
-            {
-                MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Subject subject = new Subject(User.currentUser, subjectName);
-            User.currentUser.Subjects.Add(subject);
-            subject.AddToDatabase();
-
-            RefreshTable();
-            Clear();
-        }
-
-        private void saveBtn_Click(object sender, EventArgs e)
-        {
-            string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-
-            if (selectedSubject == null)
-            {
-                MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (selectedSubject.SubjectName != subjectTxtBox.Text && User.currentUser.Subjects.Any(subject => subject.SubjectName == subjectTxtBox.Text))
-            {
-                MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (Directory.Exists(User.currentUser.UserPath + "/Subjects/" + subjectName))
-            {
-                MessageBox.Show("Subject folder already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            selectedSubject.SubjectName = subjectTxtBox.Text;
-            selectedSubject.UpdateToDatabase();
-            RefreshTable();
-            Clear();
-        }
-
-        private void deleteBtn_Click(object sender, EventArgs e)
-        {
-            string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-
-            if (selectedSubject == null)
-            {
-                MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the product '{selectedSubject.SubjectName}'?",
-                                                "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
-            {
-                User.currentUser.RemoveSubject(selectedSubject);
                 RefreshTable();
-                MessageBox.Show("Subject deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Clear();
             }
-            Clear();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private async void saveBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string oldSubjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+
+                Subject selectedSubject = Program.user?.Subjects.FirstOrDefault(subject => subject.SubjectName == oldSubjectName) ?? throw new ArgumentNullException("Current user is null");
+
+                string newSubjectName = subjectTxtBox.Text;
+
+                if (newSubjectName == "")
+                {
+                    MessageBox.Show("Please add subject name.", "Error");
+                    return;
+                }
+                else if (newSubjectName != oldSubjectName && Program.user.Subjects.Any(subject => subject.SubjectName == newSubjectName))
+                {
+                    MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Subject newSubject = new Subject(Program.user, newSubjectName);
+                bool success = await selectedSubject.UpdateSubject(newSubject);
+
+                if (success) MessageBox.Show("Subject updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("Failed to update subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                RefreshTable();
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private async void deleteBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string subjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+
+                Subject selectedSubject = Program.user?.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current user is null");
+
+                if (selectedSubject == null)
+                {
+                    MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var confirmResult = MessageBox.Show($"Are you sure you want to delete the subject '{selectedSubject.SubjectName}'?",
+                                                    "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    bool success = await selectedSubject.DeleteSubject();
+
+                    if (success) MessageBox.Show("Subject deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else MessageBox.Show("Failed to delete subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                RefreshTable();
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
@@ -181,7 +226,9 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            User.currentUser.CheckForUpdates();
+            if (Program.client.IsLoggedIn) return;
+
+            Program.client.CheckForUpdates();
             RefreshTable();
         }
     }

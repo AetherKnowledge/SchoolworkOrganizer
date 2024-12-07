@@ -4,20 +4,20 @@ using SkiaSharp;
 using System.Drawing;
 using System.Text.Json.Serialization;
 using System.Timers;
-using Timer = System.Timers.Timer;
+using System.Xml.Linq;
 
 namespace SchoolworkOrganizerUtils
 {
     [Serializable]
     public class User
     {
-        public static User? currentUser { get; private set; } = null;
+
         public string UserPath;
         public string Email;
         private string _username = "";
         public Image? WinformImage { get; private set; }
         private SKImage? _userImage;
-        private Timer updateTimer = new Timer(5000);
+        public Client? client { get; internal set; }
 
         [JsonPropertyName("username")]
         public string Username
@@ -64,69 +64,20 @@ namespace SchoolworkOrganizerUtils
             this.Password = message.Password;
             this.UserImage = message.UserImageData != null ? Utilities.ByteArrayToSKImage(message.UserImageData) : null;
             UserPath = "Data/" + Username;
-
         }
 
-        public void RemoveSubject(Subject selectedSubject)
+        public async Task<bool> UpdateUser(User user)
         {
-            selectedSubject.DeleteFolder();
-            selectedSubject.DeleteFromDatabase();
-            Subjects.Remove(selectedSubject);
-        }
-
-        public void CheckForUpdates()
-        {
-            foreach (Subject subject in Subjects)
+            if (client == null) return false;
+            bool success = await client.UpdateUser(user, Username);
+            if (success)
             {
-                subject.CheckForUpdates();
+                Email = user.Email;
+                Password = user.Password;
+                UserImage = user.UserImage;
+                Username = user.Username;
             }
-        }
-
-        private void OnTimedEvent(object? sender, ElapsedEventArgs e)
-        {
-            Console.WriteLine("Checking for updates...");
-            CheckForUpdates();
-        }
-
-        public static void Logout()
-        {
-            currentUser?.updateTimer.Close();
-            currentUser = null;
-
-        }
-
-        public static void Login(User user)
-        {
-            currentUser = user;
-            user.updateTimer.Start();
-
-            user.updateTimer.Elapsed += user.OnTimedEvent;
-            user.updateTimer.AutoReset = true;
-            user.updateTimer.Enabled = true;
-        }
-        public JObject ToJson()
-        {
-            JObject json = new JObject();
-            json.Add("username", Username);
-            json.Add("password", Password);
-            json.Add("email", Email);
-            json.Add("imageData", UserImage != null ? Convert.ToBase64String(Utilities.SKImageToByteArray(UserImage)) : null);
-            return json;
-        }
-
-        public static User ParseJson(JObject json)
-        {
-            string username = json["username"]?.ToString() ?? throw new ArgumentNullException(nameof(username));
-            string password = json["password"]?.ToString() ?? throw new ArgumentNullException(nameof(password));
-            string email = json["email"]?.ToString() ?? throw new ArgumentNullException(nameof(email));
-            string imageDataBase64 = json["imageData"]?.ToString() ?? string.Empty;
-            byte[] imageData = Convert.FromBase64String(imageDataBase64);
-            SKImage? userImage;
-
-            if (imageData != null) userImage = (Utilities.ByteArrayToSKImage(imageData)) ?? null;
-            else userImage = null;
-
-            return new User(email, username, password, userImage);
+            return success;
         }
     }
 }

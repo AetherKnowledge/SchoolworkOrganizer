@@ -1,43 +1,37 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace SchoolworkOrganizerUtils.MessageTypes
 {
     public class UserDataMessage : Message
     {
         public readonly string Username;
-        public readonly List<Subject> Subjects = new List<Subject>();
         public readonly JObject Json;
         
-        public UserDataMessage (string username, JObject json)
+        public UserDataMessage (string username, JObject json) : base(MessageType.FetchUserData)
         {
+            json.Add("type", MessageType.FetchUserData.ToString());
             Username = username;
             Json = json;
         }
 
-        public UserDataMessage(JObject json)
+        public UserDataMessage(JObject json) : base (TypeFromJson(json))
         {
             this.Json = json;
-            if (!json.ContainsKey("username") || !json.ContainsKey("type")) throw new ArgumentNullException("Invalid User Data Message Data");
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
-            if (type != MessageType.FetchUserData) throw new ArgumentException("Invalid type for UserDataMessage");
-            this.Type = type;
+            if (!Json.ContainsKey("username")) throw new ArgumentNullException("Invalid User Data Message Data");
+            Username = Json.GetValue("username")?.ToString() ?? throw new ArgumentException("username in " + this.GetType());
+        }
 
-            Username = json.GetValue("username")?.ToString() ?? throw new ArgumentException("username in " + this.GetType());
+        public List<Subject> GetSubjects(User user)
+        {
+            List<Subject> subjects = new List<Subject>();
+            if (user.Username != Username) throw new ArgumentNullException("Current User is null in " + this.GetType());
 
-            if (User.currentUser == null || User.currentUser.Username != Username) throw new ArgumentNullException("Current User is null in " + this.GetType());
-
-            foreach (var subjectJson in json)
+            foreach (var subjectJson in Json)
             {
                 if (subjectJson.Value == null || subjectJson.Key == "username" || subjectJson.Key == "type") continue;
 
                 string subjectName = subjectJson.Key;
-                Subject subject = new Subject(User.currentUser, subjectName);
+                Subject subject = new Subject(user, subjectName);
 
                 JToken activities = subjectJson.Value["Activities"] ?? new JObject();
                 foreach (var activityJson in activities.Children<JProperty>())
@@ -65,8 +59,10 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                     subject.Reviewers.Add(reviewer);
                 }
 
-                Subjects.Add(subject);
+                subjects.Add(subject);
             }
+
+            return subjects;
         }
 
         public override JObject ToJson()

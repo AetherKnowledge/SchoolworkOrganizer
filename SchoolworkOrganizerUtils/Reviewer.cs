@@ -8,11 +8,23 @@ namespace SchoolworkOrganizerUtils
     [Serializable]
     public class Reviewer
     {
-        public string FileName { get; private set; }
+        private string _fileName;
         private Subject _subject;
-        public DateTime LastUpdated { get; private set; }
+        public DateTime LastUpdated { get; internal set; }
         public string Name;
+        public Client? client => Subject.client;
 
+        public string FileName
+        {
+            get => _fileName;
+            private set
+            {
+                if (value == _fileName) return;
+                string oldPath = FilePath;
+                _fileName = value;
+                if (File.Exists(FilePath)) Utilities.MoveFile(oldPath, FilePath);
+            }
+        }
         public Subject Subject
         {
             get { return _subject; }
@@ -59,11 +71,11 @@ namespace SchoolworkOrganizerUtils
             _subject = subject;
             Subject = subject;
 
-            if (isFileName) FileName = path;
+            if (isFileName) _fileName = path;
             else
             {
                 string fileName = Path.GetFileName(path);
-                FileName = fileName;
+                _fileName = fileName;
 
                 if (path != FilePath)
                 {
@@ -80,7 +92,7 @@ namespace SchoolworkOrganizerUtils
             Name = name;
             _subject = subject;
             Subject = subject;
-            FileName = fileName;
+            _fileName = fileName;
             LastUpdated = lastUpdated;
 
             if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
@@ -94,34 +106,6 @@ namespace SchoolworkOrganizerUtils
             {
                 File.WriteAllBytes(FilePath, fileData);
                 File.SetLastWriteTime(FilePath, LastUpdated);
-            }
-            else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath))
-            {
-                UpdateToDatabase(Name);
-            }
-        }
-
-        public Reviewer(ReviewerMessage message)
-        {
-            if (User.currentUser == null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
-            Subject subject = User.currentUser.Subjects.FirstOrDefault(s => s.SubjectName == message.Subject) ?? throw new InvalidOperationException("Invalid Subject");
-
-            Name = message.Name;
-            _subject = subject;
-            Subject = subject;
-            FileName = message.FileName;
-
-            if (message.FileData == null || !message.WithFile) return;
-            if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
-            if (!File.Exists(FilePath))
-            {
-                File.WriteAllBytes(FilePath, message.FileData);
-                File.SetLastWriteTime(FilePath, message.LastUpdated);
-            }
-            else if (message.LastUpdated > LastUpdated)
-            {
-                File.WriteAllBytes(FilePath, message.FileData);
-                File.SetLastWriteTime(FilePath, message.LastUpdated);
             }
         }
 
@@ -155,29 +139,30 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        public void AddToDatabase()
+        public async Task<bool> AddReviewer()
         {
-            ReviewerMessage message = new ReviewerMessage(MessageType.AddReviewer, this, Name, true);
-            Client.SendMessageAsync(message);
+            if (client == null) return false;
+            bool success = await client.AddReviewer(this);
+            if (success) Subject.Reviewers.Add(this);
+            return success;
         }
 
-        public void UpdateToDatabase(string previousName)
+        public async Task<bool> UpdateReviewer(string previousName = "")
         {
-            bool withFile = false;
-            if (File.Exists(FilePath) && LastUpdated < File.GetLastWriteTime(FilePath))
+            if (client == null) return false;
+            return await client.UpdateReviewer(this);
+        }
+
+        public async Task<bool> DeleteReviewer()
+        {
+            if (client == null) return false;
+            bool success = await client.DeleteReviewer(this);
+            if (success) 
             {
-                withFile = true;
-                LastUpdated = File.GetLastWriteTime(FilePath);
+                this.DeleteFile();
+                Subject.Reviewers.Remove(this);
             }
-
-            ReviewerMessage message = new ReviewerMessage(MessageType.UpdateReviewer, this, previousName, withFile);
-            Client.SendMessageAsync(message);
-        }
-
-        public void DeleteFromDatabase()
-        {
-            ReviewerMessage message = new ReviewerMessage(MessageType.DeleteReviewer, this);
-            Client.SendMessageAsync(message);
+            return success;
         }
     }
 }

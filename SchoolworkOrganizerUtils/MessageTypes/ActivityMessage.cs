@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolworkOrganizerUtils.MessageTypes
 {
@@ -20,9 +15,8 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         public readonly bool WithFile;
         public readonly byte[]? FileData;
 
-        public ActivityMessage(MessageType type, Activity activity, string currentName = "", bool withFile = false)
+        public ActivityMessage(MessageType type, Activity activity, bool withFile = false, string currentName = "") : base(type)
         {
-            Type = type;
             Username = activity.Subject.User.Username;
             Name = activity.Name;
             Subject = activity.Subject.SubjectName;
@@ -39,10 +33,9 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             }
         }
 
-        public ActivityMessage(JObject json)
+        public ActivityMessage(JObject json) : base(TypeFromJson(json))
         {
-            if (!json.ContainsKey("type") || 
-                !json.ContainsKey("username") || 
+            if (!json.ContainsKey("username") || 
                 !json.ContainsKey("name") || 
                 !json.ContainsKey("subject") || 
                 !json.ContainsKey("fileName") || 
@@ -54,7 +47,6 @@ namespace SchoolworkOrganizerUtils.MessageTypes
                 throw new ArgumentException("Invalid Activity Message Data");
             if (json.Count != 11) throw new ArgumentException("Invalid key count in json");
 
-            Type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
             if (Type != MessageType.AddActivity && Type != MessageType.UpdateActivity && Type != MessageType.DeleteActivity && Type != MessageType.DeleteActivity) throw new ArgumentException("Invalid type for ActivityMessage");
             Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("username in " + this.GetType());
             Name = json.GetValue("name")?.ToString() ?? throw new ArgumentNullException("name in " + this.GetType());
@@ -83,11 +75,6 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             json.Add("fileData", Convert.ToBase64String(FileData ?? new byte[0]));
             json.Add("lastUpdated", LastUpdated.ToString());
             return json;
-        }
-
-        public Activity GetReviewer()
-        {
-            return new Activity(this);
         }
 
     }

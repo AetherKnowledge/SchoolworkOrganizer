@@ -6,18 +6,23 @@ namespace SchoolworkOrganizerUtils.MessageTypes
 {
     public abstract class Message
     {
-        public MessageType Type { get; internal set; }
+        public readonly MessageType Type;
+
+        protected Message(MessageType type)
+        {
+            this.Type = type;
+        }
 
         public static Message? Parse(string rawData)
         {
             JObject json = JObject.Parse(rawData);
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type of recieved json is null"));
+            MessageType type = TypeFromJson(json);
             switch (type)
             {
                 case MessageType.Login:
                     return new LoginMessage(json);
                 case MessageType.Logout:
-                    return null;
+                    throw new NotImplementedException("logout message not implemented");
                 case MessageType.Register:
                     return new UserMessage(json);
                 case MessageType.AddSubject:
@@ -53,6 +58,11 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             }
         }
 
+        protected static MessageType TypeFromJson(JObject json)
+        {
+            if (!json.ContainsKey("type")) throw new ArgumentException("Type of recieved message is null");
+            return (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentException("type of recieved json is null"));
+        }
 
         public abstract JObject ToJson();
 

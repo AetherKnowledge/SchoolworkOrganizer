@@ -13,7 +13,6 @@ namespace SchoolWorkOrganizerServer.Handlers
         {
             JObject json = new JObject();
             json.Add("username", username);
-            json.Add("type", MessageType.FetchUserData.ToString());
 
             try
             {

@@ -50,11 +50,11 @@ namespace SchoolworkOrganizerServer
                     Message userInfoMessage = userMessage;
                     Message userDataMessage = new UserDataMessage(username, await SubjectHandler.GetSubjects(username));
 
-                    await Send(statusMessage);
+                    await SendAsync(statusMessage);
                     Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
-                    await Send(userInfoMessage);
+                    await SendAsync(userInfoMessage);
                     Console.WriteLine($"Sent to {socketID}: " + userInfoMessage.Type);
-                    await Send(userDataMessage);
+                    await SendAsync(userDataMessage);
                     Console.WriteLine($"Sent to {socketID}: " + userDataMessage.Type);
 
                     Console.WriteLine("Logged in with " + currentUsername);
@@ -62,7 +62,7 @@ namespace SchoolworkOrganizerServer
                 else
                 {
                     Message statusMessage = new StatusMessage(Status.Failure);
-                    await Send(statusMessage);
+                    await SendAsync(statusMessage);
                     Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
                     Console.WriteLine("Failed to login");
                 }
@@ -90,14 +90,14 @@ namespace SchoolworkOrganizerServer
                 {
                     UserHandler.AddToDatabase(registerMessage);
                     Message statusMessage = new StatusMessage(Status.Success);
-                    await Send(statusMessage);
+                    await SendAsync(statusMessage);
                     Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
                     Console.WriteLine("Registered with " + registerMessage.Username);
                 }
                 else
                 {
                     Message statusMessage = new StatusMessage(Status.Failure);
-                    await Send(statusMessage);
+                    await SendAsync(statusMessage);
                     Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
                     Console.WriteLine("Failed to register with " + registerMessage.Username);
                 }
@@ -108,7 +108,7 @@ namespace SchoolworkOrganizerServer
                 if (Utilities.Debug) Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 Message statusMessage = new StatusMessage(Status.Failure);
-                await Send(statusMessage);
+                await SendAsync(statusMessage);
                 Console.WriteLine($"Sent to {socketID}: " + statusMessage.Type);
                 Console.WriteLine("Failed to register");
             }

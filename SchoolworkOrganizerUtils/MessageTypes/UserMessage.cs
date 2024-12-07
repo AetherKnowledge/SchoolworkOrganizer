@@ -1,10 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace SchoolworkOrganizerUtils.MessageTypes
 {
@@ -16,9 +10,8 @@ namespace SchoolworkOrganizerUtils.MessageTypes
         public readonly byte[]? UserImageData;
         public readonly string PreviousUsername;
 
-        public UserMessage(MessageType type, string Username, string Password, string Email, byte[]? UserImageData, string previousUsername = "")
+        public UserMessage(MessageType type, string Username, string Password, string Email, byte[]? UserImageData, string previousUsername = "") : base(type)
         {
-            this.Type = type;
             this.Username = Username;
             this.Password = Password;
             this.Email = Email;
@@ -26,9 +19,8 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             PreviousUsername = previousUsername;
         }
 
-        public UserMessage(MessageType type, User user, string previousUsername = "")
+        public UserMessage(MessageType type, User user, string previousUsername = "") : base(type)
         {
-            this.Type = type;
             this.Username = user.Username;
             this.Password = user.Password;
             this.Email = user.Email;
@@ -41,16 +33,14 @@ namespace SchoolworkOrganizerUtils.MessageTypes
             return new User(this);
         }
 
-        public UserMessage(JObject json)
+        public UserMessage(JObject json) : base(TypeFromJson(json))
         {
-            if (!json.ContainsKey("type") || !json.ContainsKey("username") || !json.ContainsKey("password") || !json.ContainsKey("email") || !json.ContainsKey("userImageData")) throw new ArgumentNullException("Invalid User Message Data");
+            if (!json.ContainsKey("username") || !json.ContainsKey("password") || !json.ContainsKey("email") || !json.ContainsKey("userImageData")) throw new ArgumentNullException("Invalid User Message Data");
             if (json.Count != 6) throw new ArgumentException("Invalid key count in json");
 
-            MessageType type = (MessageType)Enum.Parse(typeof(MessageType), json.GetValue("type")?.ToString() ?? throw new ArgumentNullException("type in " + this.GetType()));
-            if (type != MessageType.FetchUser && type != MessageType.Register && type != MessageType.UpdateUser && type != MessageType.DeleteUser) throw new ArgumentException("Invalid type for UserMessage");
-            if (type == MessageType.UpdateUser && !json.ContainsKey("previousUsername")) throw new ArgumentException("Invalid key count in json");
+            if (Type != MessageType.FetchUser && Type != MessageType.Register && Type != MessageType.UpdateUser && Type != MessageType.DeleteUser) throw new ArgumentException("Invalid type for UserMessage");
+            if (Type == MessageType.UpdateUser && !json.ContainsKey("previousUsername")) throw new ArgumentException("Invalid key count in json");
 
-            Type = type;
             Username = json.GetValue("username")?.ToString() ?? throw new ArgumentNullException("usernamel in " + this.GetType());
             Password = json.GetValue("password")?.ToString() ?? throw new ArgumentNullException("password in " + this.GetType());
             Email = json.GetValue("email")?.ToString() ?? throw new ArgumentNullException("email in " + this.GetType());

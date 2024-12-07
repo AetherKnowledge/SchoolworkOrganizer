@@ -5,7 +5,7 @@ namespace SchoolworkOrganizer.Panels
 {
     public partial class ReviewerPanel : Template
     {
-        string selectedFilePath = null;
+        string selectedFilePath = string.Empty;
         public ReviewerPanel()
         {
             InitializeComponent();
@@ -45,15 +45,16 @@ namespace SchoolworkOrganizer.Panels
             base.Show();
             Clear();
             RefreshData();
-            
         }
 
         private void RefreshData()
         {
+            if (Program.user == null) return;
+
             subjectCBox.Items.Clear();
             editSubjectCBox.Items.Clear();
 
-            foreach (Subject subject in User.currentUser.Subjects)
+            foreach (Subject subject in Program.user.Subjects)
             {
                 subjectCBox.Items.Add(subject.SubjectName);
                 editSubjectCBox.Items.Add(subject.SubjectName);
@@ -66,171 +67,210 @@ namespace SchoolworkOrganizer.Panels
 
         private void RefreshTable()
         {
-            table.Rows.Clear();
-
-            string subjectName = subjectCBox.Text;
-            if (subjectName == null) return;
-
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-            if (selectedSubject == null) return;
-
-            foreach (Reviewer reviewer in selectedSubject.Reviewers)
+            try
             {
-                DataGridViewRow row = new DataGridViewRow();
+                if (Program.user == null) return;
 
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Name });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Subject.SubjectName });
-                row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.FilePath });
+                table.Rows.Clear();
 
-                table.Rows.Add(row);
+                string subjectName = subjectCBox.Text;
+                if (subjectName == null) return;
+
+                Subject selectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current User is null");
+                if (selectedSubject == null) return;
+
+                foreach (Reviewer reviewer in selectedSubject.Reviewers)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Name });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.Subject.SubjectName });
+                    row.Cells.Add(new DataGridViewTextBoxCell { Value = reviewer.FilePath });
+
+                    table.Rows.Add(row);
+                }
+
+                foreach (DataGridViewColumn column in table.Columns)
+                {
+                    column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
             }
 
-            foreach (DataGridViewColumn column in table.Columns)
-            {
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
         }
 
         private void table_SelectionChanged(object? sender, EventArgs e)
         {
-            if (table.SelectedRows.Count > 0)
+            try
             {
-
-                DataGridViewRow selectedRow = table.SelectedRows[0];
-                if (selectedRow.Index > table.RowCount - 1)
+                if (table.SelectedRows.Count > 0)
                 {
-                    Clear();
+                    DataGridViewRow selectedRow = table.SelectedRows[0];
+                    if (selectedRow.Index > table.RowCount - 1)
+                    {
+                        Clear();
+                        return;
+                    }
+
+                    string name = selectedRow.Cells["ReviewerName"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row reviewer name cannot be found");
+                    string subject = selectedRow.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+                    string path = selectedRow.Cells["FilePath"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row file path cannot be found");
+
+                    reviewerTxtBox.Text = name;
+                    editSubjectCBox.Text = subject;
+                    selectedFileLabel.Text = path;
+                    selectedFilePath = path;
+
+                    addBtn.Enabled = false;
+                    saveBtn.Enabled = true;
+                    deleteBtn.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private async void addBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Program.client.IsLoggedIn) return;
+
+                string reviewerName = reviewerTxtBox.Text;
+                string subjectName = editSubjectCBox.Text;
+                Subject selectedSubject = Program.user?.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current User is null");
+                string filePath = selectedFilePath;
+
+                if (subjectName == "")
+                {
+                    MessageBox.Show("Please add subject name.", "Error");
+                    return;
+                }
+                else if (selectedSubject == null)
+                {
+                    MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (selectedFilePath == null)
+                {
+                    MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                string name = selectedRow.Cells["ReviewerName"].Value.ToString();
-                string subject = selectedRow.Cells["Subject"].Value.ToString();
-                string path = selectedRow.Cells["FilePath"].Value.ToString();
+                Reviewer reviewer = new Reviewer(reviewerName, selectedSubject, selectedFilePath);
+                if (await reviewer.AddReviewer()) MessageBox.Show("Reviewer added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("Failed to add reviewer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                reviewerTxtBox.Text = name;
-                editSubjectCBox.Text = subject;
-                selectedFileLabel.Text = path;
-                selectedFilePath = path;
-
-                addBtn.Enabled = false;
-                saveBtn.Enabled = true;
-                deleteBtn.Enabled = true;
-            }
-        }
-
-        private void addBtn_Click(object sender, EventArgs e)
-        {
-            string reviewerName = reviewerTxtBox.Text;
-            string subjectName = editSubjectCBox.Text;
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-            string filePath = selectedFilePath;
-
-            if (subjectName == "")
-            {
-                MessageBox.Show("Please add subject name.", "Error");
-                return;
-            }
-            else if (selectedSubject == null)
-            {
-                MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else if (selectedFilePath == null)
-            {
-                MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Reviewer reviewer = new Reviewer(reviewerName, selectedSubject, selectedFilePath);
-            selectedSubject.Reviewers.Add(reviewer);
-            reviewer.AddToDatabase();
-
-            RefreshTable();
-            Clear();
-        }
-
-        private void saveBtn_Click(object sender, EventArgs e)
-        {
-            string oldSubjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            string filePath = table.SelectedRows[0].Cells["FilePath"].Value.ToString();
-
-            string newReviewerName = reviewerTxtBox.Text;
-
-            Subject oldSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == oldSubjectName);
-            Reviewer selectedReviewer = oldSelectedSubject.Reviewers.FirstOrDefault(reviewer => reviewer.FilePath == filePath);
-
-            string newSubjectName = editSubjectCBox.Text;
-            Subject newSelectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == newSubjectName);
-            
-
-            if (newReviewerName == "")
-            {
-                MessageBox.Show("Please add reviewer name.", "Error");
-                return;
-            }
-            else if (newSelectedSubject == null)
-            {
-                MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            else if (selectedFilePath == null)
-            {
-                MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            string oldReviewerName = selectedReviewer.Name;
-            selectedReviewer.Name = newReviewerName;
-            selectedReviewer.Subject = newSelectedSubject;
-            selectedReviewer.ChangeFile(selectedFilePath);
-            selectedReviewer.UpdateToDatabase(oldReviewerName);
-
-            RefreshTable();
-
-            Clear();
-        }
-
-        private void deleteBtn_Click(object sender, EventArgs e)
-        {
-            string filePath = selectedFilePath;
-            string subjectName = table.SelectedRows[0].Cells["Subject"].Value.ToString();
-            Subject selectedSubject = User.currentUser.Subjects.FirstOrDefault(subject => subject.SubjectName == subjectName);
-            Reviewer selectedReviewer = selectedSubject.Reviewers.FirstOrDefault(reviewer => reviewer.FilePath == filePath);
-
-            if (selectedReviewer == null)
-            {
-                MessageBox.Show("Reviewer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
-                                                "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
-            {
-                selectedReviewer.DeleteFromDatabase();
-                selectedSubject.RemoveReviewer(selectedReviewer);
                 RefreshTable();
-                MessageBox.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Clear();
             }
-
-            Clear();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
         }
 
-        private void cancelBtn_Click(object sender, EventArgs e)
+        private async void saveBtn_Click(object sender, EventArgs e)
         {
-            Clear();
+            try
+            {
+                string oldSubjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+                string oldFilePath = table.SelectedRows[0]?.Cells["FilePath"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row file path cannot be found");
+
+                string newReviewerName = reviewerTxtBox.Text;
+
+                Subject oldSelectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == oldSubjectName) ?? throw new ArgumentNullException("Current user is null");
+                Reviewer selectedReviewer = oldSelectedSubject.Reviewers.First(reviewer => reviewer.FilePath == oldFilePath);
+
+                string newSubjectName = editSubjectCBox.Text;
+                Subject newSelectedSubject = Program.user.Subjects.First(subject => subject.SubjectName == newSubjectName);
+
+                if (newReviewerName == "")
+                {
+                    MessageBox.Show("Please add reviewer name.", "Error");
+                    return;
+                }
+                else if (newSelectedSubject == null)
+                {
+                    MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (selectedFilePath == null)
+                {
+                    MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (selectedReviewer == null)
+                {
+                    MessageBox.Show("Reviewer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Reviewer reviewer = new Reviewer(newReviewerName, newSelectedSubject, selectedFilePath);
+                bool success = await selectedReviewer.UpdateReviewer(reviewer.Name);
+
+                if (success) MessageBox.Show("Reviewer updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else MessageBox.Show("Failed to update reviewer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                RefreshTable();
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
         }
 
-        public void Clear()
+        private async void deleteBtn_Click(object sender, EventArgs e)
         {
-            table.ClearSelection();
-            editSubjectCBox.Text = "";
-            reviewerTxtBox.Text = "";
-            selectedFilePath = null;
-            selectedFileLabel.Text = "";
+            try
+            {
+                if (Program.client.IsLoggedIn) return;
 
-            saveBtn.Enabled = false;
-            deleteBtn.Enabled = false;
-            addBtn.Enabled = true;
+                string filePath = selectedFilePath;
+                string subjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
+                Subject selectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current user is null");
+
+                if (selectedSubject == null)
+                {
+                    MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                Reviewer selectedReviewer = selectedSubject.Reviewers.First(reviewer => reviewer.FilePath == filePath);
+
+                if (selectedReviewer == null)
+                {
+                    MessageBox.Show("Reviewer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
+                                                    "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    bool success = await selectedReviewer.DeleteReviewer();
+
+                    if (success) MessageBox.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else MessageBox.Show("Failed to delete reviewer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                RefreshTable();
+                Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+            }
         }
 
         private void editFileBtn_Click(object sender, EventArgs e)
@@ -255,6 +295,24 @@ namespace SchoolworkOrganizer.Panels
             Utilities.OpenFile(selectedFilePath);
         }
 
+        private void cancelBtn_Click(object sender, EventArgs e)
+        {
+            Clear();
+        }
+
+        public void Clear()
+        {
+            table.ClearSelection();
+            editSubjectCBox.Text = "";
+            reviewerTxtBox.Text = "";
+            selectedFilePath = string.Empty;
+            selectedFileLabel.Text = "";
+
+            saveBtn.Enabled = false;
+            deleteBtn.Enabled = false;
+            addBtn.Enabled = true;
+        }
+
         private void subjectCBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             RefreshTable();
@@ -262,7 +320,9 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            User.currentUser.CheckForUpdates();
+            if (Program.client.IsLoggedIn) return;
+
+            Program.client.CheckForUpdates();
             RefreshTable();
         }
     }

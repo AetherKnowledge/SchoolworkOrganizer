@@ -4,15 +4,15 @@ using System.Text;
 
 namespace SchoolworkOrganizerUtils
 {
-    public static class Client
+    public partial class Client
     {
-        private static ClientWebSocket socket = new ClientWebSocket();
-        private static readonly Uri uri = new Uri(Utilities.WebSocket);
-        private static TaskCompletionSource<bool>? loginTcs;
-        private static TaskCompletionSource<bool>? registerTcs;
-        private static TaskCompletionSource<bool>? connectionTcs;
+        private ClientWebSocket socket = new ClientWebSocket();
+        private readonly Uri uri = new Uri(Utilities.WebSocket);
+        private TaskCompletionSource<bool>? connectionTcs;
 
-        public static async Task ConnectAsync()
+        //public static Client MainClient = new Client();
+
+        public async Task ConnectAsync()
         {
             try
             {
@@ -26,7 +26,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
-                User.Logout();
+                Logout();
                 Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 socket.Dispose();
@@ -37,46 +37,7 @@ namespace SchoolworkOrganizerUtils
             
         }
 
-        public static async Task<bool> Login(string username, string password)
-        {
-            loginTcs = new TaskCompletionSource<bool>();
-            Message message = new LoginMessage(username, password);
-            SendMessageAsync(message);
-
-            return await loginTcs.Task;
-        }
-
-        public static async Task<bool> Register(User user)
-        {
-            registerTcs = new TaskCompletionSource<bool>();
-
-            Message message = new UserMessage(MessageType.Register, user);
-            SendMessageAsync(message);
-
-            return await registerTcs.Task;
-        }
-
-        public static void UpdateUser(string oldUsername, User user)
-        {
-            Message message = new UserMessage(MessageType.UpdateUser, user, oldUsername);
-            if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
-            SendMessageAsync(message);
-        }
-
-        internal static async void SendMessageAsync(Message message)
-        {
-            if (socket.State != WebSocketState.Open) {
-                Console.WriteLine("Please wait while trying to connect");
-
-                connectionTcs = new TaskCompletionSource<bool>();
-                await connectionTcs.Task;
-            }
-
-            byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
-            await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-        }
-
-        private static async Task ReceiveMessagesAsync()
+        private async Task ReceiveMessagesAsync()
         {
             try
             {
@@ -109,7 +70,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception e)
             {
-                User.Logout();
+                Logout();
                 Console.WriteLine(e.StackTrace); 
                 Console.WriteLine(e.Message);
                 //socket.Dispose();
@@ -120,7 +81,7 @@ namespace SchoolworkOrganizerUtils
 
         }
 
-        public static void Disconnect()
+        public void Disconnect()
         {
             try
             {
@@ -133,7 +94,7 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        private static void HandleMessageAsync(Message message)
+        private void HandleMessageAsync(Message message)
         {
             switch (message.Type)
             {
@@ -151,7 +112,7 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        private static void HandleStatus(Message message)
+        private void HandleStatus(Message message)
         {
             if (message is StatusMessage statusMessage)
             {
@@ -171,22 +132,19 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
-        private static void HandleFetchUser(Message message)
+        public void CheckForUpdates()
         {
-            if (message is not UserMessage) return;
-            if (message.Type != MessageType.FetchUser) return;
-            UserMessage userMessage = (UserMessage)message;
-            User.Login(userMessage.GetUser());
+            if (user == null)
+            {
+                Console.WriteLine("User is null");
+                return;
+            }
+            foreach (Subject subject in user.Subjects)
+            {
+                subject.CheckForUpdates();
+            }
         }
 
-        private static void HandleFetchUserData(Message message)
-        {
-            if (User.currentUser == null) return;
-            if (message is not UserDataMessage) return;
-            UserDataMessage userDataMessage = (UserDataMessage)message;
-
-            User.currentUser.Subjects = userDataMessage.Subjects;
-        }
     }
 }
 

@@ -5,13 +5,17 @@ namespace SchoolworkOrganizer
 {
     internal static class Program
     {
+        public static readonly Client client = new Client();
+        public static User? user => client.user;
+        public static void Logout() => client.Logout();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            _ = Client.ConnectAsync();
+            _ = client.ConnectAsync();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             var materialSkinManager = MaterialSkinManager.Instance;

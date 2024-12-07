@@ -47,7 +47,7 @@ namespace SchoolworkOrganizer.Panels
         {
             base.Show();
 
-            if (User.currentUser == null) return;
+            if (Program.client.IsLoggedIn) return;
             
             this.Size = size;
             this.Location = location;
@@ -68,10 +68,10 @@ namespace SchoolworkOrganizer.Panels
 
         protected void RefreshUser()
         {
-            if (User.currentUser == null) return;
+            if (Program.client.IsLoggedIn) return;
 
-            usernameLabel.Text = User.currentUser.Username;
-            if (userImageBox.Image != User.currentUser.WinformImage) userImageBox.Image = User.currentUser.WinformImage ?? Properties.Resources.user;
+            usernameLabel.Text = Program.user.Username;
+            if (userImageBox.Image != Program.user.WinformImage) userImageBox.Image = Program.user.WinformImage ?? Properties.Resources.user;
         }
 
         public void homeBtn_Click(object sender, EventArgs e)
