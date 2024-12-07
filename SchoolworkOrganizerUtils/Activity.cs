@@ -44,10 +44,10 @@ namespace SchoolworkOrganizerUtils
 
         public string FolderPath
         {
-            get 
+            get
             {
                 if (Subject == null) return "";
-                return Subject.FolderPath + "/Activity"; 
+                return Subject.FolderPath + "/Activity";
             }
         }
         public string FilePath
@@ -94,14 +94,26 @@ namespace SchoolworkOrganizerUtils
             LastUpdated = lastUpdated;
 
             if (!Directory.Exists(subject.FolderPath + "/Activity")) Directory.CreateDirectory(subject.FolderPath + "/Activity");
-            if (!File.Exists(FilePath)) File.WriteAllBytes(FilePath, fileData);
-            else if (File.Exists(FilePath) && lastUpdated > File.GetLastWriteTime(FilePath)) File.WriteAllBytes(FilePath, fileData);
-            else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath)) UpdateToDatabase(Name);
+
+            if (!File.Exists(FilePath))
+            {
+                File.WriteAllBytes(FilePath, fileData);
+                File.SetLastWriteTime(FilePath, LastUpdated);
+            }
+            else if (File.Exists(FilePath) && lastUpdated > File.GetLastWriteTime(FilePath))
+            {
+                File.WriteAllBytes(FilePath, fileData);
+                File.SetLastWriteTime(FilePath, LastUpdated);
+            }
+            else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath))
+            {
+                UpdateToDatabase(Name);
+            }
         }
 
         public Activity(ActivityMessage message)
         {
-            if (User.currentUser != null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
+            if (User.currentUser == null || User.currentUser.Username != message.Username) throw new InvalidOperationException("Invalid User");
             Subject subject = User.currentUser.Subjects.FirstOrDefault(s => s.SubjectName == message.Subject) ?? throw new InvalidOperationException("Invalid Subject");
 
             Name = message.Name;
@@ -110,11 +122,20 @@ namespace SchoolworkOrganizerUtils
             FileName = message.FileName;
             DueDate = message.DueDate;
             Status = message.Status;
+            LastUpdated = message.LastUpdated;
 
             if (message.FileData == null || !message.WithFile) return;
-            if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
-            if (!File.Exists(FilePath)) File.WriteAllBytes(FilePath, message.FileData);
-            else if (message.LastUpdated > LastUpdated) File.WriteAllBytes(FilePath, message.FileData);
+            if (!Directory.Exists(subject.FolderPath + "/Activity")) Directory.CreateDirectory(subject.FolderPath + "/Activity");
+            if (!File.Exists(FilePath))
+            {
+                File.WriteAllBytes(FilePath, message.FileData);
+                File.SetLastWriteTime(FilePath, message.LastUpdated);
+            }
+            else if (message.LastUpdated > LastUpdated)
+            {
+                File.WriteAllBytes(FilePath, message.FileData);
+                File.SetLastWriteTime(FilePath, message.LastUpdated);
+            }
         }
 
         public void ChangeFile(string sourcePath)

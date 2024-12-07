@@ -18,7 +18,7 @@ namespace SchoolworkOrganizerServer
 
                 if (this.currentUsername == null || reviewerMessage.Username != this.currentUsername) throw new ArgumentException("Cannot add reviewer to different user");
                 ReviewerHandler.AddToDatabase(reviewerMessage);
-                Console.WriteLine($"Added reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Name}' and user '{currentUsername}'");
+                Console.WriteLine($"Added reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Subject}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
@@ -39,7 +39,7 @@ namespace SchoolworkOrganizerServer
                 if (this.currentUsername == null || reviewerMessage.Username != this.currentUsername) throw new ArgumentException("Cannot update reviewer of different user");
 
                 ReviewerHandler.UpdateToDatabase(reviewerMessage);
-                Console.WriteLine($"Updated reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Name}' and user '{currentUsername}'");
+                Console.WriteLine($"Updated reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Subject}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
@@ -60,7 +60,7 @@ namespace SchoolworkOrganizerServer
                 if (this.currentUsername == null || reviewerMessage.Username != this.currentUsername) throw new ArgumentException("Cannot delete reviewer of different user");
 
                 ReviewerHandler.DeleteFromDatabase(reviewerMessage);
-                Console.WriteLine($"Deleted reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Name}' and user '{currentUsername}'");
+                Console.WriteLine($"Deleted reviewer '{reviewerMessage.Name}' for subject '{reviewerMessage.Subject}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {

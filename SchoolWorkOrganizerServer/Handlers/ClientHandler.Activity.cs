@@ -18,7 +18,7 @@ namespace SchoolworkOrganizerServer
 
                 if (this.currentUsername == null || activityMessage.Username != this.currentUsername) throw new ArgumentException("Cannot add activity to different user");
                 ActivityHandler.AddToDatabase(activityMessage);
-                Console.WriteLine($"Added activity '{activityMessage.Name}' for subject '{activityMessage.Name}' and user '{currentUsername}'");
+                Console.WriteLine($"Added activity '{activityMessage.Name}' for subject '{activityMessage.Subject}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
@@ -39,7 +39,7 @@ namespace SchoolworkOrganizerServer
                 if (this.currentUsername == null || activityMessage.Username != this.currentUsername) throw new ArgumentException("Cannot update activity of different user");
 
                 ActivityHandler.UpdateToDatabase(activityMessage);
-                Console.WriteLine($"Updated activity '{activityMessage.Name}' for subject '{activityMessage.Name}' and user '{currentUsername}'");
+                Console.WriteLine($"Updated activity '{activityMessage.Name}' for subject '{activityMessage.Subject}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {
@@ -60,7 +60,7 @@ namespace SchoolworkOrganizerServer
                 if (this.currentUsername == null || activityMessage.Username != this.currentUsername) throw new ArgumentException("Cannot delete activity of different user");
 
                 ActivityHandler.DeleteFromDatabase(activityMessage);
-                Console.WriteLine($"Deleted activity '{activityMessage.Name}' for subject '{activityMessage.Name}' and user '{currentUsername}'");
+                Console.WriteLine($"Deleted activity '{activityMessage.Name}' for subject '{activityMessage.Subject}' and user '{currentUsername}'");
             }
             catch (Exception e)
             {

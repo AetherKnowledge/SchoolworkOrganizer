@@ -47,7 +47,7 @@ namespace SchoolworkOrganizerUtils
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while reading the connection string: {ex.Message} {settingsName}");
+                Console.WriteLine($"An error occurred while reading the {nameof(settingsName)} string: {ex.Message} {settingsName}");
                 return string.Empty;
             }
         }

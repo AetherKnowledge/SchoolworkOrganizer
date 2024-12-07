@@ -1,5 +1,4 @@
-﻿
-using MySqlConnector;
+﻿using MySqlConnector;
 using SchoolworkOrganizerUtils.MessageTypes;
 using System.IO;
 using System.Xml.Linq;
@@ -14,7 +13,7 @@ namespace SchoolworkOrganizerUtils
         public DateTime LastUpdated { get; private set; }
         public string Name;
 
-        public Subject Subject 
+        public Subject Subject
         {
             get { return _subject; }
             set
@@ -23,7 +22,7 @@ namespace SchoolworkOrganizerUtils
 
                 string oldFileName = "";
                 if (FilePath == null) Path.GetFileName(FilePath);
-                
+
                 Subject oldSubject = _subject;
                 if (FilePath != null) oldSubject.Reviewers.Remove(this);
 
@@ -31,17 +30,17 @@ namespace SchoolworkOrganizerUtils
                 _subject.Reviewers.Add(this);
 
                 if (oldSubject == null || FilePath == null) return;
-                
+
                 Utilities.MoveFile(oldSubject.FolderPath + "/Reviewer" + oldFileName, FilePath);
             }
         }
 
         public string FolderPath
         {
-            get 
+            get
             {
                 if (Subject == null) return "";
-                return Subject.FolderPath + "/Reviewer"; 
+                return Subject.FolderPath + "/Reviewer";
             }
         }
 
@@ -86,9 +85,20 @@ namespace SchoolworkOrganizerUtils
 
             if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
 
-            if (!File.Exists(FilePath)) File.WriteAllBytes(FilePath, fileData);
-            else if (File.Exists(FilePath) && lastUpdated > File.GetLastWriteTime(FilePath)) File.WriteAllBytes(FilePath, fileData);
-            else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath)) UpdateToDatabase(Name);
+            if (!File.Exists(FilePath))
+            {
+                File.WriteAllBytes(FilePath, fileData);
+                File.SetLastWriteTime(FilePath, LastUpdated);
+            }
+            else if (File.Exists(FilePath) && lastUpdated > File.GetLastWriteTime(FilePath))
+            {
+                File.WriteAllBytes(FilePath, fileData);
+                File.SetLastWriteTime(FilePath, LastUpdated);
+            }
+            else if (File.Exists(FilePath) && lastUpdated < File.GetLastWriteTime(FilePath))
+            {
+                UpdateToDatabase(Name);
+            }
         }
 
         public Reviewer(ReviewerMessage message)
@@ -103,8 +113,16 @@ namespace SchoolworkOrganizerUtils
 
             if (message.FileData == null || !message.WithFile) return;
             if (!Directory.Exists(subject.FolderPath + "/Reviewer")) Directory.CreateDirectory(subject.FolderPath + "/Reviewer");
-            if (!File.Exists(FilePath)) File.WriteAllBytes(FilePath, message.FileData);
-            else if (message.LastUpdated > LastUpdated) File.WriteAllBytes(FilePath, message.FileData);
+            if (!File.Exists(FilePath))
+            {
+                File.WriteAllBytes(FilePath, message.FileData);
+                File.SetLastWriteTime(FilePath, message.LastUpdated);
+            }
+            else if (message.LastUpdated > LastUpdated)
+            {
+                File.WriteAllBytes(FilePath, message.FileData);
+                File.SetLastWriteTime(FilePath, message.LastUpdated);
+            }
         }
 
         public void ChangeFile(string sourcePath)
