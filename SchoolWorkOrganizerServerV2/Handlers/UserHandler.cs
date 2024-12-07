@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.Xml.Linq;
 using System.Text.Json.Nodes;
 using SchoolworkOrganizerUtils.MessageTypes;
-using SchoolworkOrganizerServerV2;
+using SchoolworkOrganizerServer;
 
 namespace SchoolWorkOrganizerServerV2.Handlers
 {

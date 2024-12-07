@@ -1,6 +1,6 @@
 ﻿using MySqlConnector;
 using Newtonsoft.Json.Linq;
-using SchoolworkOrganizerServerV2;
+using SchoolworkOrganizerServer;
 using SchoolworkOrganizerUtils;
 using SchoolworkOrganizerUtils.MessageTypes;
 

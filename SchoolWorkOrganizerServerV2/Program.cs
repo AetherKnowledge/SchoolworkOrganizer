@@ -1,10 +1,9 @@
 using MySqlConnector;
-using SchoolworkOrganizerServer;
 using SchoolworkOrganizerUtils;
 using System.Net.WebSockets;
 using System.Text;
 
-namespace SchoolworkOrganizerServerV2
+namespace SchoolworkOrganizerServer
 {
     public class Program
     {

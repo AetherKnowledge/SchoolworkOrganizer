@@ -14,20 +14,20 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["SchoolWorkOrganizerServerV2/SchoolWorkOrganizerServerV2.csproj", "SchoolWorkOrganizerServerV2/"]
-RUN dotnet restore "./SchoolWorkOrganizerServerV2/SchoolWorkOrganizerServerV2.csproj"
+COPY ["SchoolWorkOrganizerServer/SchoolWorkOrganizerServer.csproj", "SchoolWorkOrganizerServer/"]
+RUN dotnet restore "./SchoolWorkOrganizerServer/SchoolWorkOrganizerServer.csproj"
 
 COPY . .
-WORKDIR "/src/SchoolWorkOrganizerServerV2"
-RUN dotnet build "./SchoolWorkOrganizerServerV2.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/SchoolWorkOrganizerServer"
+RUN dotnet build "./SchoolWorkOrganizerServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./SchoolWorkOrganizerServerV2.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./SchoolWorkOrganizerServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SchoolWorkOrganizerServerV2.dll"]
+ENTRYPOINT ["dotnet", "SchoolWorkOrganizerServer.dll"]
