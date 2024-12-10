@@ -53,7 +53,9 @@ namespace SchoolworkOrganizer
                 return;
             }
 
+            Cursor.Current = Cursors.WaitCursor;
             bool loginSuccess = await Program.client.Login(username, password);
+            Cursor.Current = Cursors.Default;
 
             if (!loginSuccess)
             {

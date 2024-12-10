@@ -152,7 +152,7 @@ namespace SchoolworkOrganizer.Panels
             refreshBtn.BackColor = Color.FromArgb(52, 63, 82);
             refreshBtn.FlatAppearance.BorderSize = 0;
             refreshBtn.FlatStyle = FlatStyle.Flat;
-            refreshBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             refreshBtn.ForeColor = Color.FromArgb(231, 231, 231);
             refreshBtn.Location = new Point(154, 444);
             refreshBtn.Margin = new Padding(4, 3, 4, 3);
@@ -165,29 +165,29 @@ namespace SchoolworkOrganizer.Panels
             // 
             // statusCBox
             // 
-            statusCBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            statusCBox.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             statusCBox.FormattingEnabled = true;
             statusCBox.Items.AddRange(new object[] { "Complete", "Incomplete" });
             statusCBox.Location = new Point(107, 160);
             statusCBox.Margin = new Padding(4, 3, 4, 3);
             statusCBox.Name = "statusCBox";
-            statusCBox.Size = new Size(134, 23);
+            statusCBox.Size = new Size(134, 21);
             statusCBox.TabIndex = 25;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.Location = new Point(61, 160);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(42, 15);
+            label2.Size = new Size(40, 13);
             label2.TabIndex = 24;
             label2.Text = "Status:";
             // 
             // selectedFileLabel
             // 
-            selectedFileLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            selectedFileLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             selectedFileLabel.Location = new Point(107, 192);
             selectedFileLabel.Margin = new Padding(4, 3, 4, 3);
             selectedFileLabel.Multiline = true;
@@ -201,7 +201,7 @@ namespace SchoolworkOrganizer.Panels
             openFileBtn.BackColor = Color.FromArgb(52, 63, 82);
             openFileBtn.FlatAppearance.BorderSize = 0;
             openFileBtn.FlatStyle = FlatStyle.Flat;
-            openFileBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            openFileBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             openFileBtn.ForeColor = Color.FromArgb(231, 231, 231);
             openFileBtn.Location = new Point(107, 287);
             openFileBtn.Margin = new Padding(4, 3, 4, 3);
@@ -217,7 +217,7 @@ namespace SchoolworkOrganizer.Panels
             editFileBtn.BackColor = Color.FromArgb(52, 63, 82);
             editFileBtn.FlatAppearance.BorderSize = 0;
             editFileBtn.FlatStyle = FlatStyle.Flat;
-            editFileBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            editFileBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             editFileBtn.ForeColor = Color.FromArgb(231, 231, 231);
             editFileBtn.Location = new Point(107, 254);
             editFileBtn.Margin = new Padding(4, 3, 4, 3);
@@ -231,11 +231,11 @@ namespace SchoolworkOrganizer.Panels
             // fileLabel
             // 
             fileLabel.AutoSize = true;
-            fileLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            fileLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             fileLabel.Location = new Point(74, 195);
             fileLabel.Margin = new Padding(4, 0, 4, 0);
             fileLabel.Name = "fileLabel";
-            fileLabel.Size = new Size(27, 15);
+            fileLabel.Size = new Size(26, 13);
             fileLabel.TabIndex = 20;
             fileLabel.Text = "File:";
             // 
@@ -244,7 +244,7 @@ namespace SchoolworkOrganizer.Panels
             cancelBtn.BackColor = Color.FromArgb(52, 63, 82);
             cancelBtn.FlatAppearance.BorderSize = 0;
             cancelBtn.FlatStyle = FlatStyle.Flat;
-            cancelBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cancelBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cancelBtn.ForeColor = Color.FromArgb(231, 231, 231);
             cancelBtn.Location = new Point(154, 374);
             cancelBtn.Margin = new Padding(4, 3, 4, 3);
@@ -261,7 +261,7 @@ namespace SchoolworkOrganizer.Panels
             deleteBtn.Enabled = false;
             deleteBtn.FlatAppearance.BorderSize = 0;
             deleteBtn.FlatStyle = FlatStyle.Flat;
-            deleteBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            deleteBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             deleteBtn.ForeColor = Color.FromArgb(231, 231, 231);
             deleteBtn.Location = new Point(10, 374);
             deleteBtn.Margin = new Padding(4, 3, 4, 3);
@@ -278,7 +278,7 @@ namespace SchoolworkOrganizer.Panels
             saveBtn.Enabled = false;
             saveBtn.FlatAppearance.BorderSize = 0;
             saveBtn.FlatStyle = FlatStyle.Flat;
-            saveBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             saveBtn.ForeColor = Color.FromArgb(231, 231, 231);
             saveBtn.Location = new Point(154, 340);
             saveBtn.Margin = new Padding(4, 3, 4, 3);
@@ -294,7 +294,7 @@ namespace SchoolworkOrganizer.Panels
             addBtn.BackColor = Color.FromArgb(95, 192, 170);
             addBtn.FlatAppearance.BorderSize = 0;
             addBtn.FlatStyle = FlatStyle.Flat;
-            addBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            addBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             addBtn.ForeColor = Color.FromArgb(231, 231, 231);
             addBtn.Location = new Point(10, 340);
             addBtn.Margin = new Padding(4, 3, 4, 3);
@@ -307,42 +307,42 @@ namespace SchoolworkOrganizer.Panels
             // 
             // dueDatePicker
             // 
-            dueDatePicker.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dueDatePicker.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dueDatePicker.Location = new Point(107, 130);
             dueDatePicker.Margin = new Padding(4, 3, 4, 3);
             dueDatePicker.Name = "dueDatePicker";
-            dueDatePicker.Size = new Size(134, 22);
+            dueDatePicker.Size = new Size(134, 20);
             dueDatePicker.TabIndex = 15;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.Location = new Point(42, 130);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(54, 15);
+            label1.Size = new Size(56, 13);
             label1.TabIndex = 14;
             label1.Text = "Due Date:";
             // 
             // editSubjectCBox
             // 
-            editSubjectCBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            editSubjectCBox.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             editSubjectCBox.FormattingEnabled = true;
             editSubjectCBox.Location = new Point(107, 99);
             editSubjectCBox.Margin = new Padding(4, 3, 4, 3);
             editSubjectCBox.Name = "editSubjectCBox";
-            editSubjectCBox.Size = new Size(134, 23);
+            editSubjectCBox.Size = new Size(134, 21);
             editSubjectCBox.TabIndex = 9;
             // 
             // subjectLabel
             // 
             subjectLabel.AutoSize = true;
-            subjectLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             subjectLabel.Location = new Point(18, 103);
             subjectLabel.Margin = new Padding(4, 0, 4, 0);
             subjectLabel.Name = "subjectLabel";
-            subjectLabel.Size = new Size(80, 15);
+            subjectLabel.Size = new Size(77, 13);
             subjectLabel.TabIndex = 8;
             subjectLabel.Text = "Subject Name:";
             // 
@@ -359,7 +359,7 @@ namespace SchoolworkOrganizer.Panels
             // label3
             // 
             label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Roboto", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.Location = new Point(0, 0);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
@@ -370,21 +370,21 @@ namespace SchoolworkOrganizer.Panels
             // 
             // reviewerTxtBox
             // 
-            reviewerTxtBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            reviewerTxtBox.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             reviewerTxtBox.Location = new Point(107, 69);
             reviewerTxtBox.Margin = new Padding(4, 3, 4, 3);
             reviewerTxtBox.Name = "reviewerTxtBox";
-            reviewerTxtBox.Size = new Size(134, 22);
+            reviewerTxtBox.Size = new Size(134, 20);
             reviewerTxtBox.TabIndex = 1;
             // 
             // reviewerLabel
             // 
             reviewerLabel.AutoSize = true;
-            reviewerLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            reviewerLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             reviewerLabel.Location = new Point(18, 73);
             reviewerLabel.Margin = new Padding(4, 0, 4, 0);
             reviewerLabel.Name = "reviewerLabel";
-            reviewerLabel.Size = new Size(79, 15);
+            reviewerLabel.Size = new Size(75, 13);
             reviewerLabel.TabIndex = 0;
             reviewerLabel.Text = "Activity Name:";
             // 
@@ -482,12 +482,12 @@ namespace SchoolworkOrganizer.Panels
             // subjectCBox
             // 
             subjectCBox.Dock = DockStyle.Fill;
-            subjectCBox.Font = new Font("Roboto Light", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectCBox.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             subjectCBox.FormattingEnabled = true;
             subjectCBox.Location = new Point(12, 12);
             subjectCBox.Margin = new Padding(4, 3, 4, 3);
             subjectCBox.Name = "subjectCBox";
-            subjectCBox.Size = new Size(813, 26);
+            subjectCBox.Size = new Size(813, 24);
             subjectCBox.TabIndex = 0;
             subjectCBox.SelectedIndexChanged += subjectCBox_SelectedIndexChanged;
             // 

@@ -7,6 +7,7 @@ namespace SchoolworkOrganizer
     {
         public static readonly Client client = new Client();
         public static User? user => client.user;
+        public static bool IsLoggedIn => user != null;
         public static void Logout() => client.Logout();
 
         /// <summary>

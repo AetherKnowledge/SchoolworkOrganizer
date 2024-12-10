@@ -226,7 +226,7 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            if (Program.client.IsLoggedIn) return;
+            if (!Program.IsLoggedIn) return;
 
             Program.client.CheckForUpdates();
             RefreshTable();

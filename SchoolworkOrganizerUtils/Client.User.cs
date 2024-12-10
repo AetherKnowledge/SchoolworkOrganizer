@@ -13,7 +13,6 @@ namespace SchoolworkOrganizerUtils
     public partial class Client
     {
         public User? user { get; private set; }
-        public bool IsLoggedIn => user != null;
         private TaskCompletionSource<bool>? loginTcs;
         private TaskCompletionSource<bool>? registerTcs;
         private Timer updateTimer = new Timer(5000);
@@ -67,6 +66,7 @@ namespace SchoolworkOrganizerUtils
             if (message.Type != MessageType.FetchUser) return;
             UserMessage userMessage = (UserMessage)message;
             user = userMessage.GetUser();
+            user.client = this;
 
             if (loginTcs != null)
             {

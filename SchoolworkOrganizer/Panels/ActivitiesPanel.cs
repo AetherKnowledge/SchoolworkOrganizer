@@ -164,7 +164,7 @@ namespace SchoolworkOrganizer.Panels
         {
             try 
             {
-                if (Program.client.IsLoggedIn) return;
+                if (!Program.IsLoggedIn) return;
 
                 string reviewerName = reviewerTxtBox.Text;
                 string subjectName = editSubjectCBox.Text;
@@ -261,7 +261,7 @@ namespace SchoolworkOrganizer.Panels
         private async void deleteBtn_Click(object sender, EventArgs e)
         {
             try {
-                if (Program.client.IsLoggedIn) return;
+                if (!Program.IsLoggedIn) return;
 
                 string filePath = selectedFilePath;
                 string subjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
@@ -347,7 +347,7 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            if (Program.client.IsLoggedIn) return;
+            if (!Program.IsLoggedIn) return;
 
             Program.client.CheckForUpdates();
             RefreshTable();
