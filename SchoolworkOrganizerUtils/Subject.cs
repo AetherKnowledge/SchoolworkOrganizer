@@ -51,6 +51,7 @@ namespace SchoolworkOrganizerUtils
 
             foreach (Activity activity in Activities)
             {
+                if (Utilities.IsTemporaryFile(activity.FilePath)) continue;
                 if (!File.Exists(activity.FilePath)) continue;
                 if (File.GetLastWriteTime(activity.FilePath) <= activity.LastUpdated) continue;
                 if (await client.UpdateActivity(activity)) Console.WriteLine("Updated activity: " + activity.Name);
@@ -59,6 +60,7 @@ namespace SchoolworkOrganizerUtils
 
             foreach (Reviewer reviewer in Reviewers)
             {
+                if (Utilities.IsTemporaryFile(reviewer.FilePath)) continue;
                 if (!File.Exists(reviewer.FilePath)) continue;
                 if (File.GetLastWriteTime(reviewer.FilePath) <= reviewer.LastUpdated) continue;
                 if (await client.UpdateReviewer(reviewer)) Console.WriteLine("Updated reviewer: " + reviewer.Name);

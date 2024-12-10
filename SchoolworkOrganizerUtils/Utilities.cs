@@ -52,6 +52,12 @@ namespace SchoolworkOrganizerUtils
             }
         }
 
+        public static bool IsTemporaryFile(string filePath)
+        {
+            string fileName = Path.GetFileName(filePath);
+            return fileName.StartsWith("~") || fileName.EndsWith(".tmp");
+        }
+
         [SupportedOSPlatform("windows")]
         public static System.Drawing.Image? ConvertToImage(SKImage skImage)
         {
