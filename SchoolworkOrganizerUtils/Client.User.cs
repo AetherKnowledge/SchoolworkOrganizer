@@ -49,22 +49,6 @@ namespace SchoolworkOrganizerUtils
             return true;
         }
 
-        public async Task SendMessageAsync(Message message)
-        {
-            if (socket.State != WebSocketState.Open)
-            {
-                Console.WriteLine("Please wait while trying to connect");
-
-                connectionTcs = new TaskCompletionSource<bool>();
-                await connectionTcs.Task;
-            }
-
-            byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
-
-            if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
-            await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
-        }
-
         private void OnTimedEvent(object? sender, ElapsedEventArgs e)
         {
             Console.WriteLine("Checking for updates...");
@@ -83,6 +67,13 @@ namespace SchoolworkOrganizerUtils
             if (message.Type != MessageType.FetchUser) return;
             UserMessage userMessage = (UserMessage)message;
             user = userMessage.GetUser();
+
+            if (loginTcs != null)
+            {
+                loginTcs.SetResult(true);
+                Console.WriteLine("Logged in.");
+                loginTcs = null;
+            }
 
             updateTimer.Start();
 

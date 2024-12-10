@@ -20,6 +20,7 @@ namespace SchoolworkOrganizerUtils
                 await socket.ConnectAsync(uri, default);
                 if (connectionTcs != null) connectionTcs.SetResult(true);
                 connectionTcs = null;
+                if (socket.State != WebSocketState.Open) throw new Exception("Connection Failed");
 
                 Console.WriteLine("Connected to the server.");
                 await ReceiveMessagesAsync();
@@ -81,6 +82,22 @@ namespace SchoolworkOrganizerUtils
 
         }
 
+        public async Task SendMessageAsync(Message message)
+        {
+            if (socket.State != WebSocketState.Open)
+            {
+                Console.WriteLine("Please wait while trying to connect");
+
+                connectionTcs = new TaskCompletionSource<bool>();
+                await connectionTcs.Task;
+            }
+
+            byte[] buffer = Encoding.UTF8.GetBytes(message.ToString());
+
+            if (Utilities.ShowDataStream) Console.WriteLine(message.ToJsonNoData());
+            await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+        }
+
         public void Disconnect()
         {
             try
@@ -116,10 +133,9 @@ namespace SchoolworkOrganizerUtils
         {
             if (message is StatusMessage statusMessage)
             {
-                if (loginTcs != null)
+                if (loginTcs != null && statusMessage.Status == Status.Failure)
                 {
-                    loginTcs.SetResult(statusMessage.Status == Status.Success);
-                    Console.WriteLine("Logged in.");
+                    loginTcs.SetResult(false);
                     loginTcs = null;
                 }
                 if (registerTcs != null)
