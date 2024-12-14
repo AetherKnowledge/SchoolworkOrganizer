@@ -41,27 +41,24 @@
             uploadPicture = new PictureBox();
             label1 = new Label();
             cancelBtn = new Button();
-            mainPanel.SuspendLayout();
+            SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uploadPicture).BeginInit();
             SuspendLayout();
-            // 
-            // mainPanel
-            // 
-            mainPanel.Controls.Add(cancelBtn);
-            mainPanel.Controls.Add(label1);
-            mainPanel.Controls.Add(uploadPicture);
-            mainPanel.Controls.Add(upload_button);
-            mainPanel.Controls.Add(usernameTxt);
-            mainPanel.Controls.Add(passwordTxt);
-            mainPanel.Controls.Add(verifyTxt);
-            mainPanel.Controls.Add(label9);
-            mainPanel.Controls.Add(emailTxt);
-            mainPanel.Controls.Add(label3);
-            mainPanel.Controls.Add(label6);
-            mainPanel.Controls.Add(updateBtn);
-            mainPanel.Controls.Add(label29);
-            mainPanel.Margin = new Padding(5, 3, 5, 3);
-            mainPanel.Size = new Size(1089, 626);
+            Controls.Add(cancelBtn);
+            Controls.Add(label1);
+            Controls.Add(uploadPicture);
+            Controls.Add(upload_button);
+            Controls.Add(usernameTxt);
+            Controls.Add(passwordTxt);
+            Controls.Add(verifyTxt);
+            Controls.Add(label9);
+            Controls.Add(emailTxt);
+            Controls.Add(label3);
+            Controls.Add(label6);
+            Controls.Add(updateBtn);
+            Controls.Add(label29);
+            Margin = new Padding(5, 3, 5, 3);
+            Size = new Size(1089, 626);
             // 
             // label9
             // 
@@ -219,8 +216,8 @@
             Margin = new Padding(5, 3, 5, 3);
             Name = "SettingsPanel";
             Text = "Settings";
-            mainPanel.ResumeLayout(false);
-            mainPanel.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
             ((System.ComponentModel.ISupportInitialize)uploadPicture).EndInit();
             ResumeLayout(false);
             PerformLayout();

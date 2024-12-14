@@ -65,7 +65,7 @@ namespace SchoolworkOrganizer.Panels
             Status = new DataGridViewTextBoxColumn();
             panel3 = new Panel();
             subjectCBox = new ComboBox();
-            mainPanel.SuspendLayout();
+            SuspendLayout();
             panel5.SuspendLayout();
             panel7.SuspendLayout();
             panel4.SuspendLayout();
@@ -75,12 +75,6 @@ namespace SchoolworkOrganizer.Panels
             ((System.ComponentModel.ISupportInitialize)table).BeginInit();
             panel3.SuspendLayout();
             SuspendLayout();
-            // 
-            // mainPanel
-            // 
-            mainPanel.Controls.Add(panel8);
-            mainPanel.Controls.Add(panel4);
-            mainPanel.Margin = new Padding(5, 3, 5, 3);
             // 
             // searchComboBox
             // 
@@ -493,13 +487,16 @@ namespace SchoolworkOrganizer.Panels
             // 
             // ActivitiesPanel
             // 
+            Controls.Add(panel8);
+            Controls.Add(panel4);
+            Margin = new Padding(5, 3, 5, 3);
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1280, 720);
             Margin = new Padding(5, 3, 5, 3);
             Name = "ActivitiesPanel";
             Text = "Activities";
-            mainPanel.ResumeLayout(false);
+            ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel7.ResumeLayout(false);
             panel4.ResumeLayout(false);

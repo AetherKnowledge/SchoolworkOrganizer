@@ -11,12 +11,17 @@ using System.Windows.Forms;
 
 namespace SchoolworkOrganizer
 {
-    public partial class HomePanel : Template
+    public partial class HomePanel : Template2
     {
         public HomePanel()
         {
             InitializeComponent();
 
+        }
+
+        public override void RefreshData()
+        {
+            
         }
 
     }

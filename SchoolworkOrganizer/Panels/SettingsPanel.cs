@@ -4,16 +4,15 @@ using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public partial class SettingsPanel : Template
+    public partial class SettingsPanel : Template2
     {
         public SettingsPanel()
         {
             InitializeComponent();
         }
 
-        public new void Show()
+        public override void RefreshData()
         {
-            base.Show();
             RefreshUser();
         }
 
@@ -77,9 +76,8 @@ namespace SchoolworkOrganizer.Panels
             RefreshUser();
         }
 
-        protected new void RefreshUser()
+        protected void RefreshUser()
         {
-            base.RefreshUser();
             if (Program.user == null) return;
 
             usernameTxt.Text = Program.user.Username;

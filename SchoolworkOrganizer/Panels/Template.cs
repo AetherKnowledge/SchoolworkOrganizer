@@ -77,37 +77,37 @@ namespace SchoolworkOrganizer.Panels
 
         public void homeBtn_Click(object sender, EventArgs e)
         {
-            if (this == OpenPanels.homePanel) return;
-            this.Hide();
-            OpenPanels.homePanel.Show();
+            //if (this == OpenPanels.homePanel) return;
+            //this.Hide();
+            //OpenPanels.homePanel.Show();
         }
 
         public void activityBtn_Click(object sender, EventArgs e)
         {
-            if (this == OpenPanels.activitiesPanel) return;
-            this.Hide();
-            OpenPanels.activitiesPanel.Show();
+            //if (this == OpenPanels.activitiesPanel) return;
+            //this.Hide();
+            //OpenPanels.activitiesPanel.Show();
         }
 
         public void settingsBtn_Click(object sender, EventArgs e)
         {
-            if (this == OpenPanels.settingsPanel) return;
-            this.Hide();
-            OpenPanels.settingsPanel.Show();
+            //if (this == OpenPanels.settingsPanel) return;
+            //this.Hide();
+            //OpenPanels.settingsPanel.Show();
         }
 
         private void reviewerBtn_Click(object sender, EventArgs e)
         {
-            if (this == OpenPanels.reviewerPanel) return;
-            this.Hide();
-            OpenPanels.reviewerPanel.Show();
+            //if (this == OpenPanels.reviewerPanel) return;
+            //this.Hide();
+            //OpenPanels.reviewerPanel.Show();
         }
 
         private void subjectsBtn_Click(object sender, EventArgs e)
         {
-            if (this == OpenPanels.subjectsPanel) return;
-            this.Hide();
-            OpenPanels.subjectsPanel.Show();
+            //if (this == OpenPanels.subjectsPanel) return;
+            //this.Hide();
+            //OpenPanels.subjectsPanel.Show();
         }
 
         public void logoutBtn_Click(object sender, EventArgs e)
@@ -130,8 +130,6 @@ namespace SchoolworkOrganizer.Panels
                 e.Graphics.DrawRectangle(pen, rect);
             }
         }
-
-
 
     }
 }

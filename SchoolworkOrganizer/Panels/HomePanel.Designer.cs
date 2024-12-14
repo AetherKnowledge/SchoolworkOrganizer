@@ -30,13 +30,10 @@
         {
             SuspendLayout();
             // 
-            // mainPanel
-            // 
-            mainPanel.Margin = new Padding(5, 3, 5, 3);
-            mainPanel.Size = new Size(1089, 626);
-            // 
             // HomePanel
-            // 
+            //
+            Margin = new Padding(5, 3, 5, 3);
+            Size = new Size(1089, 626);
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1280, 720);

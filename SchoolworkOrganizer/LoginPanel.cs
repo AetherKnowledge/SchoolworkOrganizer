@@ -65,7 +65,7 @@ namespace SchoolworkOrganizer
             }
 
             this.Hide();
-            OpenPanels.homePanel.Show();
+            OpenPanels.adminPage.Show();
             Clear();
 
         }

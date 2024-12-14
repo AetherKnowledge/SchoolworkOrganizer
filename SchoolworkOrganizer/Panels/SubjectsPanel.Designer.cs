@@ -43,19 +43,16 @@
             Subject = new DataGridViewTextBoxColumn();
             Reviewers = new DataGridViewTextBoxColumn();
             Activities = new DataGridViewTextBoxColumn();
-            mainPanel.SuspendLayout();
+            SuspendLayout();
             panel4.SuspendLayout();
             panel5.SuspendLayout();
             panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)table).BeginInit();
             SuspendLayout();
-            // 
-            // mainPanel
-            // 
-            mainPanel.Controls.Add(panel8);
-            mainPanel.Controls.Add(panel4);
-            mainPanel.Margin = new Padding(5, 3, 5, 3);
-            mainPanel.Size = new Size(1089, 626);
+            Controls.Add(panel8);
+            Controls.Add(panel4);
+            Margin = new Padding(5, 3, 5, 3);
+            Size = new Size(1089, 626);
             // 
             // panel4
             // 
@@ -255,7 +252,7 @@
             Margin = new Padding(5, 3, 5, 3);
             Name = "SubjectsPanel";
             Text = "Subjects";
-            mainPanel.ResumeLayout(false);
+            ResumeLayout(false);
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel5.ResumeLayout(false);

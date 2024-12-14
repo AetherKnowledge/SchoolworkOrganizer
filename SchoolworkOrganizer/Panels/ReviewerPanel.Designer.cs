@@ -52,7 +52,6 @@
             FilePath = new DataGridViewButtonColumn();
             panel1 = new Panel();
             subjectCBox = new ComboBox();
-            mainPanel.SuspendLayout();
             panel4.SuspendLayout();
             panel5.SuspendLayout();
             panel8.SuspendLayout();
@@ -60,12 +59,6 @@
             ((System.ComponentModel.ISupportInitialize)table).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
-            // 
-            // mainPanel
-            // 
-            mainPanel.Controls.Add(panel8);
-            mainPanel.Controls.Add(panel4);
-            mainPanel.Margin = new Padding(5, 3, 5, 3);
             // 
             // panel4
             // 
@@ -87,7 +80,7 @@
             panel4.Location = new Point(0, 0);
             panel4.Margin = new Padding(4, 3, 4, 3);
             panel4.Name = "panel4";
-            panel4.Size = new Size(252, 626);
+            panel4.Size = new Size(252, 720);
             panel4.TabIndex = 1;
             // 
             // refreshBtn
@@ -297,7 +290,7 @@
             panel8.Location = new Point(252, 0);
             panel8.Margin = new Padding(4, 3, 4, 3);
             panel8.Name = "panel8";
-            panel8.Size = new Size(837, 626);
+            panel8.Size = new Size(1028, 720);
             panel8.TabIndex = 17;
             // 
             // panel2
@@ -308,7 +301,7 @@
             panel2.Margin = new Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
             panel2.Padding = new Padding(12);
-            panel2.Size = new Size(837, 583);
+            panel2.Size = new Size(1028, 677);
             panel2.TabIndex = 8;
             // 
             // table
@@ -328,7 +321,7 @@
             table.ReadOnly = true;
             table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            table.Size = new Size(813, 559);
+            table.Size = new Size(1004, 653);
             table.TabIndex = 6;
             // 
             // ReviewerName
@@ -359,7 +352,7 @@
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(12);
-            panel1.Size = new Size(837, 43);
+            panel1.Size = new Size(1028, 43);
             panel1.TabIndex = 7;
             // 
             // subjectCBox
@@ -370,19 +363,17 @@
             subjectCBox.Location = new Point(12, 12);
             subjectCBox.Margin = new Padding(4, 3, 4, 3);
             subjectCBox.Name = "subjectCBox";
-            subjectCBox.Size = new Size(813, 26);
+            subjectCBox.Size = new Size(1004, 26);
             subjectCBox.TabIndex = 0;
             subjectCBox.SelectedIndexChanged += subjectCBox_SelectedIndexChanged;
             // 
             // ReviewerPanel
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1280, 720);
+            Controls.Add(panel8);
+            Controls.Add(panel4);
             Margin = new Padding(5, 3, 5, 3);
             Name = "ReviewerPanel";
-            Text = "Reviewer";
-            mainPanel.ResumeLayout(false);
+            Size = new Size(1280, 720);
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel5.ResumeLayout(false);
@@ -391,7 +382,6 @@
             ((System.ComponentModel.ISupportInitialize)table).EndInit();
             panel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
