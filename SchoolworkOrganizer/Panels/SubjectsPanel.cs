@@ -1,4 +1,5 @@
 ﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
@@ -72,8 +73,8 @@ namespace SchoolworkOrganizer.Panels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -101,8 +102,8 @@ namespace SchoolworkOrganizer.Panels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -115,27 +116,27 @@ namespace SchoolworkOrganizer.Panels
                 string subjectName = subjectTxtBox.Text;
                 if (subjectName == "")
                 {
-                    MessageBox.Show("Please add subject name.", "Error");
+                    PopupForm.Show("Please add subject name.", "Error");
                     return;
                 }
 
                 if (Program.user.Subjects.Any(subject => subject.SubjectName == subjectName))
                 {
-                    MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Subject already exists.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
                 Subject subject = new Subject(Program.user, subjectName);
-                if (await subject.AddSubject()) MessageBox.Show("Subject added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else MessageBox.Show("Failed to add subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (await subject.AddSubject()) PopupForm.Show("Subject added successfully.", "Success", MessageBoxButtons.OK);
+                else PopupForm.Show("Failed to add subject.", "Error", MessageBoxButtons.OK);
 
                 RefreshTable();
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -151,28 +152,28 @@ namespace SchoolworkOrganizer.Panels
 
                 if (newSubjectName == "")
                 {
-                    MessageBox.Show("Please add subject name.", "Error");
+                    PopupForm.Show("Please add subject name.", "Error");
                     return;
                 }
                 else if (newSubjectName != oldSubjectName && Program.user.Subjects.Any(subject => subject.SubjectName == newSubjectName))
                 {
-                    MessageBox.Show("Subject already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Subject already exists.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
                 Subject newSubject = new Subject(Program.user, newSubjectName);
                 bool success = await selectedSubject.UpdateSubject(newSubject);
 
-                if (success) MessageBox.Show("Subject updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else MessageBox.Show("Failed to update subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (success) PopupForm.Show("Subject updated successfully.", "Success", MessageBoxButtons.OK);
+                else PopupForm.Show("Failed to update subject.", "Error", MessageBoxButtons.OK);
 
                 RefreshTable();
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -186,26 +187,26 @@ namespace SchoolworkOrganizer.Panels
 
                 if (selectedSubject == null)
                 {
-                    MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Subject not found.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
-                var confirmResult = MessageBox.Show($"Are you sure you want to delete the subject '{selectedSubject.SubjectName}'?",
-                                                    "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var confirmResult = PopupForm.Show($"Are you sure you want to delete the subject '{selectedSubject.SubjectName}'?",
+                                                    "Delete Confirmation", MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
                 {
                     bool success = await selectedSubject.DeleteSubject();
 
-                    if (success) MessageBox.Show("Subject deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    else MessageBox.Show("Failed to delete subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (success) PopupForm.Show("Subject deleted successfully.", "Success", MessageBoxButtons.OK);
+                    else PopupForm.Show("Failed to delete subject.", "Error", MessageBoxButtons.OK);
                 }
                 RefreshTable();
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -226,7 +227,7 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            if (!Program.IsLoggedIn) return;
+            if (Program.user != null) return;
 
             Program.client.CheckForUpdates();
             RefreshTable();

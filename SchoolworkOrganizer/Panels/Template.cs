@@ -1,5 +1,6 @@
 ﻿using MaterialSkin.Controls;
 using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
@@ -24,7 +25,7 @@ namespace SchoolworkOrganizer.Panels
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
-            var result = MessageBox.Show("Are you sure you want to exit?", "Confirm Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = PopupForm.Show("Are you sure you want to exit?", "Confirm Exit", MessageBoxButtons.YesNo);
 
             if (result == DialogResult.No)
             {

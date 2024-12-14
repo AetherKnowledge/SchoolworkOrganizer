@@ -1,4 +1,5 @@
 ﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
@@ -35,7 +36,7 @@ namespace SchoolworkOrganizer.Panels
             {
                 if (Program.client == null)
                 {
-                    MessageBox.Show("Please login to update user", "Error");
+                    PopupForm.Show("Please login to update user", "Error");
                     return;
                 }
 
@@ -48,24 +49,24 @@ namespace SchoolworkOrganizer.Panels
 
                 if (password == "" || password == "Password")
                 {
-                    MessageBox.Show("Please Enter a password", "Error");
+                    PopupForm.Show("Please Enter a password", "Error");
                     return;
                 }
                 if (password != verifyPass)
                 {
-                    MessageBox.Show("Password does not match", "Error");
+                    PopupForm.Show("Password does not match", "Error");
                     return;
                 }
 
                 User user = new User(email, username, password, Utilities.ConvertToSKImage(uploadPicture.Image));
                 bool success = await Program.user.UpdateUser(user);
-                if (success) MessageBox.Show("User updated successfully", "Success");
-                MessageBox.Show("User update failed", "Error");
+                if (success) PopupForm.Show("User updated successfully", "Success");
+                PopupForm.Show("User update failed", "Error");
                 RefreshUser();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                PopupForm.Show(ex.Message, "Error");
                 if (Program.user == null) return;
 
             }

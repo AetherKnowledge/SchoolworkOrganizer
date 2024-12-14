@@ -1,4 +1,5 @@
 ﻿using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
@@ -97,8 +98,8 @@ namespace SchoolworkOrganizer.Panels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
 
         }
@@ -132,8 +133,8 @@ namespace SchoolworkOrganizer.Panels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -141,7 +142,7 @@ namespace SchoolworkOrganizer.Panels
         {
             try
             {
-                if (!Program.IsLoggedIn) return;
+                if (Program.user != null) return;
 
                 string reviewerName = reviewerTxtBox.Text;
                 string subjectName = editSubjectCBox.Text;
@@ -150,31 +151,31 @@ namespace SchoolworkOrganizer.Panels
 
                 if (subjectName == "")
                 {
-                    MessageBox.Show("Please add subject name.", "Error");
+                    PopupForm.Show("Please add subject name.", "Error");
                     return;
                 }
                 else if (selectedSubject == null)
                 {
-                    MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Please select subject.", "Error", MessageBoxButtons.OK);
                     return;
                 }
                 else if (selectedFilePath == null)
                 {
-                    MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Please select file.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
                 Reviewer reviewer = new Reviewer(reviewerName, selectedSubject, selectedFilePath);
-                if (await reviewer.AddReviewer()) MessageBox.Show("Reviewer added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else MessageBox.Show("Failed to add reviewer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (await reviewer.AddReviewer()) PopupForm.Show("Reviewer added successfully.", "Success", MessageBoxButtons.OK);
+                else PopupForm.Show("Failed to add reviewer.", "Error", MessageBoxButtons.OK);
 
                 RefreshTable();
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -195,38 +196,38 @@ namespace SchoolworkOrganizer.Panels
 
                 if (newReviewerName == "")
                 {
-                    MessageBox.Show("Please add reviewer name.", "Error");
+                    PopupForm.Show("Please add reviewer name.", "Error");
                     return;
                 }
                 else if (newSelectedSubject == null)
                 {
-                    MessageBox.Show("Please select subject.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Please select subject.", "Error", MessageBoxButtons.OK);
                     return;
                 }
                 else if (selectedFilePath == null)
                 {
-                    MessageBox.Show("Please select file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Please select file.", "Error", MessageBoxButtons.OK);
                     return;
                 }
                 else if (selectedReviewer == null)
                 {
-                    MessageBox.Show("Reviewer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Reviewer not found.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
                 Reviewer reviewer = new Reviewer(newReviewerName, newSelectedSubject, selectedFilePath);
                 bool success = await selectedReviewer.UpdateReviewer(reviewer.Name);
 
-                if (success) MessageBox.Show("Reviewer updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                else MessageBox.Show("Failed to update reviewer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (success) PopupForm.Show("Reviewer updated successfully.", "Success", MessageBoxButtons.OK);
+                else PopupForm.Show("Failed to update reviewer.", "Error", MessageBoxButtons.OK);
 
                 RefreshTable();
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -234,7 +235,7 @@ namespace SchoolworkOrganizer.Panels
         {
             try
             {
-                if (!Program.IsLoggedIn) return;
+                if (Program.user != null) return;
 
                 string filePath = selectedFilePath;
                 string subjectName = table.SelectedRows[0]?.Cells["Subject"]?.Value?.ToString() ?? throw new ArgumentNullException("Invalid row subject cannot be found");
@@ -242,7 +243,7 @@ namespace SchoolworkOrganizer.Panels
 
                 if (selectedSubject == null)
                 {
-                    MessageBox.Show("Subject not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Subject not found.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
@@ -250,26 +251,26 @@ namespace SchoolworkOrganizer.Panels
 
                 if (selectedReviewer == null)
                 {
-                    MessageBox.Show("Reviewer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    PopupForm.Show("Reviewer not found.", "Error", MessageBoxButtons.OK);
                     return;
                 }
 
-                var confirmResult = MessageBox.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
-                                                    "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var confirmResult = PopupForm.Show($"Are you sure you want to delete the reviewer '{selectedSubject.SubjectName}'?",
+                                                    "Delete Confirmation", MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
                 {
                     bool success = await selectedReviewer.DeleteReviewer();
 
-                    if (success) MessageBox.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    else MessageBox.Show("Failed to delete reviewer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (success) PopupForm.Show("Reviewer deleted successfully.", "Success", MessageBoxButtons.OK);
+                    else PopupForm.Show("Failed to delete reviewer.", "Error", MessageBoxButtons.OK);
                 }
                 RefreshTable();
                 Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-                if (Utilities.Debug) MessageBox.Show(ex.StackTrace);
+                PopupForm.Show($"An error occurred: {ex.Message}");
+                if (Utilities.Debug) PopupForm.Show(ex.StackTrace);
             }
         }
 
@@ -289,7 +290,7 @@ namespace SchoolworkOrganizer.Panels
         {
             if (selectedFilePath == null)
             {
-                MessageBox.Show("Please select a file.", "Error");
+                PopupForm.Show("Please select a file.", "Error");
                 return;
             }
             Utilities.OpenFile(selectedFilePath);
@@ -320,7 +321,7 @@ namespace SchoolworkOrganizer.Panels
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            if (!Program.IsLoggedIn) return;
+            if (Program.user != null) return;
 
             Program.client.CheckForUpdates();
             RefreshTable();

@@ -1,5 +1,6 @@
 ﻿using SchoolworkOrganizer.Design;
 using SchoolworkOrganizer.Panels;
+using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizer.Popups;
 using SchoolworkOrganizerUtils;
 
@@ -49,7 +50,7 @@ namespace SchoolworkOrganizer
 
             if (username == "Username" || password == "Password")
             {
-                MessageBox.Show("Please enter valid credentials", "Error");
+                PopupForm.Show("Please enter valid credentials", "Error");
                 return;
             }
 
@@ -59,7 +60,7 @@ namespace SchoolworkOrganizer
 
             if (!loginSuccess)
             {
-                MessageBox.Show("Invalid Credentials", "Error");
+                PopupForm.Show("Invalid Credentials", "Error");
                 return;
             }
 

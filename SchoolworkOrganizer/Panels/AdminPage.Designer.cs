@@ -43,8 +43,6 @@
             // 
             mainPanel.Controls.Add(tabControl);
             mainPanel.Controls.Add(materialDrawer1);
-            mainPanel.Location = new Point(190, 93);
-            mainPanel.Size = new Size(1089, 626);
             // 
             // tabControl
             // 
@@ -140,7 +138,6 @@
             DrawerShowIconsWhenHidden = true;
             DrawerUseColors = true;
             Name = "AdminPage";
-            Padding = new Padding(1, 24, 1, 1);
             Text = "AdminPage";
             mainPanel.ResumeLayout(false);
             tabControl.ResumeLayout(false);

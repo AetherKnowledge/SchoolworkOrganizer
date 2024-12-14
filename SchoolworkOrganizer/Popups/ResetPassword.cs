@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Popup;
 
 namespace SchoolworkOrganizer.Popups
 {
@@ -47,7 +48,7 @@ namespace SchoolworkOrganizer.Popups
         {
             if(newPasswordTxtBox.Text == "New Password" || newPasswordTxtBox.Text != verifyPasswordTxtBox.Text)
             {
-                MessageBox.Show("Password not the same", "Error");
+                PopupForm.Show("Password not the same", "Error");
                 return;
             }
 

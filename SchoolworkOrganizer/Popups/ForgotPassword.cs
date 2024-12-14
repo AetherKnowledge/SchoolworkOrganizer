@@ -1,6 +1,7 @@
 ﻿using SchoolworkOrganizer.Panels;
 using SchoolworkOrganizerUtils;
 using SchoolworkOrganizer.Design;
+using SchoolworkOrganizer.Popup;
 
 namespace SchoolworkOrganizer.Popups
 {
@@ -44,7 +45,7 @@ namespace SchoolworkOrganizer.Popups
             //string email = employeeIDTxtBox.Text;
             //if (!doesUserExist(email))
             //{
-            //    MessageBox.Show("Employee does not exist", "Error");
+            //    PopupForm.Show("Employee does not exist", "Error");
             //    return;
             //}
 
@@ -52,7 +53,7 @@ namespace SchoolworkOrganizer.Popups
             code = random.Next(100001,999999).ToString();
 
             //kung gusto mong mag gmail shit comment mo ung line nasa baba
-            MessageBox.Show(code.ToString());
+            PopupForm.Show(code.ToString());
 
             //// Set up the SMTP client configuration
             //string smtpHost = "smtp.gmail.com"; // e.g., smtp.gmail.com for Gmail
@@ -87,11 +88,11 @@ namespace SchoolworkOrganizer.Popups
 
             //    // Send the email
             //    smtp.Send(mail);
-            //    MessageBox.Show("Verification code has been sent to your email.", "Success");
+            //    PopupForm.Show("Verification code has been sent to your email.", "Success");
             //}
             //catch (Exception ex)
             //{
-            //    MessageBox.Show("An error occurred: " + ex.Message, "Error");
+            //    PopupForm.Show("An error occurred: " + ex.Message, "Error");
             //}
             ////hanggang dine kung ayaw mo muna mag gmail shit
 
@@ -101,7 +102,7 @@ namespace SchoolworkOrganizer.Popups
         {
             if (codeTxtBox.Text != code)
             {
-                MessageBox.Show("Invalid Verification Code", "Error");
+                PopupForm.Show("Invalid Verification Code", "Error");
                 return;
             }
             isSuccess = true;

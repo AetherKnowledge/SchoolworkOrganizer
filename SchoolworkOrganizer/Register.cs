@@ -2,6 +2,7 @@
 using SchoolworkOrganizerUtils;
 using SchoolworkOrganizer.Design;
 using SkiaSharp;
+using SchoolworkOrganizer.Popup;
 
 namespace SchoolworkOrganizer
 {
@@ -57,7 +58,7 @@ namespace SchoolworkOrganizer
 
             if (password != verifyPass)
             {
-                MessageBox.Show("Password does not match", "Error");
+                PopupForm.Show("Password does not match", "Error");
                 return;
             }
 
@@ -65,11 +66,11 @@ namespace SchoolworkOrganizer
             bool registerSuccess = await Program.client.Register(user);
             if (!registerSuccess)
             {
-                MessageBox.Show("User already exists", "Error");
+                PopupForm.Show("User already exists", "Error");
                 return;
             }
 
-            MessageBox.Show("Register Successful", "Success");
+            PopupForm.Show("Register Successful", "Success");
             this.Hide();
             OpenPanels.loginPage.Show();
             Clear();
