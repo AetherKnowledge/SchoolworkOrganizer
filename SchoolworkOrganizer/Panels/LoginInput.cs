@@ -7,6 +7,9 @@ namespace SchoolworkOrganizer.Panels
     public partial class LoginInput : UserControl
     {
         public event EventHandler? Switch;
+        public event EventHandler? LoginSuccess;
+        public event EventHandler? LoginFail;
+
         private Image hidePassImage;
         private Image showPassImage;
         public LoginInput()
@@ -59,6 +62,7 @@ namespace SchoolworkOrganizer.Panels
             if (username == "Username" || password == "Password")
             {
                 PopupForm.Show("Please enter valid credentials", "Error");
+                LoginFail?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -69,12 +73,12 @@ namespace SchoolworkOrganizer.Panels
             if (!loginSuccess)
             {
                 PopupForm.Show("Invalid Credentials", "Error");
+                LoginFail?.Invoke(this, EventArgs.Empty);
                 return;
             }
-
-            OpenPanels.loginPage.Hide();
-            OpenPanels.adminPage.Show();
             Clear();
+
+            LoginSuccess?.Invoke(this, EventArgs.Empty);
         }
 
         private void switchLabel_Click(object sender, EventArgs e)

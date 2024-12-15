@@ -46,6 +46,12 @@ namespace SchoolworkOrganizer
             loginInput.Switch += switchLabel_Click;
             registerInput.Switch += switchLabel_Click;
 
+            loginInput.LoginSuccess += (sender, e) =>
+            {
+                this.Hide();
+                OpenPanels.adminPage.Show();
+            };
+
         }
 
         public new void Show()

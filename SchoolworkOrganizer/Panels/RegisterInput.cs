@@ -9,6 +9,9 @@ namespace SchoolworkOrganizer.Panels
     public partial class RegisterInput : UserControl
     {
         public event EventHandler? Switch;
+        public event EventHandler? RegisterSuccess;
+        public event EventHandler? RegisterFail;
+
         private Image hidePassImage;
         private Image showPassImage;
         public RegisterInput()
@@ -75,6 +78,7 @@ namespace SchoolworkOrganizer.Panels
             if (password != verifyPass)
             {
                 PopupForm.Show("Password does not match", "Error");
+                RegisterFail?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -83,11 +87,14 @@ namespace SchoolworkOrganizer.Panels
             if (!registerSuccess)
             {
                 PopupForm.Show("User already exists", "Error");
+                RegisterFail?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
             PopupForm.Show("Register Successful", "Success");
             Clear();
+
+            RegisterSuccess?.Invoke(this, EventArgs.Empty);
         }
 
     }
