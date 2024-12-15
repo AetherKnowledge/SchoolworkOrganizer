@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using MaterialSkin.Controls;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,31 @@ namespace SchoolworkOrganizer.Design
     {
 
         public static void InitializeTextBoxWithPlaceholder(TextBox textBox)
+        {
+            string placeholder = textBox.Text;
+            textBox.ForeColor = Color.Gray;
+
+            textBox.Enter += (sender, e) =>
+            {
+                if (textBox.Text == placeholder)
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            };
+
+            textBox.Leave += (sender, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Text = placeholder;
+                    textBox.ForeColor = Color.Gray;
+                }
+            };
+
+        }
+
+        public static void InitializeTextBoxWithPlaceholder(MaterialTextBox2 textBox)
         {
             string placeholder = textBox.Text;
             textBox.ForeColor = Color.Gray;

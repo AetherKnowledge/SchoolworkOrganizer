@@ -94,7 +94,7 @@ namespace MaterialSkin.Controls
         }
 
         [Category("Drawer")]
-        public bool UseBackColor
+        public bool DrawerUseBackColor
         {
             get => drawerControl.UseBackColor;
             set => drawerControl.UseBackColor = value;

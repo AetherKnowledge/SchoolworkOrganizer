@@ -17,21 +17,25 @@ namespace SchoolworkOrganizer
             FormUtilities.InitializeTextBoxWithPlaceholder(txtPassword);
             FormUtilities.InitializeTextBoxWithPlaceholder(txtVerify);
             this.FormClosing += Template.MyFormClosing;
+
+            this.Size = OpenPanels.size;
+            this.Location = OpenPanels.location;
+            this.WindowState = OpenPanels.windowState;
         }
 
         public new void Show()
         {
             base.Show();
-            this.Size = Template.size;
-            this.Location = Template.location;
-            this.WindowState = Template.windowState;
+            this.Size = OpenPanels.size;
+            this.Location = OpenPanels.location;
+            this.WindowState = OpenPanels.windowState;
         }
 
         public new void Hide()
         {
-            Template.size = this.Size;
-            Template.location = this.Location;
-            Template.windowState = this.WindowState;
+            OpenPanels.size = this.Size;
+            OpenPanels.location = this.Location;
+            OpenPanels.windowState = this.WindowState;
             base.Hide();
         }
 

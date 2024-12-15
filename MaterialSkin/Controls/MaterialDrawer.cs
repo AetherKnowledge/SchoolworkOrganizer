@@ -8,8 +8,11 @@
     using System.Drawing.Drawing2D;
     using System.Drawing.Imaging;
     using System.Drawing.Text;
-    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
+    using System.Threading;
     using System.Windows.Forms;
+    using System.Windows.Forms.VisualStyles;
+    using Timer = System.Windows.Forms.Timer;
 
     public class MaterialDrawer : Control, IMaterialControl
     {
@@ -20,13 +23,19 @@
         private readonly PictureBox SmallLogoPictureBox = new PictureBox();
         private readonly PictureBox picBox = new PictureBox();
         private readonly Label picLabel = new Label();
-        private readonly AnimationManager _logoutImageAnimManager;
+        private Timer animationTimer = new Timer();
+        private bool logoutBtnHovered = false;
+        private bool logoutBtnPressed = false;
+        private bool logoutBtnHasLeft = true;
+        private AnimationManager _logoutClickManager;
 
         private int _imagePadding = 100;
         private int ImagePadding { 
             get {
                 if (!DisplayImage) return LogoPanel.Height;
-                return IsOpen ? _imagePadding : LogoPanel.Height; 
+                return _imagePadding;
+
+                //return IsOpen ? _imagePadding : LogoPanel.Height; 
             }
             set => _imagePadding = value;
         }
@@ -47,13 +56,21 @@
         }
 
         [Category("Logo")]
-        public int LogoPanelHeight { get; set; } = 100;
+        public int LogoPanelHeight 
+        { 
+            get; set; 
+        } = 100;
 
+        private Image _BigLogo;
         [Category("Logo")]
         public Image BigLogo
         {
-            get { return BigLogoPictureBox.Image; }
-            set { BigLogoPictureBox.Image = value; }
+            get { return _BigLogo; }
+            set 
+            {
+                _BigLogo = value;
+                BigLogoPictureBox.Image = value; 
+            }
         }
         [Category("Logo")]
         public Image SmallLogo
@@ -272,10 +289,6 @@
         public event EventHandler LogoutImageClick;
 
         // icons
-        private Dictionary<string, TextureBrush> iconsBrushes;
-
-        private Dictionary<string, TextureBrush> iconsSelectedBrushes;
-        private Dictionary<string, Rectangle> iconsSize;
         private int prevLocation;
 
         private int rippleSize = 0;
@@ -321,106 +334,14 @@
         private void preProcessIcons()
         {
             // pre-process and pre-allocate texture brushes (icons)
-            if (_baseTabControl == null || _baseTabControl.TabCount == 0 || _baseTabControl.ImageList == null || _drawerItemRects == null || _drawerItemRects.Count == 0)
-                return;
+            //if (_baseTabControl == null || _baseTabControl.TabCount == 0 || _baseTabControl.ImageList == null || _drawerItemRects == null || _drawerItemRects.Count == 0)
+            //    return;
 
-            // Calculate lightness and color
-            float l = UseColors ? SkinManager.ColorScheme.TextColor.R / 255 : SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? 0f : 1f;
-            float r = (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor.R : SkinManager.ColorScheme.PrimaryColor.R) / 255f;
-            float g = (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor.G : SkinManager.ColorScheme.PrimaryColor.G) / 255f;
-            float b = (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor.B : SkinManager.ColorScheme.PrimaryColor.B) / 255f;
-
-            // Create matrices
-            float[][] matrixGray = {
-                    new float[] {   0,   0,   0,   0,  0}, // Red scale factor
-                    new float[] {   0,   0,   0,   0,  0}, // Green scale factor
-                    new float[] {   0,   0,   0,   0,  0}, // Blue scale factor
-                    new float[] {   0,   0,   0, .7f,  0}, // alpha scale factor
-                    new float[] {   l,   l,   l,   0,  1}};// offset
-
-            float[][] matrixColor = {
-                    new float[] {   0,   0,   0,   0,  0}, // Red scale factor
-                    new float[] {   0,   0,   0,   0,  0}, // Green scale factor
-                    new float[] {   0,   0,   0,   0,  0}, // Blue scale factor
-                    new float[] {   0,   0,   0,   1,  0}, // alpha scale factor
-                    new float[] {   r,   g,   b,   0,  1}};// offset
-
-            ColorMatrix colorMatrixGray = new ColorMatrix(matrixGray);
-            ColorMatrix colorMatrixColor = new ColorMatrix(matrixColor);
-
-            ImageAttributes grayImageAttributes = new ImageAttributes();
-            ImageAttributes colorImageAttributes = new ImageAttributes();
-
-            // Set color matrices
-            grayImageAttributes.SetColorMatrix(colorMatrixGray, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-            colorImageAttributes.SetColorMatrix(colorMatrixColor, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
-            // Create brushes
-            iconsBrushes = new Dictionary<string, TextureBrush>(_baseTabControl.TabPages.Count);
-            iconsSelectedBrushes = new Dictionary<string, TextureBrush>(_baseTabControl.TabPages.Count);
-            iconsSize = new Dictionary<string, Rectangle>(_baseTabControl.TabPages.Count);
-
-            foreach (TabPage tabPage in _baseTabControl.TabPages)
-            {
-                // skip items without image
-                if (String.IsNullOrEmpty(tabPage.ImageKey) || _drawerItemRects == null)
-                    continue;
-
-                // Image Rect
-                Rectangle destRect = new Rectangle(0, 0, _baseTabControl.ImageList.Images[tabPage.ImageKey].Width, _baseTabControl.ImageList.Images[tabPage.ImageKey].Height);
-
-                // Create a pre-processed copy of the image (GRAY)
-                Bitmap bgray = new Bitmap(destRect.Width, destRect.Height);
-                using (Graphics gGray = Graphics.FromImage(bgray))
-                {
-                    gGray.DrawImage(_baseTabControl.ImageList.Images[tabPage.ImageKey],
-                        new Point[] {
-                                new Point(0, 0),
-                                new Point(destRect.Width, 0),
-                                new Point(0, destRect.Height),
-                        },
-                        destRect, GraphicsUnit.Pixel, grayImageAttributes);
-                }
-
-                // Create a pre-processed copy of the image (PRIMARY COLOR)
-                Bitmap bcolor = new Bitmap(destRect.Width, destRect.Height);
-                using (Graphics gColor = Graphics.FromImage(bcolor))
-                {
-                    gColor.DrawImage(_baseTabControl.ImageList.Images[tabPage.ImageKey],
-                        new Point[] {
-                                new Point(0, 0),
-                                new Point(destRect.Width, 0),
-                                new Point(0, destRect.Height),
-                        },
-                        destRect, GraphicsUnit.Pixel, colorImageAttributes);
-                }
-
-                // added processed image to brush for drawing
-                TextureBrush textureBrushGray = new TextureBrush(bgray);
-                TextureBrush textureBrushColor = new TextureBrush(bcolor);
-
-                textureBrushGray.WrapMode = System.Drawing.Drawing2D.WrapMode.Clamp;
-                textureBrushColor.WrapMode = System.Drawing.Drawing2D.WrapMode.Clamp;
-
-                // Translate the brushes to the correct positions
-                var currentTabIndex = _baseTabControl.TabPages.IndexOf(tabPage);
-
-                Rectangle iconRect = new Rectangle(
-                   _drawerItemRects[currentTabIndex].X + (drawerItemHeight / 2) - (_baseTabControl.ImageList.Images[tabPage.ImageKey].Width / 2),
-                   _drawerItemRects[currentTabIndex].Y + (drawerItemHeight / 2) - (_baseTabControl.ImageList.Images[tabPage.ImageKey].Height / 2),
-                   _baseTabControl.ImageList.Images[tabPage.ImageKey].Width, _baseTabControl.ImageList.Images[tabPage.ImageKey].Height);
-
-                textureBrushGray.TranslateTransform(iconRect.X + iconRect.Width / 2 - _baseTabControl.ImageList.Images[tabPage.ImageKey].Width / 2,
-                                                    iconRect.Y + iconRect.Height / 2 - _baseTabControl.ImageList.Images[tabPage.ImageKey].Height / 2);
-                textureBrushColor.TranslateTransform(iconRect.X + iconRect.Width / 2 - _baseTabControl.ImageList.Images[tabPage.ImageKey].Width / 2,
-                                                     iconRect.Y + iconRect.Height / 2 - _baseTabControl.ImageList.Images[tabPage.ImageKey].Height / 2);
-
-                // add to dictionary
-                var ik = string.Concat(tabPage.ImageKey, "_", tabPage.Name);
-                iconsBrushes.Add(ik, textureBrushGray);
-                iconsSelectedBrushes.Add(ik, textureBrushColor);
-                iconsSize.Add(ik, new Rectangle(0, 0, iconRect.Width, iconRect.Height));
-            }
+            //for (int i = 0; i < _baseTabControl.ImageList.Images.Count; i++)
+            //{
+            //    Image image = _baseTabControl.ImageList.Images[i];
+            //    image = ChangeColor(image, SkinManager.ColorScheme.TextColor);
+            //}
         }
 
         private int _previousSelectedTabIndex;
@@ -446,6 +367,7 @@
         public MaterialDrawer()
         {
             SetStyle(ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+
             Height = 120;
             Width = 250;
             IndicatorWidth = 0;
@@ -509,14 +431,29 @@
 
             MouseWheel += MaterialDrawer_MouseWheel;
 
-            BigLogoPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            BigLogoPictureBox.Dock = DockStyle.Fill;
-            SmallLogoPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            SmallLogoPictureBox.Dock = DockStyle.Fill;
             LogoPanel.Dock = DockStyle.Top;
             LogoPanel.Height = 30;
-            LogoPanel.Controls.Add(BigLogoPictureBox);
             LogoPanel.Controls.Add(SmallLogoPictureBox);
+            LogoPanel.Controls.Add(BigLogoPictureBox);
+            
+            LogoPanel.TabStop = false;
+            LogoPanel.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
+            LogoPanel.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
+
+            SmallLogoPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            SmallLogoPictureBox.Dock = DockStyle.None;
+            SmallLogoPictureBox.Size = new Size(LogoPanelHeight, LogoPanelHeight);
+            SmallLogoPictureBox.Location = new Point(0, 0);
+            SmallLogoPictureBox.TabStop = false;
+            SmallLogoPictureBox.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
+            SmallLogoPictureBox.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
+
+            BigLogoPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            BigLogoPictureBox.Dock = DockStyle.Right;
+            BigLogoPictureBox.Size = new Size(Width - LogoPanelHeight, Width - LogoPanelHeight);
+            BigLogoPictureBox.TabStop = false;
+            BigLogoPictureBox.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
+            BigLogoPictureBox.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
 
             picBox.SizeMode = PictureBoxSizeMode.StretchImage;
             picBox.BackColor = SkinManager.ColorScheme.PrimaryColor;
@@ -525,17 +462,7 @@
             picBox.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
             picBox.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
 
-            LogoPanel.TabStop = false;
-            LogoPanel.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
-            LogoPanel.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
-            BigLogoPictureBox.TabStop = false;
-            BigLogoPictureBox.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
-            BigLogoPictureBox.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
-            SmallLogoPictureBox.TabStop = false;
-            SmallLogoPictureBox.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
-            SmallLogoPictureBox.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
-
-            picLabel.TextAlign = ContentAlignment.MiddleCenter;
+            picLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             picLabel.BackColor = SkinManager.ColorScheme.PrimaryColor;
             picLabel.ForeColor = SkinManager.ColorScheme.TextColor;
             picLabel.Font = SkinManager.getFontByType(MaterialSkinManager.fontType.Subtitle1);
@@ -544,16 +471,29 @@
             picLabel.MouseEnter += (s, e) => OnMouseEnter(e); // Prevent hover effect
             picLabel.MouseLeave += (s, e) => OnMouseLeave(e); // Prevent hover effect
 
+            Controls.Add(LogoPanel);
             Controls.Add(picBox);
             Controls.Add(picLabel);
-            Controls.Add(LogoPanel);
 
-            _logoutImageAnimManager = new AnimationManager
+            animationTimer.Interval = 16; // ~60 FPS
+            animationTimer.Tick += AnimationTimer_Tick;
+
+            _logoutClickManager = new AnimationManager
             {
                 AnimationType = AnimationType.EaseOut,
                 Increment = 0.04
             };
-            _logoutImageAnimManager.OnAnimationProgress += sender => Invalidate();
+            _logoutClickManager.OnAnimationProgress += sender => Invalidate();
+
+            if (_baseTabControl != null && _baseTabControl.ImageList != null && _baseTabControl.ImageList.Images.Count > 0)
+            {
+
+                for (int i = 0; i < _baseTabControl.ImageList.Images.Count; i++)
+                {
+                    Image image = _baseTabControl.ImageList.Images[i];
+                    image = Utilities.ChangeColor(image, SkinManager.ColorScheme.TextColor);
+                }
+            }
         }
 
         private void MaterialDrawer_MouseWheel(object sender, MouseEventArgs e)
@@ -631,10 +571,7 @@
 
         private new void Paint(PaintEventArgs e)
         {
-            if (UseBackColor)
-                PaintOwnColors(e);
-            else
-                PaintNormal(e);
+            PaintNormal(e);
 
             if (LogoPanel.BackColor != LogoPanelBackColor) LogoPanel.BackColor = LogoPanelBackColor;
         }
@@ -643,122 +580,29 @@
         {
             var g = e.Graphics;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-
-            // redraw stuff
-            g.Clear(UseColors ? SkinManager.ColorScheme.PrimaryColor : SkinManager.BackdropColor);
-
-            if (_baseTabControl == null)
-                return;
-
-            if (!_clickAnimManager.IsAnimating() || _drawerItemRects == null || _drawerItemRects.Count != _baseTabControl.TabCount)
-                UpdateTabRects();
-
-            if (_drawerItemRects == null || _drawerItemRects.Count != _baseTabControl.TabCount)
-                return;
-
-            // Click Animation
-            var clickAnimProgress = _clickAnimManager.GetProgress();
-            // Show/Hide Drawer Animation
-            var showHideAnimProgress = _showHideAnimManager.GetProgress();
-            var rSize = (int)(clickAnimProgress * rippleSize * 1.75);
-
-            int dx = prevLocation - Location.X;
-            prevLocation = Location.X;
-
-            // Ripple
-            if (_clickAnimManager.IsAnimating())
-            {
-                var rippleBrush = new SolidBrush(Color.FromArgb((int)(70 - (clickAnimProgress * 70)),
-                    UseColors ? SkinManager.ColorScheme.AccentColor : // Using colors
-                    SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? SkinManager.ColorScheme.PrimaryColor : // light theme
-                    SkinManager.ColorScheme.LightPrimaryColor)); // dark theme
-
-                g.SetClip(_drawerItemPaths[_baseTabControl.SelectedIndex]);
-                g.FillEllipse(rippleBrush, new Rectangle(_animationSource.X + dx - (rSize / 2), _animationSource.Y - rSize / 2, rSize, rSize));
-                g.ResetClip();
-                rippleBrush.Dispose();
-            }
-
-            // Draw menu items
-            foreach (TabPage tabPage in _baseTabControl.TabPages)
-            {
-                var currentTabIndex = _baseTabControl.TabPages.IndexOf(tabPage);
-
-                // Background
-                Brush bgBrush = new SolidBrush(Color.FromArgb(CalculateAlpha(60, 0, currentTabIndex, clickAnimProgress, 1 - showHideAnimProgress),
-                    UseColors ? _backgroundWithAccent ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.LightPrimaryColor : // using colors
-                    _backgroundWithAccent ? SkinManager.ColorScheme.AccentColor : // default accent
-                    SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? SkinManager.ColorScheme.PrimaryColor : // default light
-                    SkinManager.ColorScheme.LightPrimaryColor)); // default dark
-                g.FillPath(bgBrush, _drawerItemPaths[currentTabIndex]);
-                bgBrush.Dispose();
-
-                // Text
-                Color textColor = Color.FromArgb(CalculateAlphaZeroWhenClosed(SkinManager.TextHighEmphasisColor.A, UseColors ? SkinManager.TextMediumEmphasisColor.A : 255, currentTabIndex, clickAnimProgress, 1 - showHideAnimProgress), // alpha
-                    UseColors ? (currentTabIndex == _baseTabControl.SelectedIndex ? (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.PrimaryColor) // Use colors - selected
-                    : SkinManager.ColorScheme.TextColor) :  // Use colors - not selected
-                    (currentTabIndex == _baseTabControl.SelectedIndex ? (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.PrimaryColor) : // selected
-                    SkinManager.TextHighEmphasisColor));
-
-                IntPtr textFont = SkinManager.getLogFontByType(MaterialSkinManager.fontType.Subtitle2);
-
-                Rectangle textRect = _drawerItemRects[currentTabIndex];
-                textRect.X += _baseTabControl.ImageList != null ? drawerItemHeight : (int)(SkinManager.FORM_PADDING * 0.75);
-                textRect.Width -= SkinManager.FORM_PADDING << 2;
-
-                using (NativeTextRenderer NativeText = new NativeTextRenderer(g))
-                {
-                    NativeText.DrawTransparentText(tabPage.Text, textFont, textColor, textRect.Location, textRect.Size, NativeTextRenderer.TextAlignFlags.Left | NativeTextRenderer.TextAlignFlags.Middle);
-                }
-
-                // Icons
-                if (_baseTabControl.ImageList != null && !String.IsNullOrEmpty(tabPage.ImageKey))
-                {
-                    var ik = string.Concat(tabPage.ImageKey, "_", tabPage.Name);
-                    Rectangle iconRect = new Rectangle(
-                        _drawerItemRects[currentTabIndex].X + (drawerItemHeight >> 1) - (iconsSize[ik].Width >> 1),
-                        _drawerItemRects[currentTabIndex].Y + (drawerItemHeight >> 1) - (iconsSize[ik].Height >> 1), // Add topPadding to the icon rectangle
-                        iconsSize[ik].Width, iconsSize[ik].Height);
-
-                    if (ShowIconsWhenHidden)
-                    {
-                        iconsBrushes[ik].TranslateTransform(dx, 0);
-                        iconsSelectedBrushes[ik].TranslateTransform(dx, 0);
-                    }
-
-                    g.FillRectangle(currentTabIndex == _baseTabControl.SelectedIndex ? iconsSelectedBrushes[ik] : iconsBrushes[ik], iconRect);
-                }
-            }
-
-            // Draw divider if not using colors
-            if (!UseColors)
-            {
-                using (Pen dividerPen = new Pen(SkinManager.DividersColor, 1))
-                {
-                    g.DrawLine(dividerPen, Width - 1, 0, Width - 1, Height);
-                }
-            }
-
-            // Animate tab indicator
-            var previousSelectedTabIndexIfHasOne = _previousSelectedTabIndex == -1 ? _baseTabControl.SelectedIndex : _previousSelectedTabIndex;
-            var previousActiveTabRect = _drawerItemRects[previousSelectedTabIndexIfHasOne];
-            var activeTabPageRect = _drawerItemRects[_baseTabControl.SelectedIndex];
-
-            var y = previousActiveTabRect.Y + (int)((activeTabPageRect.Y - previousActiveTabRect.Y) * clickAnimProgress); // Add topPadding to the indicator
-            var x = ShowIconsWhenHidden ? -Location.X : 0;
-            var height = drawerItemHeight;
-
-            g.FillRectangle(SkinManager.ColorScheme.AccentBrush, x, y, IndicatorWidth, height);
-        }
-        private void PaintOwnColors(PaintEventArgs e)
-        {
-            var g = e.Graphics;
-            g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
+            Color drawerBackColor;
+            if (UseBackColor) drawerBackColor = BackColor;
+            else drawerBackColor = SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? SkinManager.ColorScheme.LightPrimaryColor : SkinManager.ColorScheme.PrimaryColor;
+
+            Color btnBackColor;
+            if (UseBackColor) btnBackColor = BackColor.Darken(0.8f);
+            else btnBackColor = UseColors? _backgroundWithAccent ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.LightPrimaryColor : // using colors
+                _backgroundWithAccent? SkinManager.ColorScheme.AccentColor : // default accent
+                SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? SkinManager.ColorScheme.PrimaryColor : // default light
+                SkinManager.ColorScheme.LightPrimaryColor; // default dark
+
+            Color defaultBtnTextColor = UseColors ? SkinManager.ColorScheme.TextColor : SkinManager.TextHighEmphasisColor;
+
+            Color selectedBtnTextColor = UseColors ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.PrimaryColor; // Use colors - selected
+
+            Color rippleColor = UseColors ? SkinManager.ColorScheme.AccentColor : // Using colors
+                    SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? SkinManager.ColorScheme.PrimaryColor : // light theme
+                    SkinManager.ColorScheme.LightPrimaryColor; // dark theme
+
             // redraw stuff
-            if (UseBackColor) g.Clear(BackColor);
-            Color accent = BackColor.Darken(0.8f);
+            g.Clear(drawerBackColor);
 
             if (_baseTabControl == null)
                 return;
@@ -781,10 +625,7 @@
             // Ripple
             if (_clickAnimManager.IsAnimating())
             {
-                var rippleBrush = new SolidBrush(Color.FromArgb((int)(70 - (clickAnimProgress * 70)),
-                    UseColors ? SkinManager.ColorScheme.AccentColor : // Using colors
-                    SkinManager.Theme == MaterialSkinManager.Themes.LIGHT ? SkinManager.ColorScheme.PrimaryColor : // light theme
-                    SkinManager.ColorScheme.LightPrimaryColor)); // dark theme
+                var rippleBrush = new SolidBrush(Color.FromArgb((int)(70 - (clickAnimProgress * 70)),rippleColor)); 
 
                 g.SetClip(_drawerItemPaths[_baseTabControl.SelectedIndex]);
                 g.FillEllipse(rippleBrush, new Rectangle(_animationSource.X + dx - (rSize / 2), _animationSource.Y - rSize / 2, rSize, rSize));
@@ -795,21 +636,16 @@
             // Draw menu items
             foreach (TabPage tabPage in _baseTabControl.TabPages)
             {
-                
                 var currentTabIndex = _baseTabControl.TabPages.IndexOf(tabPage);
 
                 // Background
-                Brush bgBrush = new SolidBrush(Color.FromArgb(CalculateAlpha(60, 0, currentTabIndex, clickAnimProgress, 1 - showHideAnimProgress),
-                    accent)); // default dark
+                Brush bgBrush = new SolidBrush(Color.FromArgb(CalculateAlpha(60, 0, currentTabIndex, clickAnimProgress, 1 - showHideAnimProgress), btnBackColor));
                 g.FillPath(bgBrush, _drawerItemPaths[currentTabIndex]);
                 bgBrush.Dispose();
 
                 // Text
                 Color textColor = Color.FromArgb(CalculateAlphaZeroWhenClosed(SkinManager.TextHighEmphasisColor.A, UseColors ? SkinManager.TextMediumEmphasisColor.A : 255, currentTabIndex, clickAnimProgress, 1 - showHideAnimProgress), // alpha
-                    UseColors ? (currentTabIndex == _baseTabControl.SelectedIndex ? (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.TextColor) // Use colors - selected
-                    : SkinManager.ColorScheme.TextColor) :  // Use colors - not selected
-                    (currentTabIndex == _baseTabControl.SelectedIndex ? (_highlightWithAccent ? SkinManager.ColorScheme.AccentColor : SkinManager.ColorScheme.PrimaryColor) : // selected
-                    SkinManager.TextHighEmphasisColor));
+                    currentTabIndex == _baseTabControl.SelectedIndex ? selectedBtnTextColor : defaultBtnTextColor); // color
 
                 IntPtr textFont = SkinManager.getLogFontByType(MaterialSkinManager.fontType.Subtitle2);
 
@@ -821,24 +657,27 @@
                 {
                     NativeText.DrawTransparentText(tabPage.Text, textFont, textColor, textRect.Location, textRect.Size, NativeTextRenderer.TextAlignFlags.Left | NativeTextRenderer.TextAlignFlags.Middle);
                 }
-
                 // Icons
                 if (_baseTabControl.ImageList != null && !String.IsNullOrEmpty(tabPage.ImageKey))
                 {
                     var ik = string.Concat(tabPage.ImageKey, "_", tabPage.Name);
+                    int size = 32;
                     Rectangle iconRect = new Rectangle(
-                        _drawerItemRects[currentTabIndex].X + (drawerItemHeight >> 1) - (iconsSize[ik].Width >> 1),
-                        _drawerItemRects[currentTabIndex].Y + (drawerItemHeight >> 1) - (iconsSize[ik].Height >> 1), // Add topPadding to the icon rectangle
-                        iconsSize[ik].Width, iconsSize[ik].Height);
+                        _drawerItemRects[currentTabIndex].X + (drawerItemHeight >> 1) - (size >> 1),
+                        _drawerItemRects[currentTabIndex].Y + (drawerItemHeight >> 1) - (size >> 1), // Add topPadding to the icon rectangle
+                        size, size);
 
-                    if (ShowIconsWhenHidden)
+                    if (currentTabIndex == _baseTabControl.SelectedIndex)
                     {
-                        iconsBrushes[ik].TranslateTransform(dx, 0);
-                        iconsSelectedBrushes[ik].TranslateTransform(dx, 0);
+                        Color btnColor = Utilities.BlendColors(defaultBtnTextColor, selectedBtnTextColor, (float)clickAnimProgress);
+                        using (Image btnImage = Utilities.ChangeColor(_baseTabControl.ImageList.Images[tabPage.ImageKey], btnColor, true))
+                        {
+                            g.DrawImage(btnImage, iconRect);
+                        }
                     }
+                    else g.DrawImage(Utilities.ChangeColor(_baseTabControl.ImageList.Images[tabPage.ImageKey], textColor, true), iconRect);
 
                     //g.FillRectangle(currentTabIndex == _baseTabControl.SelectedIndex ? iconsSelectedBrushes[ik] : iconsBrushes[ik], iconRect);
-                    g.DrawImage(_baseTabControl.ImageList.Images[tabPage.ImageKey], iconRect);
                 }
             }
 
@@ -862,37 +701,92 @@
 
             g.FillRectangle(SkinManager.ColorScheme.AccentBrush, x, y, IndicatorWidth, height);
 
-            if (LogoutImage != null)
-            {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                int logoutImageSize = 30; // Set the size of the logout image
-                _logoutImageRect = new Rectangle(Width - logoutImageSize - 14, Height - logoutImageSize - 12, logoutImageSize, logoutImageSize);
+            if (LogoutImage != null) DrawLogoutBtn(e, btnBackColor, defaultBtnTextColor, selectedBtnTextColor, rippleColor);
 
-                // Draw the logout image with animation
+            int alpha = 255 - (int)(showHideAnimProgress * 255);
 
-                var logoutAnimProgress = _logoutImageAnimManager.GetProgress();
-                using (GraphicsPath rectPath = DrawHelper.CreateRoundRect(_logoutImageRect.X - 5, _logoutImageRect.Y -5, _logoutImageRect.Width + 10, _logoutImageRect.Height + 10, 4))
-                {
-                    // Fill the rectangle
-                    using (Brush brush = new SolidBrush(Color.FromArgb(CalculateAlpha(60, 0, _logoutImageAnimManager), accent)))
-                    {
-                        e.Graphics.FillPath(brush, rectPath);
-                    }
-                }
-
-                g.DrawImage(LogoutImage, _logoutImageRect);
-            }
+            BigLogoPictureBox.Image = Utilities.ChangeAlpha(BigLogo, alpha);
+            //if (BigLogo != BigLogoPictureBox.Image) BigLogoPictureBox.Image = BigLogo;
         }
 
-        private int CalculateAlpha(int primaryA, int secondaryA, AnimationManager manager)
+        private void DrawLogoutBtn(PaintEventArgs e, Color btnColor, Color btnTextColor, Color btnSelectedTextColor, Color rippleColor)
         {
-            if (!manager.IsAnimating()) return (int)(primaryA);
-            return secondaryA + (int)((primaryA - secondaryA) * manager.GetProgress());
+            var g = e.Graphics;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            int logoutImageSize = 30; // Set the size of the logout image
+            _logoutImageRect = new Rectangle(Width - logoutImageSize - 14, Height - logoutImageSize - 12, logoutImageSize, logoutImageSize);
+
+            // Draw the logout image with animation
+            var logoutAnimProgress = progress;
+            
+
+            using (GraphicsPath rectPath = DrawHelper.CreateRoundRect(_logoutImageRect.X - 5, _logoutImageRect.Y - 5, _logoutImageRect.Width + 10, _logoutImageRect.Height + 10, 4))
+            {
+                // Fill the rectangle
+                using (Brush brush = new SolidBrush(Color.FromArgb(CalculateAlpha(150, 0, progress), btnColor)))
+                {
+                    g.FillPath(brush, rectPath);
+                }
+
+                if (logoutBtnPressed)
+                {
+                    var rSize = (int)(logoutAnimProgress * (_logoutImageRect.Width + 10) * 1.75);
+                    int dx = prevLocation - Location.X;
+                    prevLocation = Location.X;
+
+                    var rippleBrush = new SolidBrush(Color.FromArgb((int)(70 - (_logoutClickManager.GetProgress() * 70)), rippleColor));
+
+                    g.SetClip(rectPath);
+                    g.FillEllipse(rippleBrush, new Rectangle(_animationSource.X + dx - (rSize / 2), _animationSource.Y - rSize / 2, rSize, rSize));
+                    g.ResetClip();
+                    rippleBrush.Dispose();
+                }
+            }
+            Color logoutBtnColor = Utilities.BlendColors(btnTextColor, btnSelectedTextColor, progress);
+            using (Image btnImage = Utilities.ChangeColor(LogoutImage, logoutBtnColor, true))
+            {
+                g.DrawImage(btnImage, _logoutImageRect);
+            }
+            
+        }
+
+        private float progress = 0;
+        private float target = 0;
+        private int CalculateAlpha(int primaryA, int secondaryA, double progress)
+        {
+            double pressedAlpha = secondaryA + (primaryA - secondaryA);
+            double hoverAlpha = secondaryA + (primaryA - secondaryA) * .8;
+
+            if (logoutBtnPressed) return (int)(pressedAlpha * progress);
+            if (logoutBtnHovered && !logoutBtnHasLeft) return (int)(hoverAlpha * progress);
+            if (!logoutBtnHasLeft) return (int)((hoverAlpha + pressedAlpha - hoverAlpha) * progress );
+            return secondaryA + (int)((primaryA - secondaryA) * progress);
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            // Adjust hover progress gradually
+            if (logoutBtnPressed) target = 1;
+            else if (logoutBtnHovered && !logoutBtnHasLeft) target = 0.5f;
+            else target = 0;
+
+            progress += (target - progress) * 0.2f; // Smooth transition
+
+            if (Math.Abs(target - progress) < 0.01f)
+            {
+                progress = target;
+                animationTimer.Stop();
+            }
+
+            Invalidate();
         }
 
         public new void Show()
         {
             _isOpen = true;
+            SmallLogoPictureBox.Size = new Size(LogoPanelHeight, LogoPanelHeight);
+            
+
             if (BigLogo == null) 
             { 
                 LogoPanel.Visible = false; 
@@ -902,7 +796,8 @@
             {
                 LogoPanel.Visible = true;
                 LogoPanel.Height = LogoPanelHeight;
-                SmallLogoPictureBox.Visible = false;
+                //SmallLogoPictureBox.Visible = false;
+
                 BigLogoPictureBox.Visible = true;
             }
 
@@ -915,9 +810,11 @@
         public new void Hide()
         {
             _isOpen = false;
+            SmallLogoPictureBox.Size = new Size(LogoPanelHeight, LogoPanelHeight);
             DrawerStateChanged?.Invoke(this);
             DrawerBeginClose?.Invoke(this);
             _showHideAnimManager.StartNewAnimation(AnimationDirection.In);
+
         }
 
         public void Toggle()
@@ -992,10 +889,9 @@
             // Check if the logout image was clicked
             if (_logoutImageRect.Contains(e.Location))
             {
-                // Handle logout image click
+                logoutBtnPressed = true;
                 OnLogoutImageClick(EventArgs.Empty);
-                _logoutImageAnimManager.SetProgress(0);
-                _logoutImageAnimManager.StartNewAnimation(AnimationDirection.In);
+                animationTimer.Start();
             }
 
             _animationSource = e.Location;
@@ -1010,6 +906,16 @@
         {
             _lastMouseY = e.Y;
             _lastLocationY = Location.Y; // memorize Y location of drawer
+            if (_logoutImageRect.Contains(e.Location))
+            {
+                _animationSource = e.Location;
+                logoutBtnPressed = true;
+                OnLogoutImageClick(EventArgs.Empty);
+                animationTimer.Start();
+                _logoutClickManager.SetProgress(0);
+                _logoutClickManager.StartNewAnimation(AnimationDirection.In);
+            }
+
             base.OnMouseDown(e);
             if (DesignMode)
                 return;
@@ -1019,9 +925,16 @@
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            if (!logoutBtnPressed) logoutBtnPressed = false;
+
             if (DesignMode)
                 return;
             MouseState = MouseState.OUT;
+
+            if (logoutBtnPressed) { 
+                logoutBtnPressed = false;
+                animationTimer.Start();
+            }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -1048,6 +961,26 @@
                         Height = Parent.Height + Math.Abs(Location.Y);
                     }
                 }
+            }
+
+            if (_logoutImageRect.Contains(e.Location))
+            {
+                if (!logoutBtnHovered)
+                {
+                    logoutBtnHovered = true;
+                    animationTimer.Start();
+                }
+                if (logoutBtnHasLeft) logoutBtnHasLeft = false;
+            }
+            else
+            {
+                if (logoutBtnHovered)
+                {
+                    logoutBtnHovered = false;
+                    animationTimer.Start();
+                }
+                if (!logoutBtnHasLeft) logoutBtnHasLeft = true;
+                if (logoutBtnPressed) logoutBtnPressed = false;
             }
 
             base.OnMouseMove(e);
@@ -1119,15 +1052,24 @@
             {
                 Hide();
             }
+
         }
+        private Image imageLogo;
 
         private void ShowImage()
         {
-            if (!DisplayImage || !IsOpen)
+            if (!DisplayImage)
             {
+                picBox.Visible = false;
+                picLabel.Visible = false;
                 return;
             }
-            picBox.Location = new Point(Width/2 - picBox.Width/2, LogoPanel.Height + 10);
+
+            int x = ((Width - picBox.Width) / 2) - Location.X;
+            int y = (int)((LogoPanel.Height + 10 - (_showHideAnimManager.GetProgress()) * picBox.Height * 2 + 10));
+
+
+            picBox.Location = new Point(x, y);
 
             using (Graphics g = CreateGraphics())
             {
@@ -1135,13 +1077,17 @@
                 picLabel.Size = new Size(Width, (int)textSize.Height);
             }
 
-            int picLabelX = Width/2 - (picLabel.Width/2);
+            int picLabelX = ((Width - picLabel.Width) / 2) - Location.X;
 
-            picLabel.Location = new Point(0, picBox.Bottom + 2);
+            picLabel.Location = new Point(picLabelX, picBox.Bottom + 2);
 
             picBox.Visible = true;
             picLabel.Visible = true;
             ImagePadding = picBox.Bottom + picLabel.Height;
+
+            if (SmallLogoPictureBox.Image == null) return;
+            int smallLogoX = -Location.X;
+            SmallLogoPictureBox.Location = new Point(smallLogoX, 0);
         }
 
         private void UpdateTabRects()
@@ -1172,9 +1118,13 @@
             
             for (int i = 0; i < _baseTabControl.TabPages.Count; i++)
             {
+                int y = (TAB_HEADER_PADDING * 2) * i + (int)(SkinManager.FORM_PADDING >> 1);
+                //y += IsOpen ? Math.Max(picBox.Top, (ImagePadding - (int)(_showHideAnimManager.GetProgress() * ImagePadding))) : picBox.Top + (int)((1 - _showHideAnimManager.GetProgress()) * (ImagePadding + picBox.Top - TAB_HEADER_PADDING ));
+                y += Math.Max(LogoPanel.Height + 10, ImagePadding);
+
                 _drawerItemRects[i] = (new Rectangle(
                     (int)(SkinManager.FORM_PADDING * 0.75) - (ShowIconsWhenHidden ? Location.X : 0),
-                    (TAB_HEADER_PADDING * 2) * i + (int)(SkinManager.FORM_PADDING >> 1) + ImagePadding,
+                    y,
                     (Width + (ShowIconsWhenHidden ? Location.X : 0)) - (int)(SkinManager.FORM_PADDING * 1.5) - 1,
                     drawerItemHeight));
 

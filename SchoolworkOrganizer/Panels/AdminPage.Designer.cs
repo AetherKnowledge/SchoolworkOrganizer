@@ -65,7 +65,7 @@
             drawerControl.AutoShow = true;
             drawerControl.BackColor = Color.FromArgb(65, 78, 101);
             drawerControl.BigLogo = Properties.Resources.Screenshot_2024_11_13_231616_removebg_preview;
-            drawerControl.BigLogoBounds = new Rectangle(59, 5, 186, 69);
+            drawerControl.BigLogoBounds = new Rectangle(69, 5, 186, 69);
             drawerControl.BigLogoDockStyle = DockStyle.None;
             drawerControl.DisplayImage = true;
             drawerControl.Image = Properties.Resources.user;
@@ -77,6 +77,7 @@
             drawerControl.LogoPanelHeight = 69;
             drawerControl.LogoutImage = Properties.Resources.logout_white;
             drawerControl.ShowIconsWhenHidden = true;
+            drawerControl.SmallLogo = Properties.Resources.Logo_nobg;
             drawerControl.UseBackColor = true;
             drawerControl.UseColors = true;
             // 
@@ -103,11 +104,11 @@
             // 
             homeTab.BackColor = Color.White;
             homeTab.Controls.Add(homePanel);
-            homeTab.ImageKey = "home-white.png";
-            homeTab.Location = new Point(4, 39);
+            homeTab.ImageKey = "home.png";
+            homeTab.Location = new Point(4, 71);
             homeTab.Name = "homeTab";
             homeTab.Padding = new Padding(3);
-            homeTab.Size = new Size(1270, 583);
+            homeTab.Size = new Size(1270, 551);
             homeTab.TabIndex = 0;
             homeTab.Text = "Home";
             // 
@@ -117,7 +118,7 @@
             homePanel.Location = new Point(3, 3);
             homePanel.Margin = new Padding(5, 3, 5, 3);
             homePanel.Name = "homePanel";
-            homePanel.Size = new Size(1264, 577);
+            homePanel.Size = new Size(1264, 545);
             homePanel.TabIndex = 0;
             // 
             // subjectTab
@@ -125,10 +126,10 @@
             subjectTab.BackColor = Color.White;
             subjectTab.Controls.Add(subjectsPanel);
             subjectTab.ImageKey = "subjects-white.png";
-            subjectTab.Location = new Point(4, 39);
+            subjectTab.Location = new Point(4, 71);
             subjectTab.Name = "subjectTab";
             subjectTab.Padding = new Padding(3);
-            subjectTab.Size = new Size(1270, 583);
+            subjectTab.Size = new Size(1270, 551);
             subjectTab.TabIndex = 1;
             subjectTab.Text = "Subjects";
             // 
@@ -138,17 +139,17 @@
             subjectsPanel.Location = new Point(3, 3);
             subjectsPanel.Margin = new Padding(5, 3, 5, 3);
             subjectsPanel.Name = "subjectsPanel";
-            subjectsPanel.Size = new Size(1264, 577);
+            subjectsPanel.Size = new Size(1264, 545);
             subjectsPanel.TabIndex = 0;
             // 
             // activitiesTab
             // 
             activitiesTab.BackColor = Color.White;
             activitiesTab.Controls.Add(activitiesPanel);
-            activitiesTab.ImageKey = "activities-white.png";
-            activitiesTab.Location = new Point(4, 39);
+            activitiesTab.ImageKey = "activities.png";
+            activitiesTab.Location = new Point(4, 71);
             activitiesTab.Name = "activitiesTab";
-            activitiesTab.Size = new Size(1270, 583);
+            activitiesTab.Size = new Size(1270, 551);
             activitiesTab.TabIndex = 2;
             activitiesTab.Text = "Activities";
             // 
@@ -158,17 +159,17 @@
             activitiesPanel.Location = new Point(0, 0);
             activitiesPanel.Margin = new Padding(5, 3, 5, 3);
             activitiesPanel.Name = "activitiesPanel";
-            activitiesPanel.Size = new Size(1270, 583);
+            activitiesPanel.Size = new Size(1270, 551);
             activitiesPanel.TabIndex = 0;
             // 
             // reviewersTab
             // 
             reviewersTab.BackColor = Color.White;
             reviewersTab.Controls.Add(reviewerPanel);
-            reviewersTab.ImageKey = "reviewer-white.png";
-            reviewersTab.Location = new Point(4, 39);
+            reviewersTab.ImageKey = "reviewer.png";
+            reviewersTab.Location = new Point(4, 71);
             reviewersTab.Name = "reviewersTab";
-            reviewersTab.Size = new Size(1270, 583);
+            reviewersTab.Size = new Size(1270, 551);
             reviewersTab.TabIndex = 3;
             reviewersTab.Text = "Reviewers";
             // 
@@ -178,17 +179,17 @@
             reviewerPanel.Location = new Point(0, 0);
             reviewerPanel.Margin = new Padding(5, 3, 5, 3);
             reviewerPanel.Name = "reviewerPanel";
-            reviewerPanel.Size = new Size(1270, 583);
+            reviewerPanel.Size = new Size(1270, 551);
             reviewerPanel.TabIndex = 0;
             // 
             // settingsTab
             // 
             settingsTab.BackColor = Color.White;
             settingsTab.Controls.Add(settingsPanel);
-            settingsTab.ImageKey = "setting-white.png";
-            settingsTab.Location = new Point(4, 39);
+            settingsTab.ImageKey = "settings.png";
+            settingsTab.Location = new Point(4, 71);
             settingsTab.Name = "settingsTab";
-            settingsTab.Size = new Size(1270, 583);
+            settingsTab.Size = new Size(1270, 551);
             settingsTab.TabIndex = 4;
             settingsTab.Text = "Settings";
             // 
@@ -198,7 +199,7 @@
             settingsPanel.Location = new Point(0, 0);
             settingsPanel.Margin = new Padding(5, 3, 5, 3);
             settingsPanel.Name = "settingsPanel";
-            settingsPanel.Size = new Size(1270, 583);
+            settingsPanel.Size = new Size(1270, 551);
             settingsPanel.TabIndex = 0;
             // 
             // logoImages
@@ -206,11 +207,11 @@
             logoImages.ColorDepth = ColorDepth.Depth32Bit;
             logoImages.ImageStream = (ImageListStreamer)resources.GetObject("logoImages.ImageStream");
             logoImages.TransparentColor = Color.Transparent;
-            logoImages.Images.SetKeyName(0, "activities-white.png");
-            logoImages.Images.SetKeyName(1, "home-white.png");
-            logoImages.Images.SetKeyName(2, "reviewer-white.png");
-            logoImages.Images.SetKeyName(3, "setting-white.png");
-            logoImages.Images.SetKeyName(4, "subjects-white.png");
+            logoImages.Images.SetKeyName(0, "home.png");
+            logoImages.Images.SetKeyName(1, "reviewer.png");
+            logoImages.Images.SetKeyName(2, "settings.png");
+            logoImages.Images.SetKeyName(3, "subjects-white.png");
+            logoImages.Images.SetKeyName(4, "activities.png");
             // 
             // timeKeeper
             // 
@@ -278,7 +279,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BigLogo = Properties.Resources.Screenshot_2024_11_13_231616_removebg_preview;
-            BigLogoBounds = new Rectangle(59, 5, 186, 69);
+            BigLogoBounds = new Rectangle(69, 5, 186, 69);
             BigLogoDockStyle = DockStyle.None;
             ClientSize = new Size(1280, 720);
             Controls.Add(mainPanel);
@@ -301,9 +302,10 @@
             LogoutImage = Properties.Resources.logout_white;
             Name = "AdminPage";
             Padding = new Padding(1, 24, 1, 1);
+            SmallLogo = Properties.Resources.Logo_nobg;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminPage";
-            UseBackColor = true;
+            DrawerUseBackColor = true;
             tabControl.ResumeLayout(false);
             homeTab.ResumeLayout(false);
             subjectTab.ResumeLayout(false);

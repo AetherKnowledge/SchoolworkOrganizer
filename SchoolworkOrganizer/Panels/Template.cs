@@ -7,9 +7,6 @@ namespace SchoolworkOrganizer.Panels
 {
     public partial class Template : MaterialForm
     {
-        public static Point location = new Point(0,0);
-        public static Size size = new Size(946, 519);
-        public static FormWindowState windowState = FormWindowState.Normal;
 
         public Template()
         {
@@ -50,9 +47,9 @@ namespace SchoolworkOrganizer.Panels
 
             if (Program.user == null) return;
             
-            this.Size = size;
-            this.Location = location;
-            this.WindowState = windowState;
+            this.Size = OpenPanels.size;
+            this.Location = OpenPanels.location;
+            this.WindowState = OpenPanels.windowState;
             
 
             RefreshUser();
@@ -60,9 +57,9 @@ namespace SchoolworkOrganizer.Panels
 
         public new void Hide()
         {
-            size = this.Size;
-            location = this.Location;
-            windowState = this.WindowState;
+            OpenPanels.size = this.Size;
+            OpenPanels.location = this.Location;
+            OpenPanels.windowState = this.WindowState;
 
             base.Hide();
         }

@@ -43,9 +43,8 @@ namespace MaterialSkin.Controls
         [Browsable(false)]
         public int TextLength { get { return baseTextBox.TextLength; } }
 
-        [Browsable(false)]
+        [Browsable(true)]
         public override System.Drawing.Color ForeColor { get; set; }
-
 
         //Material Skin properties
 
@@ -223,8 +222,22 @@ namespace MaterialSkin.Controls
             }
         }
 
-        [Browsable(false)]
-        public override Color BackColor { get { return Parent == null ? SkinManager.BackgroundColor : Parent.BackColor; } }
+        [Browsable(true)]
+        public override Color BackColor
+        {
+            get
+            {
+                if (UseOwnColors) return base.BackColor;
+                else return Parent == null ? SkinManager.BackgroundColor : Parent.BackColor;
+            }
+            set
+            {
+                if (UseOwnColors) base.BackColor = value;
+            }
+        }
+
+        [Category("Appearance")]
+        public bool UseOwnColors { get; set; } = false;
 
         public override string Text { get { return baseTextBox.Text; } set { baseTextBox.Text = value; UpdateRects(); } }
 
@@ -241,7 +254,15 @@ namespace MaterialSkin.Controls
         public int MaxLength { get { return baseTextBox.MaxLength; } set { baseTextBox.MaxLength = value; } }
 
         [Category("Behavior")]
-        public char PasswordChar { get { return baseTextBox.PasswordChar; } set { baseTextBox.PasswordChar = value; } }
+        public char PasswordChar 
+        { get 
+            { 
+                return baseTextBox.PasswordChar; 
+            } set 
+            { 
+                if (UseSystemPasswordChar) baseTextBox.PasswordChar = value; 
+            } 
+        }
 
         [Category("Behavior")]
         public bool ShortcutsEnabled 
@@ -265,7 +286,15 @@ namespace MaterialSkin.Controls
         }
 
         [Category("Behavior")]
-        public bool UseSystemPasswordChar { get { return baseTextBox.UseSystemPasswordChar; } set { baseTextBox.UseSystemPasswordChar = value; } }
+        public bool UseSystemPasswordChar 
+        { 
+            get { return baseTextBox.UseSystemPasswordChar; } 
+            set 
+            {
+                baseTextBox.UseSystemPasswordChar = value; 
+            } 
+            
+        }
 
         public new object Tag { get { return baseTextBox.Tag; } set { baseTextBox.Tag = value; } }
 

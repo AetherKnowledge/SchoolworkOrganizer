@@ -325,6 +325,18 @@ namespace SchoolworkOrganizer.CustomControls
             Invalidate();
         }
 
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            Invalidate(); // Redraw the control when it gains focus
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            Invalidate(); // Redraw the control when it loses focus
+        }
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -335,7 +347,6 @@ namespace SchoolworkOrganizer.CustomControls
         {
             base.OnMouseDown(e);
             pressed = true;
-
             animationTimer.Start();
         }
 
@@ -398,7 +409,7 @@ namespace SchoolworkOrganizer.CustomControls
             get
             {
                 CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x20; // WS_EX_TRANSPARENT
+                //cp.ExStyle |= 0x20; // WS_EX_TRANSPARENT
                 return cp;
             }
         }

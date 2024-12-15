@@ -1,4 +1,7 @@
-﻿namespace SchoolworkOrganizer
+﻿using MaterialSkin.Controls;
+using SchoolworkOrganizer.CustomControls;
+
+namespace SchoolworkOrganizer
 {
     partial class LoginPanel
     {
@@ -28,137 +31,162 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginPanel));
-            txtUsername = new TextBox();
-            txtPassword = new TextBox();
-            labelForgotPassword = new Label();
-            ButtonLogIn = new Button();
-            showPassword = new CheckBox();
-            registerLabel = new Label();
-            pictureBox3 = new PictureBox();
-            pictureBox2 = new PictureBox();
+            loginTxtUsername = new MaterialTextBox2();
+            loginTxtPassword = new MaterialTextBox2();
+            loginLabelForgotPassword = new CustomLabel();
+            loginShowPassword = new CheckBox();
+            password = new ImageList(components);
+            loginSwitchLabel = new CustomLabel();
             pictureBox1 = new PictureBox();
             testBtn = new Button();
-            button1 = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            loginBtn = new RoundedButton();
+            mainPanel = new Panel();
+            inputPanel = new Panel();
+            hidePanel = new Panel();
+            topPanel = new Panel();
+            topLabel = new CustomLabel();
+            loginImagePanel = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            mainPanel.SuspendLayout();
+            inputPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // txtUsername
+            // loginTxtUsername
             // 
-            txtUsername.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtUsername.Location = new Point(508, 276);
-            txtUsername.Margin = new Padding(4, 3, 4, 3);
-            txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(291, 33);
-            txtUsername.TabIndex = 1;
-            txtUsername.Text = "Username";
+            loginTxtUsername.AnimateReadOnly = false;
+            loginTxtUsername.AutoCompleteMode = AutoCompleteMode.None;
+            loginTxtUsername.AutoCompleteSource = AutoCompleteSource.None;
+            loginTxtUsername.BackgroundImageLayout = ImageLayout.None;
+            loginTxtUsername.CharacterCasing = CharacterCasing.Normal;
+            loginTxtUsername.Depth = 0;
+            loginTxtUsername.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loginTxtUsername.HideSelection = true;
+            loginTxtUsername.LeadingIcon = Properties.Resources.Capture;
+            loginTxtUsername.Location = new Point(53, 40);
+            loginTxtUsername.Margin = new Padding(4, 3, 4, 3);
+            loginTxtUsername.MaxLength = 32767;
+            loginTxtUsername.MouseState = MaterialSkin.MouseState.OUT;
+            loginTxtUsername.Name = "loginTxtUsername";
+            loginTxtUsername.PasswordChar = '\0';
+            loginTxtUsername.PrefixSuffixText = null;
+            loginTxtUsername.ReadOnly = false;
+            loginTxtUsername.RightToLeft = RightToLeft.No;
+            loginTxtUsername.SelectedText = "";
+            loginTxtUsername.SelectionLength = 0;
+            loginTxtUsername.SelectionStart = 0;
+            loginTxtUsername.ShortcutsEnabled = true;
+            loginTxtUsername.Size = new Size(389, 48);
+            loginTxtUsername.TabIndex = 1;
+            loginTxtUsername.TabStop = false;
+            loginTxtUsername.Text = "Username";
+            loginTxtUsername.TextAlign = HorizontalAlignment.Left;
+            loginTxtUsername.TrailingIcon = null;
+            loginTxtUsername.UseOwnColors = true;
+            loginTxtUsername.UseSystemPasswordChar = false;
             // 
-            // txtPassword
+            // loginTxtPassword
             // 
-            txtPassword.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtPassword.Location = new Point(508, 345);
-            txtPassword.Margin = new Padding(4, 3, 4, 3);
-            txtPassword.Name = "txtPassword";
-            txtPassword.Size = new Size(291, 33);
-            txtPassword.TabIndex = 2;
-            txtPassword.Text = "Password";
-            txtPassword.UseSystemPasswordChar = true;
+            loginTxtPassword.AnimateReadOnly = false;
+            loginTxtPassword.AutoCompleteMode = AutoCompleteMode.None;
+            loginTxtPassword.AutoCompleteSource = AutoCompleteSource.None;
+            loginTxtPassword.BackgroundImageLayout = ImageLayout.None;
+            loginTxtPassword.CharacterCasing = CharacterCasing.Normal;
+            loginTxtPassword.Depth = 0;
+            loginTxtPassword.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loginTxtPassword.HideSelection = true;
+            loginTxtPassword.LeadingIcon = Properties.Resources.password1;
+            loginTxtPassword.Location = new Point(53, 94);
+            loginTxtPassword.Margin = new Padding(4, 3, 4, 3);
+            loginTxtPassword.MaxLength = 32767;
+            loginTxtPassword.MouseState = MaterialSkin.MouseState.OUT;
+            loginTxtPassword.Name = "loginTxtPassword";
+            loginTxtPassword.PasswordChar = '●';
+            loginTxtPassword.PrefixSuffixText = null;
+            loginTxtPassword.ReadOnly = false;
+            loginTxtPassword.RightToLeft = RightToLeft.No;
+            loginTxtPassword.SelectedText = "";
+            loginTxtPassword.SelectionLength = 0;
+            loginTxtPassword.SelectionStart = 0;
+            loginTxtPassword.ShortcutsEnabled = true;
+            loginTxtPassword.Size = new Size(389, 48);
+            loginTxtPassword.TabIndex = 2;
+            loginTxtPassword.TabStop = false;
+            loginTxtPassword.Text = "Password";
+            loginTxtPassword.TextAlign = HorizontalAlignment.Left;
+            loginTxtPassword.TrailingIcon = null;
+            loginTxtPassword.UseOwnColors = false;
+            loginTxtPassword.UseSystemPasswordChar = true;
             // 
-            // labelForgotPassword
+            // loginLabelForgotPassword
             // 
-            labelForgotPassword.AutoSize = true;
-            labelForgotPassword.Cursor = Cursors.Hand;
-            labelForgotPassword.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelForgotPassword.ForeColor = Color.SteelBlue;
-            labelForgotPassword.Location = new Point(504, 408);
-            labelForgotPassword.Margin = new Padding(4, 0, 4, 0);
-            labelForgotPassword.Name = "labelForgotPassword";
-            labelForgotPassword.Size = new Size(96, 15);
-            labelForgotPassword.TabIndex = 5;
-            labelForgotPassword.Text = "Forgot Password?";
-            labelForgotPassword.Click += labelForgotPassword_Click;
+            loginLabelForgotPassword.AutoSize = true;
+            loginLabelForgotPassword.Cursor = Cursors.Hand;
+            loginLabelForgotPassword.Font = new Font("Roboto Light", 9.75F);
+            loginLabelForgotPassword.ForeColor = Color.FromArgb(65, 78, 101);
+            loginLabelForgotPassword.Location = new Point(81, 163);
+            loginLabelForgotPassword.Margin = new Padding(4, 0, 4, 0);
+            loginLabelForgotPassword.Name = "loginLabelForgotPassword";
+            loginLabelForgotPassword.Size = new Size(111, 18);
+            loginLabelForgotPassword.TabIndex = 5;
+            loginLabelForgotPassword.Text = "Forgot Password?";
+            loginLabelForgotPassword.Click += labelForgotPassword_Click;
             // 
-            // ButtonLogIn
+            // loginShowPassword
             // 
-            ButtonLogIn.BackColor = Color.FromArgb(95, 192, 170);
-            ButtonLogIn.FlatAppearance.BorderSize = 0;
-            ButtonLogIn.FlatStyle = FlatStyle.Flat;
-            ButtonLogIn.Font = new Font("Roboto Light", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ButtonLogIn.ForeColor = Color.White;
-            ButtonLogIn.Location = new Point(677, 449);
-            ButtonLogIn.Margin = new Padding(4, 3, 4, 3);
-            ButtonLogIn.Name = "ButtonLogIn";
-            ButtonLogIn.Size = new Size(122, 37);
-            ButtonLogIn.TabIndex = 6;
-            ButtonLogIn.Text = "Log In";
-            ButtonLogIn.UseVisualStyleBackColor = false;
-            ButtonLogIn.Click += ButtonLogIn_Click;
+            loginShowPassword.AutoSize = true;
+            loginShowPassword.Cursor = Cursors.Hand;
+            loginShowPassword.Font = new Font("Roboto Light", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loginShowPassword.ImageIndex = 0;
+            loginShowPassword.ImageList = password;
+            loginShowPassword.Location = new Point(281, 145);
+            loginShowPassword.Margin = new Padding(0);
+            loginShowPassword.Name = "loginShowPassword";
+            loginShowPassword.Size = new Size(161, 32);
+            loginShowPassword.TabIndex = 7;
+            loginShowPassword.Text = "Show Password";
+            loginShowPassword.TextImageRelation = TextImageRelation.ImageBeforeText;
+            loginShowPassword.UseVisualStyleBackColor = true;
+            loginShowPassword.CheckedChanged += showPassword_CheckedChanged;
             // 
-            // showPassword
+            // password
             // 
-            showPassword.AutoSize = true;
-            showPassword.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            showPassword.Location = new Point(677, 390);
-            showPassword.Margin = new Padding(4, 3, 4, 3);
-            showPassword.Name = "showPassword";
-            showPassword.Size = new Size(105, 19);
-            showPassword.TabIndex = 7;
-            showPassword.Text = "Show Password";
-            showPassword.UseVisualStyleBackColor = true;
-            showPassword.CheckedChanged += showPassword_CheckedChanged;
+            password.ColorDepth = ColorDepth.Depth32Bit;
+            password.ImageStream = (ImageListStreamer)resources.GetObject("password.ImageStream");
+            password.TransparentColor = Color.Transparent;
+            password.Images.SetKeyName(0, "eye.png");
+            password.Images.SetKeyName(1, "view.png");
             // 
-            // registerLabel
+            // loginSwitchLabel
             // 
-            registerLabel.AutoSize = true;
-            registerLabel.Cursor = Cursors.Hand;
-            registerLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            registerLabel.ForeColor = Color.SteelBlue;
-            registerLabel.Location = new Point(504, 390);
-            registerLabel.Margin = new Padding(4, 0, 4, 0);
-            registerLabel.Name = "registerLabel";
-            registerLabel.Size = new Size(119, 15);
-            registerLabel.TabIndex = 14;
-            registerLabel.Text = "Dont have an account?";
-            registerLabel.Click += registerLabel_Click;
-            // 
-            // pictureBox3
-            // 
-            pictureBox3.Image = Properties.Resources.password;
-            pictureBox3.Location = new Point(459, 348);
-            pictureBox3.Margin = new Padding(4, 3, 4, 3);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(42, 36);
-            pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox3.TabIndex = 4;
-            pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.Image = Properties.Resources.username;
-            pictureBox2.Location = new Point(459, 276);
-            pictureBox2.Margin = new Padding(4, 3, 4, 3);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(42, 38);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 3;
-            pictureBox2.TabStop = false;
+            loginSwitchLabel.AutoSize = true;
+            loginSwitchLabel.Cursor = Cursors.Hand;
+            loginSwitchLabel.Font = new Font("Roboto Light", 9.75F);
+            loginSwitchLabel.ForeColor = Color.FromArgb(65, 78, 101);
+            loginSwitchLabel.Location = new Point(53, 145);
+            loginSwitchLabel.Margin = new Padding(4, 0, 4, 0);
+            loginSwitchLabel.Name = "loginSwitchLabel";
+            loginSwitchLabel.Size = new Size(139, 18);
+            loginSwitchLabel.TabIndex = 14;
+            loginSwitchLabel.Text = "Don't have an account?";
+            loginSwitchLabel.Click += switchLabel_Click;
             // 
             // pictureBox1
             // 
+            pictureBox1.Dock = DockStyle.Top;
             pictureBox1.Image = Properties.Resources.bg_dark;
-            pictureBox1.Location = new Point(433, 78);
+            pictureBox1.Location = new Point(0, 0);
             pictureBox1.Margin = new Padding(4, 3, 4, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(410, 136);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.Size = new Size(487, 126);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // testBtn
             // 
-            testBtn.Location = new Point(289, 206);
+            testBtn.Location = new Point(44, 348);
             testBtn.Name = "testBtn";
             testBtn.Size = new Size(75, 23);
             testBtn.TabIndex = 15;
@@ -166,56 +194,132 @@
             testBtn.UseVisualStyleBackColor = true;
             testBtn.Click += testBtn_Click;
             // 
-            // button1
+            // loginBtn
             // 
-            button1.Location = new Point(243, 442);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 16;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            loginBtn.BackImageSize = new Size(0, 0);
+            loginBtn.BorderColor = Color.Black;
+            loginBtn.BorderRadius = 10;
+            loginBtn.BorderThickness = 1;
+            loginBtn.ButtonColor = Color.FromArgb(95, 192, 170);
+            loginBtn.FlatAppearance.BorderSize = 0;
+            loginBtn.FlatStyle = FlatStyle.Flat;
+            loginBtn.Font = new Font("Roboto Light", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loginBtn.ForeColor = Color.White;
+            loginBtn.HoverColor = Color.FromArgb(66, 134, 118);
+            loginBtn.IconLocation = RoundedButton.ImageLocation.Center;
+            loginBtn.Image = null;
+            loginBtn.ImageSize = new Size(0, 0);
+            loginBtn.Location = new Point(320, 232);
+            loginBtn.Name = "loginBtn";
+            loginBtn.PressedColor = Color.FromArgb(46, 93, 82);
+            loginBtn.Size = new Size(122, 42);
+            loginBtn.TabIndex = 17;
+            loginBtn.Text = "Log In";
+            loginBtn.UseVisualStyleBackColor = true;
+            loginBtn.Click += loginBtn_Click;
+            // 
+            // mainPanel
+            // 
+            mainPanel.BackColor = SystemColors.Control;
+            mainPanel.Controls.Add(inputPanel);
+            mainPanel.Controls.Add(topPanel);
+            mainPanel.Controls.Add(topLabel);
+            mainPanel.Controls.Add(pictureBox1);
+            mainPanel.Location = new Point(4, 27);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(487, 689);
+            mainPanel.TabIndex = 18;
+            // 
+            // inputPanel
+            // 
+            inputPanel.Controls.Add(testBtn);
+            inputPanel.Controls.Add(hidePanel);
+            inputPanel.Controls.Add(loginShowPassword);
+            inputPanel.Controls.Add(loginTxtUsername);
+            inputPanel.Controls.Add(loginTxtPassword);
+            inputPanel.Controls.Add(loginSwitchLabel);
+            inputPanel.Controls.Add(loginLabelForgotPassword);
+            inputPanel.Controls.Add(loginBtn);
+            inputPanel.Dock = DockStyle.Fill;
+            inputPanel.Location = new Point(0, 207);
+            inputPanel.Name = "inputPanel";
+            inputPanel.Size = new Size(487, 482);
+            inputPanel.TabIndex = 21;
+            // 
+            // hidePanel
+            // 
+            hidePanel.Location = new Point(281, 148);
+            hidePanel.Name = "hidePanel";
+            hidePanel.Size = new Size(14, 29);
+            hidePanel.TabIndex = 18;
+            // 
+            // topPanel
+            // 
+            topPanel.BackColor = SystemColors.ActiveCaption;
+            topPanel.Location = new Point(-487, 125);
+            topPanel.Name = "topPanel";
+            topPanel.Size = new Size(487, 82);
+            topPanel.TabIndex = 20;
+            // 
+            // topLabel
+            // 
+            topLabel.Dock = DockStyle.Top;
+            topLabel.Font = new Font("Roboto Medium", 26.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            topLabel.ForeColor = Color.FromArgb(65, 78, 101);
+            topLabel.Location = new Point(0, 126);
+            topLabel.Name = "topLabel";
+            topLabel.Size = new Size(487, 81);
+            topLabel.TabIndex = 19;
+            topLabel.Text = "LOGIN";
+            topLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // loginImagePanel
+            // 
+            loginImagePanel.BackColor = SystemColors.ActiveCaption;
+            loginImagePanel.Location = new Point(497, 27);
+            loginImagePanel.Name = "loginImagePanel";
+            loginImagePanel.Size = new Size(779, 689);
+            loginImagePanel.TabIndex = 19;
             // 
             // LoginPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1264, 681);
-            Controls.Add(button1);
-            Controls.Add(testBtn);
-            Controls.Add(registerLabel);
-            Controls.Add(showPassword);
-            Controls.Add(ButtonLogIn);
-            Controls.Add(labelForgotPassword);
-            Controls.Add(pictureBox3);
-            Controls.Add(pictureBox2);
-            Controls.Add(txtPassword);
-            Controls.Add(txtUsername);
-            Controls.Add(pictureBox1);
+            BackColor = SystemColors.Control;
+            ClientSize = new Size(1280, 720);
+            Controls.Add(loginImagePanel);
+            Controls.Add(mainPanel);
+            FormStyle = FormStyles.ActionBar_None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             Name = "LoginPanel";
+            Padding = new Padding(1, 24, 1, 1);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            mainPanel.ResumeLayout(false);
+            inputPanel.ResumeLayout(false);
+            inputPanel.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Label labelForgotPassword;
+        private MaterialTextBox2 loginTxtUsername;
+        private MaterialTextBox2 loginTxtPassword;
+        private CustomLabel loginLabelForgotPassword;
         private System.Windows.Forms.Button ButtonLogIn;
-        private System.Windows.Forms.CheckBox showPassword;
-        private System.Windows.Forms.Label registerLabel;
+        private System.Windows.Forms.CheckBox loginShowPassword;
+        private CustomLabel loginSwitchLabel;
         private Button testBtn;
-        private Button button1;
+        private CustomControls.RoundedButton loginBtn;
+        private Panel mainPanel;
+        private Panel hidePanel;
+        private ImageList password;
+        private CustomLabel topLabel;
+        private Panel loginImagePanel;
+        private Panel topPanel;
+        private Panel inputPanel;
     }
 }
