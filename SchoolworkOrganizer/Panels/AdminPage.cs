@@ -14,6 +14,7 @@ namespace SchoolworkOrganizer.Panels
             timeKeeper.Start();
             this.FormClosing += MyFormClosing;
             drawerControl.LogoutImageClick += logoutBtn_Click;
+
         }
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
@@ -89,7 +90,7 @@ namespace SchoolworkOrganizer.Panels
             }
         }
 
-        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        private void tabControl_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (tabControl.SelectedTab == null) return;
             if (tabControl.SelectedTab.Controls.Count == 0) return;
@@ -97,6 +98,7 @@ namespace SchoolworkOrganizer.Panels
 
             Template2 tabPage = (Template2)tabControl.SelectedTab.Controls[0];
             tabPage.RefreshData();
+            RefreshUser();
         }
     }
 }

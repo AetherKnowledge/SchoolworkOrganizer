@@ -1,4 +1,6 @@
-﻿namespace SchoolworkOrganizer
+﻿using MaterialSkin.Controls;
+
+namespace SchoolworkOrganizer
 {
     partial class RegisterPanel
     {
@@ -44,6 +46,7 @@
             pictureBox5 = new PictureBox();
             txtVerify = new TextBox();
             showPassVerify = new CheckBox();
+            comboBox1 = new MaterialComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -232,11 +235,35 @@
             showPassVerify.UseVisualStyleBackColor = true;
             showPassVerify.CheckedChanged += showPassVerify_CheckedChanged;
             // 
+            // comboBox1
+            // 
+            comboBox1.AutoResize = false;
+            comboBox1.BackColor = Color.FromArgb(255, 255, 255);
+            comboBox1.Depth = 0;
+            comboBox1.DrawMode = DrawMode.OwnerDrawVariable;
+            comboBox1.DropDownHeight = 118;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.DropDownWidth = 121;
+            comboBox1.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            comboBox1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.IntegralHeight = false;
+            comboBox1.ItemHeight = 29;
+            comboBox1.Location = new Point(71, 313);
+            comboBox1.MaxDropDownItems = 4;
+            comboBox1.MouseState = MaterialSkin.MouseState.OUT;
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(121, 35);
+            comboBox1.StartIndex = 0;
+            comboBox1.TabIndex = 42;
+            comboBox1.UseTallSize = false;
+            // 
             // RegisterPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 681);
+            Controls.Add(comboBox1);
             Controls.Add(showPassVerify);
             Controls.Add(pictureBox5);
             Controls.Add(txtVerify);
@@ -282,5 +309,6 @@
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.TextBox txtVerify;
         private System.Windows.Forms.CheckBox showPassVerify;
+        private MaterialComboBox comboBox1;
     }
 }

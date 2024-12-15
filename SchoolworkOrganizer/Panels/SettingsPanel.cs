@@ -11,7 +11,7 @@ namespace SchoolworkOrganizer.Panels
             InitializeComponent();
         }
 
-        public override void RefreshData()
+        public new void RefreshData()
         {
             RefreshUser();
         }
@@ -60,7 +60,8 @@ namespace SchoolworkOrganizer.Panels
                 User user = new User(email, username, password, Utilities.ConvertToSKImage(uploadPicture.Image));
                 bool success = await Program.user.UpdateUser(user);
                 if (success) PopupForm.Show("User updated successfully", "Success");
-                PopupForm.Show("User update failed", "Error");
+                else PopupForm.Show("User update failed", "Error");
+
                 RefreshUser();
             }
             catch (Exception ex)

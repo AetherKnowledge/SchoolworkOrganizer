@@ -19,7 +19,7 @@ namespace SchoolworkOrganizer
 
         }
 
-        public override void RefreshData()
+        public new void RefreshData()
         {
             
         }

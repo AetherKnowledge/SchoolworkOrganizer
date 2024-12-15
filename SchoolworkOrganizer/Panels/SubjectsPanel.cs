@@ -40,7 +40,7 @@ namespace SchoolworkOrganizer.Panels
             cancelBtn.Paint += FormUtilities.customButtonPaint;
         }
 
-        public override void RefreshData()
+        public new void RefreshData()
         {
             Clear();
             RefreshTable();

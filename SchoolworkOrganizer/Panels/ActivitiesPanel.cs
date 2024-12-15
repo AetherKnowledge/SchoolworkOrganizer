@@ -44,7 +44,7 @@ namespace SchoolworkOrganizer.Panels
             dueDatePicker.CalendarForeColor = Color.FromArgb(65, 78, 101);
         }
 
-        public override void RefreshData()
+        public new void RefreshData()
         {
             Clear();
             if (Program.user == null) return;
@@ -72,7 +72,7 @@ namespace SchoolworkOrganizer.Panels
                 table.Rows.Clear();
 
                 string subjectName = subjectCBox.Text;
-                if (subjectName == null) return;
+                if (string.IsNullOrEmpty(subjectName)) return;
 
                 Subject selectedSubject = Program.user?.Subjects.First(subject => subject.SubjectName == subjectName) ?? throw new ArgumentNullException("Current User is null");
                 if (selectedSubject == null) return;

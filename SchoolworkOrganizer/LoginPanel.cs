@@ -147,7 +147,7 @@ namespace SchoolworkOrganizer
         {
             login = !login;
 
-            int width = 1024;
+            int width = 800;
             int originalWidth = defaultImage.Width;
             int originalHeight = defaultImage.Height;
             // Calculate the new height to maintain the aspect ratio

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public abstract class Template2 : UserControl
+    public class Template2 : UserControl
     {
-        public abstract void RefreshData();
+        public void RefreshData() { }
     }
 }
