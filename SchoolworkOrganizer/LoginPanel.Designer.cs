@@ -39,14 +39,14 @@ namespace SchoolworkOrganizer
             registerInput = new Panels.RegisterInput();
             topLabel = new Label();
             loginImagePanel = new Panel();
-            pictureBox2 = new PictureBox();
+            loginImageBox = new PictureBox();
             panel1 = new Panel();
             registerPanel = new Panel();
             pictureBox3 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             mainPanel.SuspendLayout();
             loginImagePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)loginImageBox).BeginInit();
             panel1.SuspendLayout();
             registerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -79,7 +79,7 @@ namespace SchoolworkOrganizer
             // 
             // changePanel
             // 
-            changePanel.BackColor = SystemColors.ActiveCaption;
+            changePanel.BackColor = Color.FromArgb(65, 78, 101);
             changePanel.Location = new Point(-487, 125);
             changePanel.Name = "changePanel";
             changePanel.Size = new Size(487, 557);
@@ -115,8 +115,8 @@ namespace SchoolworkOrganizer
             // 
             // loginImagePanel
             // 
-            loginImagePanel.BackColor = SystemColors.ActiveCaption;
-            loginImagePanel.Controls.Add(pictureBox2);
+            loginImagePanel.BackColor = SystemColors.Control;
+            loginImagePanel.Controls.Add(loginImageBox);
             loginImagePanel.Location = new Point(496, 6);
             loginImagePanel.Name = "loginImagePanel";
             loginImagePanel.Size = new Size(779, 682);
@@ -124,12 +124,15 @@ namespace SchoolworkOrganizer
             // 
             // pictureBox2
             // 
-            pictureBox2.Dock = DockStyle.Fill;
-            pictureBox2.Location = new Point(0, 0);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(779, 682);
-            pictureBox2.TabIndex = 0;
-            pictureBox2.TabStop = false;
+            loginImageBox.BackColor = SystemColors.Control;
+            loginImageBox.Dock = DockStyle.Fill;
+            loginImageBox.Image = Properties.Resources.login_bg;
+            loginImageBox.Location = new Point(0, 0);
+            loginImageBox.Name = "pictureBox2";
+            loginImageBox.Size = new Size(779, 682);
+            loginImageBox.SizeMode = PictureBoxSizeMode.Zoom;
+            loginImageBox.TabIndex = 0;
+            loginImageBox.TabStop = false;
             // 
             // panel1
             // 
@@ -144,7 +147,7 @@ namespace SchoolworkOrganizer
             // 
             // registerPanel
             // 
-            registerPanel.BackColor = SystemColors.ActiveCaptionText;
+            registerPanel.BackColor = Color.FromArgb(65, 78, 101);
             registerPanel.Controls.Add(pictureBox3);
             registerPanel.Location = new Point(-779, 0);
             registerPanel.Name = "registerPanel";
@@ -164,7 +167,7 @@ namespace SchoolworkOrganizer
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
+            BackColor = Color.FromArgb(65, 78, 101);
             ClientSize = new Size(1280, 720);
             Controls.Add(panel1);
             FormStyle = FormStyles.ActionBar_None;
@@ -178,7 +181,7 @@ namespace SchoolworkOrganizer
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             mainPanel.ResumeLayout(false);
             loginImagePanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)loginImageBox).EndInit();
             panel1.ResumeLayout(false);
             registerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
@@ -196,7 +199,7 @@ namespace SchoolworkOrganizer
         private Panels.LoginInput loginInput;
         private Panels.RegisterInput registerInput;
         private Panel panel1;
-        private PictureBox pictureBox2;
+        private PictureBox loginImageBox;
         private Panel registerPanel;
         private PictureBox pictureBox3;
     }

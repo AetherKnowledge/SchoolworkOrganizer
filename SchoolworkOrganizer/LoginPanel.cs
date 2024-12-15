@@ -1,5 +1,7 @@
 ﻿using MaterialSkin.Controls;
+using SchoolworkOrganizer.Design;
 using SchoolworkOrganizer.Popups;
+using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
 
@@ -11,6 +13,7 @@ namespace SchoolworkOrganizer
         private float animationProgress = 0;
         private bool login = true;
         private int panelGap;
+        private Image defaultImage;
 
         public event EventHandler? WindowStateChanged;
 
@@ -24,6 +27,7 @@ namespace SchoolworkOrganizer
 
             loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
             loginImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+            defaultImage = loginImageBox.Image;
 
             registerPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
             registerPanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
@@ -41,6 +45,7 @@ namespace SchoolworkOrganizer
 
             loginInput.Switch += switchLabel_Click;
             registerInput.Switch += switchLabel_Click;
+
         }
 
         public new void Show()
@@ -73,10 +78,10 @@ namespace SchoolworkOrganizer
 
             if (Math.Abs(target - animationProgress) < 0.0001f)
             {
+                if (loginImageBox.Image != defaultImage) loginImageBox.Image = defaultImage;
                 animationProgress = target;
                 animationTimer.Stop();
             }
-
             
             int min = panelGap - 2;
             int max = Width - mainPanel.Width - (panelGap * 2);
@@ -114,6 +119,8 @@ namespace SchoolworkOrganizer
 
             }
 
+
+
             Invalidate();
         }
 
@@ -133,6 +140,15 @@ namespace SchoolworkOrganizer
         private void switchLabel_Click(object? sender, EventArgs e)
         {
             login = !login;
+
+            int width = 1024;
+            int originalWidth = defaultImage.Width;
+            int originalHeight = defaultImage.Height;
+            // Calculate the new height to maintain the aspect ratio
+            int height = (int)((float)originalHeight / originalWidth * width);
+
+            loginImageBox.Image = FormUtilities.ResizeImage(defaultImage, width, height);
+
             animationTimer.Start();
 
         }

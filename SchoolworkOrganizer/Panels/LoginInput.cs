@@ -72,7 +72,7 @@ namespace SchoolworkOrganizer.Panels
                 return;
             }
 
-            this.Hide();
+            OpenPanels.loginPage.Hide();
             OpenPanels.adminPage.Show();
             Clear();
         }
