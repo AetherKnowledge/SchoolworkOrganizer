@@ -31,146 +31,26 @@ namespace SchoolworkOrganizer
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginPanel));
-            loginTxtUsername = new MaterialTextBox2();
-            loginTxtPassword = new MaterialTextBox2();
-            loginLabelForgotPassword = new CustomLabel();
-            loginShowPassword = new CheckBox();
-            password = new ImageList(components);
-            loginSwitchLabel = new CustomLabel();
             pictureBox1 = new PictureBox();
-            testBtn = new Button();
-            loginBtn = new RoundedButton();
             mainPanel = new Panel();
-            inputPanel = new Panel();
-            hidePanel = new Panel();
-            topPanel = new Panel();
-            topLabel = new CustomLabel();
+            changePanel = new Panel();
+            loginInput = new Panels.LoginInput();
+            registerInput = new Panels.RegisterInput();
+            topLabel = new Label();
             loginImagePanel = new Panel();
+            pictureBox2 = new PictureBox();
+            panel1 = new Panel();
+            registerPanel = new Panel();
+            pictureBox3 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             mainPanel.SuspendLayout();
-            inputPanel.SuspendLayout();
+            loginImagePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            panel1.SuspendLayout();
+            registerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             SuspendLayout();
-            // 
-            // loginTxtUsername
-            // 
-            loginTxtUsername.AnimateReadOnly = false;
-            loginTxtUsername.AutoCompleteMode = AutoCompleteMode.None;
-            loginTxtUsername.AutoCompleteSource = AutoCompleteSource.None;
-            loginTxtUsername.BackgroundImageLayout = ImageLayout.None;
-            loginTxtUsername.CharacterCasing = CharacterCasing.Normal;
-            loginTxtUsername.Depth = 0;
-            loginTxtUsername.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            loginTxtUsername.HideSelection = true;
-            loginTxtUsername.LeadingIcon = Properties.Resources.Capture;
-            loginTxtUsername.Location = new Point(53, 40);
-            loginTxtUsername.Margin = new Padding(4, 3, 4, 3);
-            loginTxtUsername.MaxLength = 32767;
-            loginTxtUsername.MouseState = MaterialSkin.MouseState.OUT;
-            loginTxtUsername.Name = "loginTxtUsername";
-            loginTxtUsername.PasswordChar = '\0';
-            loginTxtUsername.PrefixSuffixText = null;
-            loginTxtUsername.ReadOnly = false;
-            loginTxtUsername.RightToLeft = RightToLeft.No;
-            loginTxtUsername.SelectedText = "";
-            loginTxtUsername.SelectionLength = 0;
-            loginTxtUsername.SelectionStart = 0;
-            loginTxtUsername.ShortcutsEnabled = true;
-            loginTxtUsername.Size = new Size(389, 48);
-            loginTxtUsername.TabIndex = 1;
-            loginTxtUsername.TabStop = false;
-            loginTxtUsername.Text = "Username";
-            loginTxtUsername.TextAlign = HorizontalAlignment.Left;
-            loginTxtUsername.TrailingIcon = null;
-            loginTxtUsername.UseOwnColors = true;
-            loginTxtUsername.UseSystemPasswordChar = false;
-            // 
-            // loginTxtPassword
-            // 
-            loginTxtPassword.AnimateReadOnly = false;
-            loginTxtPassword.AutoCompleteMode = AutoCompleteMode.None;
-            loginTxtPassword.AutoCompleteSource = AutoCompleteSource.None;
-            loginTxtPassword.BackgroundImageLayout = ImageLayout.None;
-            loginTxtPassword.CharacterCasing = CharacterCasing.Normal;
-            loginTxtPassword.Depth = 0;
-            loginTxtPassword.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            loginTxtPassword.HideSelection = true;
-            loginTxtPassword.LeadingIcon = Properties.Resources.password1;
-            loginTxtPassword.Location = new Point(53, 94);
-            loginTxtPassword.Margin = new Padding(4, 3, 4, 3);
-            loginTxtPassword.MaxLength = 32767;
-            loginTxtPassword.MouseState = MaterialSkin.MouseState.OUT;
-            loginTxtPassword.Name = "loginTxtPassword";
-            loginTxtPassword.PasswordChar = '●';
-            loginTxtPassword.PrefixSuffixText = null;
-            loginTxtPassword.ReadOnly = false;
-            loginTxtPassword.RightToLeft = RightToLeft.No;
-            loginTxtPassword.SelectedText = "";
-            loginTxtPassword.SelectionLength = 0;
-            loginTxtPassword.SelectionStart = 0;
-            loginTxtPassword.ShortcutsEnabled = true;
-            loginTxtPassword.Size = new Size(389, 48);
-            loginTxtPassword.TabIndex = 2;
-            loginTxtPassword.TabStop = false;
-            loginTxtPassword.Text = "Password";
-            loginTxtPassword.TextAlign = HorizontalAlignment.Left;
-            loginTxtPassword.TrailingIcon = null;
-            loginTxtPassword.UseOwnColors = false;
-            loginTxtPassword.UseSystemPasswordChar = true;
-            // 
-            // loginLabelForgotPassword
-            // 
-            loginLabelForgotPassword.AutoSize = true;
-            loginLabelForgotPassword.Cursor = Cursors.Hand;
-            loginLabelForgotPassword.Font = new Font("Roboto Light", 9.75F);
-            loginLabelForgotPassword.ForeColor = Color.FromArgb(65, 78, 101);
-            loginLabelForgotPassword.Location = new Point(81, 163);
-            loginLabelForgotPassword.Margin = new Padding(4, 0, 4, 0);
-            loginLabelForgotPassword.Name = "loginLabelForgotPassword";
-            loginLabelForgotPassword.Size = new Size(111, 18);
-            loginLabelForgotPassword.TabIndex = 5;
-            loginLabelForgotPassword.Text = "Forgot Password?";
-            loginLabelForgotPassword.Click += labelForgotPassword_Click;
-            // 
-            // loginShowPassword
-            // 
-            loginShowPassword.AutoSize = true;
-            loginShowPassword.Cursor = Cursors.Hand;
-            loginShowPassword.Font = new Font("Roboto Light", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            loginShowPassword.ImageIndex = 0;
-            loginShowPassword.ImageList = password;
-            loginShowPassword.Location = new Point(281, 145);
-            loginShowPassword.Margin = new Padding(0);
-            loginShowPassword.Name = "loginShowPassword";
-            loginShowPassword.Size = new Size(161, 32);
-            loginShowPassword.TabIndex = 7;
-            loginShowPassword.Text = "Show Password";
-            loginShowPassword.TextImageRelation = TextImageRelation.ImageBeforeText;
-            loginShowPassword.UseVisualStyleBackColor = true;
-            loginShowPassword.CheckedChanged += showPassword_CheckedChanged;
-            // 
-            // password
-            // 
-            password.ColorDepth = ColorDepth.Depth32Bit;
-            password.ImageStream = (ImageListStreamer)resources.GetObject("password.ImageStream");
-            password.TransparentColor = Color.Transparent;
-            password.Images.SetKeyName(0, "eye.png");
-            password.Images.SetKeyName(1, "view.png");
-            // 
-            // loginSwitchLabel
-            // 
-            loginSwitchLabel.AutoSize = true;
-            loginSwitchLabel.Cursor = Cursors.Hand;
-            loginSwitchLabel.Font = new Font("Roboto Light", 9.75F);
-            loginSwitchLabel.ForeColor = Color.FromArgb(65, 78, 101);
-            loginSwitchLabel.Location = new Point(53, 145);
-            loginSwitchLabel.Margin = new Padding(4, 0, 4, 0);
-            loginSwitchLabel.Name = "loginSwitchLabel";
-            loginSwitchLabel.Size = new Size(139, 18);
-            loginSwitchLabel.TabIndex = 14;
-            loginSwitchLabel.Text = "Don't have an account?";
-            loginSwitchLabel.Click += switchLabel_Click;
             // 
             // pictureBox1
             // 
@@ -184,82 +64,42 @@ namespace SchoolworkOrganizer
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // testBtn
-            // 
-            testBtn.Location = new Point(44, 348);
-            testBtn.Name = "testBtn";
-            testBtn.Size = new Size(75, 23);
-            testBtn.TabIndex = 15;
-            testBtn.Text = "button1";
-            testBtn.UseVisualStyleBackColor = true;
-            testBtn.Click += testBtn_Click;
-            // 
-            // loginBtn
-            // 
-            loginBtn.BackImageSize = new Size(0, 0);
-            loginBtn.BorderColor = Color.Black;
-            loginBtn.BorderRadius = 10;
-            loginBtn.BorderThickness = 1;
-            loginBtn.ButtonColor = Color.FromArgb(95, 192, 170);
-            loginBtn.FlatAppearance.BorderSize = 0;
-            loginBtn.FlatStyle = FlatStyle.Flat;
-            loginBtn.Font = new Font("Roboto Light", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            loginBtn.ForeColor = Color.White;
-            loginBtn.HoverColor = Color.FromArgb(66, 134, 118);
-            loginBtn.IconLocation = RoundedButton.ImageLocation.Center;
-            loginBtn.Image = null;
-            loginBtn.ImageSize = new Size(0, 0);
-            loginBtn.Location = new Point(320, 232);
-            loginBtn.Name = "loginBtn";
-            loginBtn.PressedColor = Color.FromArgb(46, 93, 82);
-            loginBtn.Size = new Size(122, 42);
-            loginBtn.TabIndex = 17;
-            loginBtn.Text = "Log In";
-            loginBtn.UseVisualStyleBackColor = true;
-            loginBtn.Click += loginBtn_Click;
-            // 
             // mainPanel
             // 
             mainPanel.BackColor = SystemColors.Control;
-            mainPanel.Controls.Add(inputPanel);
-            mainPanel.Controls.Add(topPanel);
+            mainPanel.Controls.Add(changePanel);
+            mainPanel.Controls.Add(loginInput);
+            mainPanel.Controls.Add(registerInput);
             mainPanel.Controls.Add(topLabel);
             mainPanel.Controls.Add(pictureBox1);
-            mainPanel.Location = new Point(4, 27);
+            mainPanel.Location = new Point(3, 6);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(487, 689);
+            mainPanel.Size = new Size(487, 682);
             mainPanel.TabIndex = 18;
             // 
-            // inputPanel
+            // changePanel
             // 
-            inputPanel.Controls.Add(testBtn);
-            inputPanel.Controls.Add(hidePanel);
-            inputPanel.Controls.Add(loginShowPassword);
-            inputPanel.Controls.Add(loginTxtUsername);
-            inputPanel.Controls.Add(loginTxtPassword);
-            inputPanel.Controls.Add(loginSwitchLabel);
-            inputPanel.Controls.Add(loginLabelForgotPassword);
-            inputPanel.Controls.Add(loginBtn);
-            inputPanel.Dock = DockStyle.Fill;
-            inputPanel.Location = new Point(0, 207);
-            inputPanel.Name = "inputPanel";
-            inputPanel.Size = new Size(487, 482);
-            inputPanel.TabIndex = 21;
+            changePanel.BackColor = SystemColors.ActiveCaption;
+            changePanel.Location = new Point(-487, 125);
+            changePanel.Name = "changePanel";
+            changePanel.Size = new Size(487, 557);
+            changePanel.TabIndex = 20;
             // 
-            // hidePanel
+            // loginInput
             // 
-            hidePanel.Location = new Point(281, 148);
-            hidePanel.Name = "hidePanel";
-            hidePanel.Size = new Size(14, 29);
-            hidePanel.TabIndex = 18;
+            loginInput.Dock = DockStyle.Fill;
+            loginInput.Location = new Point(0, 207);
+            loginInput.Name = "loginInput";
+            loginInput.Size = new Size(487, 475);
+            loginInput.TabIndex = 21;
             // 
-            // topPanel
+            // registerInput
             // 
-            topPanel.BackColor = SystemColors.ActiveCaption;
-            topPanel.Location = new Point(-487, 125);
-            topPanel.Name = "topPanel";
-            topPanel.Size = new Size(487, 82);
-            topPanel.TabIndex = 20;
+            registerInput.Dock = DockStyle.Fill;
+            registerInput.Location = new Point(0, 207);
+            registerInput.Name = "registerInput";
+            registerInput.Size = new Size(487, 475);
+            registerInput.TabIndex = 0;
             // 
             // topLabel
             // 
@@ -276,50 +116,88 @@ namespace SchoolworkOrganizer
             // loginImagePanel
             // 
             loginImagePanel.BackColor = SystemColors.ActiveCaption;
-            loginImagePanel.Location = new Point(497, 27);
+            loginImagePanel.Controls.Add(pictureBox2);
+            loginImagePanel.Location = new Point(496, 6);
             loginImagePanel.Name = "loginImagePanel";
-            loginImagePanel.Size = new Size(779, 689);
+            loginImagePanel.Size = new Size(779, 682);
             loginImagePanel.TabIndex = 19;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Dock = DockStyle.Fill;
+            pictureBox2.Location = new Point(0, 0);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(779, 682);
+            pictureBox2.TabIndex = 0;
+            pictureBox2.TabStop = false;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(registerPanel);
+            panel1.Controls.Add(loginImagePanel);
+            panel1.Controls.Add(mainPanel);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(2, 24);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1276, 694);
+            panel1.TabIndex = 0;
+            // 
+            // registerPanel
+            // 
+            registerPanel.BackColor = SystemColors.ActiveCaptionText;
+            registerPanel.Controls.Add(pictureBox3);
+            registerPanel.Location = new Point(-779, 0);
+            registerPanel.Name = "registerPanel";
+            registerPanel.Size = new Size(779, 682);
+            registerPanel.TabIndex = 20;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Dock = DockStyle.Fill;
+            pictureBox3.Location = new Point(0, 0);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(779, 682);
+            pictureBox3.TabIndex = 0;
+            pictureBox3.TabStop = false;
             // 
             // LoginPanel
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
+            BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1280, 720);
-            Controls.Add(loginImagePanel);
-            Controls.Add(mainPanel);
+            Controls.Add(panel1);
             FormStyle = FormStyles.ActionBar_None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             Name = "LoginPanel";
-            Padding = new Padding(1, 24, 1, 1);
+            Padding = new Padding(2, 24, 2, 2);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
+            Resize += RefreshPanel;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             mainPanel.ResumeLayout(false);
-            inputPanel.ResumeLayout(false);
-            inputPanel.PerformLayout();
+            loginImagePanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            panel1.ResumeLayout(false);
+            registerPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private MaterialTextBox2 loginTxtUsername;
-        private MaterialTextBox2 loginTxtPassword;
-        private CustomLabel loginLabelForgotPassword;
         private System.Windows.Forms.Button ButtonLogIn;
-        private System.Windows.Forms.CheckBox loginShowPassword;
-        private CustomLabel loginSwitchLabel;
-        private Button testBtn;
-        private CustomControls.RoundedButton loginBtn;
         private Panel mainPanel;
-        private Panel hidePanel;
-        private ImageList password;
-        private CustomLabel topLabel;
+        private System.Windows.Forms.Label topLabel;
         private Panel loginImagePanel;
-        private Panel topPanel;
-        private Panel inputPanel;
+        private Panel changePanel;
+        private Panels.LoginInput loginInput;
+        private Panels.RegisterInput registerInput;
+        private Panel panel1;
+        private PictureBox pictureBox2;
+        private Panel registerPanel;
+        private PictureBox pictureBox3;
     }
 }

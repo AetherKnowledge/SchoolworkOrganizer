@@ -1,11 +1,5 @@
 ﻿using MaterialSkin.Controls;
-using SchoolworkOrganizer.Design;
-using SchoolworkOrganizer.Panels;
-using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizer.Popups;
-using SchoolworkOrganizerUtils;
-using System;
-using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
 
@@ -14,16 +8,28 @@ namespace SchoolworkOrganizer
     public partial class LoginPanel : MaterialForm
     {
         private Timer animationTimer = new Timer();
-        float animationProgress = 0;
-        bool login = true;
+        private float animationProgress = 0;
+        private bool login = true;
+        private int panelGap;
+
+        public event EventHandler? WindowStateChanged;
 
         public LoginPanel()
         {
             InitializeComponent();
-            FormUtilities.InitializeTextBoxWithPlaceholder(loginTxtUsername);
-            FormUtilities.InitializeTextBoxWithPlaceholder(loginTxtPassword);
+            panelGap = mainPanel.Location.X + panel1.Location.X;
+            mainPanel.Location = new Point(panelGap, mainPanel.Location.Y);
+            mainPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            changePanel.Height = mainPanel.Height;
+
+            loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            loginImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+
+            registerPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            registerPanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
 
             this.FormClosing += MyFormClosing;
+            WindowStateChanged += RefreshPanel;
 
             this.Size = OpenPanels.size;
             this.Location = OpenPanels.location;
@@ -32,6 +38,9 @@ namespace SchoolworkOrganizer
             OpenPanels.loginPage = this;
             animationTimer.Interval = 8; // ~60 FPS
             animationTimer.Tick += AnimationTimer_Tick;
+
+            loginInput.Switch += switchLabel_Click;
+            registerInput.Switch += switchLabel_Click;
         }
 
         public new void Show()
@@ -42,7 +51,7 @@ namespace SchoolworkOrganizer
             this.Location = OpenPanels.location;
             this.WindowState = OpenPanels.windowState;
 
-
+            Clear();
         }
 
         public new void Hide()
@@ -51,6 +60,8 @@ namespace SchoolworkOrganizer
             OpenPanels.location = this.Location;
             OpenPanels.windowState = this.WindowState;
             base.Hide();
+
+            Clear();
         }
 
         private void AnimationTimer_Tick(object? sender, EventArgs e)
@@ -60,14 +71,14 @@ namespace SchoolworkOrganizer
 
             animationProgress += (target - animationProgress) * 0.1f; // Smooth transition
 
-            if (Math.Abs(target - animationProgress) < 0.00001f)
+            if (Math.Abs(target - animationProgress) < 0.0001f)
             {
                 animationProgress = target;
                 animationTimer.Stop();
             }
 
-            int panelGap = 4;
-            int min = panelGap / 2;
+            
+            int min = panelGap - 2;
             int max = Width - mainPanel.Width - (panelGap * 2);
             int progress = min + (int)(animationProgress * (Width - mainPanel.Width - (min * 2)));
 
@@ -76,19 +87,30 @@ namespace SchoolworkOrganizer
             progress = Math.Min(max, progress);
 
             int mainPanelX = progress;
-            int topPanelX = (-mainPanel.Width - 5) + (int)(animationProgress * ((mainPanel.Width + 5) * 2));
+            int topPanelX = (-mainPanel.Width - 100) + (int)(animationProgress * ((mainPanel.Width + 100) * 2));
 
             mainPanel.Location = new Point(mainPanelX, mainPanel.Location.Y);
             loginImagePanel.Location = new Point(mainPanel.Right + 7, loginImagePanel.Location.Y);
-            topPanel.Location = new Point(topPanelX, topPanel.Location.Y);
+            registerPanel.Location = new Point((mainPanel.Left - 7) - registerPanel.Width, loginImagePanel.Location.Y);
+            changePanel.Location = new Point(topPanelX, changePanel.Location.Y);
 
             if (login)
             {
-                if (animationProgress < 0.5 && topLabel.Text != "Login") topLabel.Text = "Login";
+                if (animationProgress < 0.5 && topLabel.Text != "Login")
+                {
+                    topLabel.Text = "Login";
+                    registerInput.Visible = false;
+                    loginInput.Visible = true;
+                }
             }
             else
             {
-                if (animationProgress > 0.5 && topLabel.Text != "Register") topLabel.Text = "Register";
+                if (animationProgress > 0.5 && topLabel.Text != "Register")
+                {
+                    topLabel.Text = "Register";
+                    registerInput.Visible = true;
+                    loginInput.Visible = false;
+                }
 
             }
 
@@ -99,19 +121,6 @@ namespace SchoolworkOrganizer
         {
             Program.client.Disconnect();
         }
-        private void showPassword_CheckedChanged(object sender, EventArgs e)
-        {
-            if (loginShowPassword.Checked)
-            {
-                loginTxtPassword.UseSystemPasswordChar = false;
-                loginShowPassword.ImageIndex = 1;
-            }
-            else
-            {
-                loginTxtPassword.UseSystemPasswordChar = true;
-                loginShowPassword.ImageIndex = 0;
-            }
-        }
 
         private void labelForgotPassword_Click(object sender, EventArgs e)
         {
@@ -121,32 +130,17 @@ namespace SchoolworkOrganizer
 
         }
 
-        private void switchLabel_Click(object sender, EventArgs e)
+        private void switchLabel_Click(object? sender, EventArgs e)
         {
-            //this.Hide();
-            //OpenPanels.registerPage.Show();
-            //Clear();
             login = !login;
             animationTimer.Start();
 
-            if (login)
-            {
-                loginSwitchLabel.Text = "Don't Have an Account?";
-                loginLabelForgotPassword.Location = new Point(loginSwitchLabel.Right - loginLabelForgotPassword.Width, loginLabelForgotPassword.Location.Y);
-                loginBtn.Text = "Login";
-            }
-            else
-            {
-                loginSwitchLabel.Text = "Already have an Account?";
-                loginLabelForgotPassword.Location = new Point(loginSwitchLabel.Right - loginLabelForgotPassword.Width, loginLabelForgotPassword.Location.Y);
-                loginBtn.Text = "Register";
-            }
         }
 
         private void Clear()
         {
-            loginTxtUsername.Text = "";
-            loginTxtPassword.Text = "";
+            loginInput.Clear();
+            registerInput.Clear();
         }
 
         private void testBtn_Click(object sender, EventArgs e)
@@ -154,38 +148,48 @@ namespace SchoolworkOrganizer
             OpenPanels.adminPage.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void RefreshPanel(object? sender, EventArgs e)
         {
-            //foreach (User user in User.Users)
-            //{
-            //    user.AddToDatabase();
-            //}
+            //if (animationProgress != 0 || animationProgress != 1) return;
+            mainPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            changePanel.Height = mainPanel.Height;
+
+            loginImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+            loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            loginImagePanel.Location = new Point(mainPanel.Right + 7, loginImagePanel.Location.Y);
+
+            registerPanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+            registerPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            registerPanel.Location = new Point((mainPanel.Left - 7) - registerPanel.Width, loginImagePanel.Location.Y);
+
+            if (login)
+            {
+                mainPanel.Location = new Point(panelGap, mainPanel.Location.Y);
+            }
+            else
+            {
+                mainPanel.Location = new Point(Width - mainPanel.Width - (panelGap * 2), mainPanel.Location.Y);
+            }
         }
 
-        private async void loginBtn_Click(object sender, EventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
-            string username = loginTxtUsername.Text;
-            string password = loginTxtPassword.Text;
+            base.OnPaint(e);
+            Color borderColor = Color.Black; // Change to your preferred color
+            int borderThickness = 2;
 
-            if (username == "Username" || password == "Password")
+            // Draw the border
+            using (Pen pen = new Pen(borderColor, borderThickness))
             {
-                PopupForm.Show("Please enter valid credentials", "Error");
-                return;
+                Rectangle rect = new Rectangle(1, 1, this.ClientSize.Width - 2, this.ClientSize.Height - 2);
+                e.Graphics.DrawRectangle(pen, rect);
             }
+        }
 
-            Cursor.Current = Cursors.WaitCursor;
-            bool loginSuccess = await Program.client.Login(username, password);
-            Cursor.Current = Cursors.Default;
-
-            if (!loginSuccess)
-            {
-                PopupForm.Show("Invalid Credentials", "Error");
-                return;
-            }
-
-            this.Hide();
-            OpenPanels.adminPage.Show();
-            Clear();
+        protected virtual void OnWindowStateChanged(EventArgs e)
+        {
+            WindowStateChanged?.Invoke(this, e);
         }
     }
+    
 }
