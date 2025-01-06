@@ -33,7 +33,6 @@ namespace SchoolworkOrganizerUtils
                 socket.Dispose();
                 Thread.Sleep(5000);
                 socket = new ClientWebSocket();
-                ConnectAsync().Wait();
             }
             
         }

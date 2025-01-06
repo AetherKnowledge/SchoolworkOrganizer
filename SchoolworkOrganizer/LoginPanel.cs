@@ -88,7 +88,7 @@ namespace SchoolworkOrganizer
                 animationProgress = target;
                 animationTimer.Stop();
             }
-            
+
             int min = panelGap - 2;
             int max = Width - mainPanel.Width - (panelGap * 2);
             int progress = min + (int)(animationProgress * (Width - mainPanel.Width - (min * 2)));
@@ -212,6 +212,11 @@ namespace SchoolworkOrganizer
         {
             WindowStateChanged?.Invoke(this, e);
         }
+
+        private void loginInput_Load(object sender, EventArgs e)
+        {
+
+        }
     }
-    
+
 }

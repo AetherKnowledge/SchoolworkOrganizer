@@ -88,7 +88,7 @@
             refreshBtn.BackColor = Color.FromArgb(52, 63, 82);
             refreshBtn.FlatAppearance.BorderSize = 0;
             refreshBtn.FlatStyle = FlatStyle.Flat;
-            refreshBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            refreshBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             refreshBtn.ForeColor = Color.FromArgb(231, 231, 231);
             refreshBtn.Location = new Point(154, 444);
             refreshBtn.Margin = new Padding(4, 3, 4, 3);
@@ -101,7 +101,7 @@
             // 
             // selectedFileLabel
             // 
-            selectedFileLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            selectedFileLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             selectedFileLabel.Location = new Point(107, 129);
             selectedFileLabel.Margin = new Padding(4, 3, 4, 3);
             selectedFileLabel.Multiline = true;
@@ -115,7 +115,7 @@
             openFileBtn.BackColor = Color.FromArgb(52, 63, 82);
             openFileBtn.FlatAppearance.BorderSize = 0;
             openFileBtn.FlatStyle = FlatStyle.Flat;
-            openFileBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            openFileBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             openFileBtn.ForeColor = Color.FromArgb(231, 231, 231);
             openFileBtn.Location = new Point(107, 225);
             openFileBtn.Margin = new Padding(4, 3, 4, 3);
@@ -131,7 +131,7 @@
             editFileBtn.BackColor = Color.FromArgb(52, 63, 82);
             editFileBtn.FlatAppearance.BorderSize = 0;
             editFileBtn.FlatStyle = FlatStyle.Flat;
-            editFileBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            editFileBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             editFileBtn.ForeColor = Color.FromArgb(231, 231, 231);
             editFileBtn.Location = new Point(107, 192);
             editFileBtn.Margin = new Padding(4, 3, 4, 3);
@@ -145,32 +145,32 @@
             // fileLabel
             // 
             fileLabel.AutoSize = true;
-            fileLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            fileLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             fileLabel.Location = new Point(77, 133);
             fileLabel.Margin = new Padding(4, 0, 4, 0);
             fileLabel.Name = "fileLabel";
-            fileLabel.Size = new Size(27, 15);
+            fileLabel.Size = new Size(34, 17);
             fileLabel.TabIndex = 10;
             fileLabel.Text = "File:";
             // 
             // editSubjectCBox
             // 
-            editSubjectCBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            editSubjectCBox.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             editSubjectCBox.FormattingEnabled = true;
             editSubjectCBox.Location = new Point(107, 99);
             editSubjectCBox.Margin = new Padding(4, 3, 4, 3);
             editSubjectCBox.Name = "editSubjectCBox";
-            editSubjectCBox.Size = new Size(134, 23);
+            editSubjectCBox.Size = new Size(134, 25);
             editSubjectCBox.TabIndex = 9;
             // 
             // subjectLabel
             // 
             subjectLabel.AutoSize = true;
-            subjectLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             subjectLabel.Location = new Point(18, 103);
             subjectLabel.Margin = new Padding(4, 0, 4, 0);
             subjectLabel.Name = "subjectLabel";
-            subjectLabel.Size = new Size(80, 15);
+            subjectLabel.Size = new Size(100, 17);
             subjectLabel.TabIndex = 8;
             subjectLabel.Text = "Subject Name:";
             // 
@@ -187,7 +187,7 @@
             // label3
             // 
             label3.Dock = DockStyle.Fill;
-            label3.Font = new Font("Roboto", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.Location = new Point(0, 0);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
@@ -201,7 +201,7 @@
             cancelBtn.BackColor = Color.FromArgb(52, 63, 82);
             cancelBtn.FlatAppearance.BorderSize = 0;
             cancelBtn.FlatStyle = FlatStyle.Flat;
-            cancelBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cancelBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cancelBtn.ForeColor = Color.FromArgb(231, 231, 231);
             cancelBtn.Location = new Point(154, 312);
             cancelBtn.Margin = new Padding(4, 3, 4, 3);
@@ -218,7 +218,7 @@
             deleteBtn.Enabled = false;
             deleteBtn.FlatAppearance.BorderSize = 0;
             deleteBtn.FlatStyle = FlatStyle.Flat;
-            deleteBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            deleteBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             deleteBtn.ForeColor = Color.FromArgb(231, 231, 231);
             deleteBtn.Location = new Point(10, 312);
             deleteBtn.Margin = new Padding(4, 3, 4, 3);
@@ -235,7 +235,7 @@
             saveBtn.Enabled = false;
             saveBtn.FlatAppearance.BorderSize = 0;
             saveBtn.FlatStyle = FlatStyle.Flat;
-            saveBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            saveBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             saveBtn.ForeColor = Color.FromArgb(231, 231, 231);
             saveBtn.Location = new Point(154, 278);
             saveBtn.Margin = new Padding(4, 3, 4, 3);
@@ -251,7 +251,7 @@
             addBtn.BackColor = Color.FromArgb(95, 192, 170);
             addBtn.FlatAppearance.BorderSize = 0;
             addBtn.FlatStyle = FlatStyle.Flat;
-            addBtn.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            addBtn.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             addBtn.ForeColor = Color.FromArgb(231, 231, 231);
             addBtn.Location = new Point(10, 277);
             addBtn.Margin = new Padding(4, 3, 4, 3);
@@ -264,21 +264,21 @@
             // 
             // reviewerTxtBox
             // 
-            reviewerTxtBox.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            reviewerTxtBox.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             reviewerTxtBox.Location = new Point(107, 69);
             reviewerTxtBox.Margin = new Padding(4, 3, 4, 3);
             reviewerTxtBox.Name = "reviewerTxtBox";
-            reviewerTxtBox.Size = new Size(134, 22);
+            reviewerTxtBox.Size = new Size(134, 23);
             reviewerTxtBox.TabIndex = 1;
             // 
             // reviewerLabel
             // 
             reviewerLabel.AutoSize = true;
-            reviewerLabel.Font = new Font("Roboto Light", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            reviewerLabel.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             reviewerLabel.Location = new Point(7, 73);
             reviewerLabel.Margin = new Padding(4, 0, 4, 0);
             reviewerLabel.Name = "reviewerLabel";
-            reviewerLabel.Size = new Size(87, 15);
+            reviewerLabel.Size = new Size(111, 17);
             reviewerLabel.TabIndex = 0;
             reviewerLabel.Text = "Reviewer Name:";
             // 
@@ -320,6 +320,7 @@
             table.Name = "table";
             table.ReadOnly = true;
             table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            table.RowHeadersWidth = 51;
             table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             table.Size = new Size(1004, 653);
             table.TabIndex = 6;
@@ -327,18 +328,21 @@
             // ReviewerName
             // 
             ReviewerName.HeaderText = "Reviewer";
+            ReviewerName.MinimumWidth = 6;
             ReviewerName.Name = "ReviewerName";
             ReviewerName.ReadOnly = true;
             // 
             // Subject
             // 
             Subject.HeaderText = "Subject";
+            Subject.MinimumWidth = 6;
             Subject.Name = "Subject";
             Subject.ReadOnly = true;
             // 
             // FilePath
             // 
             FilePath.HeaderText = "File";
+            FilePath.MinimumWidth = 6;
             FilePath.Name = "FilePath";
             FilePath.ReadOnly = true;
             FilePath.Resizable = DataGridViewTriState.True;
@@ -358,12 +362,12 @@
             // subjectCBox
             // 
             subjectCBox.Dock = DockStyle.Fill;
-            subjectCBox.Font = new Font("Roboto Light", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            subjectCBox.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             subjectCBox.FormattingEnabled = true;
             subjectCBox.Location = new Point(12, 12);
             subjectCBox.Margin = new Padding(4, 3, 4, 3);
             subjectCBox.Name = "subjectCBox";
-            subjectCBox.Size = new Size(1004, 26);
+            subjectCBox.Size = new Size(1004, 28);
             subjectCBox.TabIndex = 0;
             subjectCBox.SelectedIndexChanged += subjectCBox_SelectedIndexChanged;
             // 

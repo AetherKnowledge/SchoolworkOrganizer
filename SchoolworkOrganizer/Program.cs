@@ -1,4 +1,5 @@
 using MaterialSkin;
+using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer
@@ -16,7 +17,14 @@ namespace SchoolworkOrganizer
         [STAThread]
         static void Main()
         {
-            _ = client.ConnectAsync();
+            try
+            {
+                _ = client.ConnectAsync();
+            }
+            catch(Exception ex)
+            {
+                PopupForm.Show($"An error occurred: {ex.InnerException?.Message ?? ex.Message}");
+            }
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             var materialSkinManager = MaterialSkinManager.Instance;

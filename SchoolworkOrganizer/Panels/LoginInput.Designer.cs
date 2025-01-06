@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            testBtn = new Button();
             hidePanel = new Panel();
             showPassword = new CheckBox();
             txtUsername = new MaterialSkin.Controls.MaterialTextBox2();
@@ -38,31 +37,23 @@
             loginBtn = new CustomControls.RoundedButton();
             SuspendLayout();
             // 
-            // testBtn
-            // 
-            testBtn.Location = new Point(44, 348);
-            testBtn.Name = "testBtn";
-            testBtn.Size = new Size(75, 23);
-            testBtn.TabIndex = 15;
-            testBtn.Text = "button1";
-            testBtn.UseVisualStyleBackColor = true;
-            // 
             // hidePanel
             // 
-            hidePanel.Location = new Point(281, 148);
+            hidePanel.Location = new Point(321, 197);
+            hidePanel.Margin = new Padding(3, 4, 3, 4);
             hidePanel.Name = "hidePanel";
-            hidePanel.Size = new Size(14, 29);
+            hidePanel.Size = new Size(16, 39);
             hidePanel.TabIndex = 18;
             // 
             // showPassword
             // 
             showPassword.AutoSize = true;
             showPassword.Cursor = Cursors.Hand;
-            showPassword.Font = new Font("Roboto Light", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            showPassword.Location = new Point(281, 145);
+            showPassword.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            showPassword.Location = new Point(321, 193);
             showPassword.Margin = new Padding(0);
             showPassword.Name = "showPassword";
-            showPassword.Size = new Size(129, 23);
+            showPassword.Size = new Size(151, 24);
             showPassword.TabIndex = 7;
             showPassword.Text = "Show Password";
             showPassword.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -77,11 +68,11 @@
             txtUsername.BackgroundImageLayout = ImageLayout.None;
             txtUsername.CharacterCasing = CharacterCasing.Normal;
             txtUsername.Depth = 0;
-            txtUsername.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtUsername.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtUsername.HideSelection = true;
             txtUsername.LeadingIcon = Properties.Resources.Capture;
-            txtUsername.Location = new Point(53, 40);
-            txtUsername.Margin = new Padding(4, 3, 4, 3);
+            txtUsername.Location = new Point(61, 53);
+            txtUsername.Margin = new Padding(5, 4, 5, 4);
             txtUsername.MaxLength = 32767;
             txtUsername.MouseState = MaterialSkin.MouseState.OUT;
             txtUsername.Name = "txtUsername";
@@ -93,7 +84,7 @@
             txtUsername.SelectionLength = 0;
             txtUsername.SelectionStart = 0;
             txtUsername.ShortcutsEnabled = true;
-            txtUsername.Size = new Size(389, 48);
+            txtUsername.Size = new Size(445, 48);
             txtUsername.TabIndex = 1;
             txtUsername.TabStop = false;
             txtUsername.Text = "Username";
@@ -110,11 +101,11 @@
             txtPassword.BackgroundImageLayout = ImageLayout.None;
             txtPassword.CharacterCasing = CharacterCasing.Normal;
             txtPassword.Depth = 0;
-            txtPassword.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPassword.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtPassword.HideSelection = true;
             txtPassword.LeadingIcon = Properties.Resources.password1;
-            txtPassword.Location = new Point(53, 94);
-            txtPassword.Margin = new Padding(4, 3, 4, 3);
+            txtPassword.Location = new Point(61, 125);
+            txtPassword.Margin = new Padding(5, 4, 5, 4);
             txtPassword.MaxLength = 32767;
             txtPassword.MouseState = MaterialSkin.MouseState.OUT;
             txtPassword.Name = "txtPassword";
@@ -126,7 +117,7 @@
             txtPassword.SelectionLength = 0;
             txtPassword.SelectionStart = 0;
             txtPassword.ShortcutsEnabled = true;
-            txtPassword.Size = new Size(389, 48);
+            txtPassword.Size = new Size(445, 48);
             txtPassword.TabIndex = 2;
             txtPassword.TabStop = false;
             txtPassword.Text = "Password";
@@ -139,12 +130,12 @@
             // 
             switchLabel.AutoSize = true;
             switchLabel.Cursor = Cursors.Hand;
-            switchLabel.Font = new Font("Roboto Light", 9.75F);
+            switchLabel.Font = new Font("Microsoft Sans Serif", 9.75F);
             switchLabel.ForeColor = Color.FromArgb(65, 78, 101);
-            switchLabel.Location = new Point(53, 145);
-            switchLabel.Margin = new Padding(4, 0, 4, 0);
+            switchLabel.Location = new Point(61, 193);
+            switchLabel.Margin = new Padding(5, 0, 5, 0);
             switchLabel.Name = "switchLabel";
-            switchLabel.Size = new Size(139, 18);
+            switchLabel.Size = new Size(185, 20);
             switchLabel.TabIndex = 14;
             switchLabel.Text = "Don't have an account?";
             switchLabel.Click += switchLabel_Click;
@@ -153,12 +144,12 @@
             // 
             forgotPassword.AutoSize = true;
             forgotPassword.Cursor = Cursors.Hand;
-            forgotPassword.Font = new Font("Roboto Light", 9.75F);
+            forgotPassword.Font = new Font("Microsoft Sans Serif", 9.75F);
             forgotPassword.ForeColor = Color.FromArgb(65, 78, 101);
-            forgotPassword.Location = new Point(81, 163);
-            forgotPassword.Margin = new Padding(4, 0, 4, 0);
+            forgotPassword.Location = new Point(93, 217);
+            forgotPassword.Margin = new Padding(5, 0, 5, 0);
             forgotPassword.Name = "forgotPassword";
-            forgotPassword.Size = new Size(111, 18);
+            forgotPassword.Size = new Size(145, 20);
             forgotPassword.TabIndex = 5;
             forgotPassword.Text = "Forgot Password?";
             forgotPassword.Click += forgotPassword_Click;
@@ -172,16 +163,17 @@
             loginBtn.ButtonColor = Color.FromArgb(95, 192, 170);
             loginBtn.FlatAppearance.BorderSize = 0;
             loginBtn.FlatStyle = FlatStyle.Flat;
-            loginBtn.Font = new Font("Roboto Light", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            loginBtn.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loginBtn.ForeColor = Color.White;
             loginBtn.HoverColor = Color.FromArgb(66, 134, 118);
             loginBtn.IconLocation = CustomControls.RoundedButton.ImageLocation.Center;
             loginBtn.Image = null;
             loginBtn.ImageSize = new Size(0, 0);
-            loginBtn.Location = new Point(320, 329);
+            loginBtn.Location = new Point(366, 439);
+            loginBtn.Margin = new Padding(3, 4, 3, 4);
             loginBtn.Name = "loginBtn";
             loginBtn.PressedColor = Color.FromArgb(46, 93, 82);
-            loginBtn.Size = new Size(122, 42);
+            loginBtn.Size = new Size(139, 56);
             loginBtn.TabIndex = 17;
             loginBtn.Text = "Log In";
             loginBtn.UseVisualStyleBackColor = true;
@@ -189,9 +181,8 @@
             // 
             // LoginInput
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(testBtn);
             Controls.Add(hidePanel);
             Controls.Add(showPassword);
             Controls.Add(txtUsername);
@@ -199,14 +190,14 @@
             Controls.Add(switchLabel);
             Controls.Add(forgotPassword);
             Controls.Add(loginBtn);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "LoginInput";
-            Size = new Size(487, 483);
+            Size = new Size(557, 644);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Button testBtn;
         private Panel hidePanel;
         private CheckBox showPassword;
         private MaterialSkin.Controls.MaterialTextBox2 txtUsername;
