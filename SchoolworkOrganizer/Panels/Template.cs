@@ -1,15 +1,13 @@
 ﻿using SchoolworkOrganizer.Popup;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public abstract class Template : UserControl
+    public class Template : UserControl
     {
-        public abstract void RefreshData();
+        public virtual void RefreshData()
+        {
+            
+        }
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {

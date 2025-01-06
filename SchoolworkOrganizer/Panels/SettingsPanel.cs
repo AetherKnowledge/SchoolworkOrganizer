@@ -1,5 +1,4 @@
-﻿using SchoolworkOrganizer.Design;
-using SchoolworkOrganizer.Popup;
+﻿using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
