@@ -65,7 +65,7 @@ namespace SchoolworkOrganizer.Panels
             Status = new DataGridViewTextBoxColumn();
             panel3 = new Panel();
             subjectCBox = new ComboBox();
-            SuspendLayout();
+            label4 = new Label();
             panel5.SuspendLayout();
             panel7.SuspendLayout();
             panel4.SuspendLayout();
@@ -138,7 +138,7 @@ namespace SchoolworkOrganizer.Panels
             panel4.Location = new Point(0, 0);
             panel4.Margin = new Padding(4, 3, 4, 3);
             panel4.Name = "panel4";
-            panel4.Size = new Size(252, 626);
+            panel4.Size = new Size(252, 720);
             panel4.TabIndex = 2;
             // 
             // refreshBtn
@@ -390,18 +390,18 @@ namespace SchoolworkOrganizer.Panels
             panel8.Location = new Point(252, 0);
             panel8.Margin = new Padding(4, 3, 4, 3);
             panel8.Name = "panel8";
-            panel8.Size = new Size(837, 626);
+            panel8.Size = new Size(1028, 720);
             panel8.TabIndex = 18;
             // 
             // panel2
             // 
             panel2.Controls.Add(table);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 43);
+            panel2.Location = new Point(0, 46);
             panel2.Margin = new Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
             panel2.Padding = new Padding(12);
-            panel2.Size = new Size(837, 583);
+            panel2.Size = new Size(1028, 674);
             panel2.TabIndex = 8;
             // 
             // table
@@ -421,7 +421,7 @@ namespace SchoolworkOrganizer.Panels
             table.ReadOnly = true;
             table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            table.Size = new Size(813, 559);
+            table.Size = new Size(1004, 650);
             table.TabIndex = 6;
             // 
             // ActivityName
@@ -465,12 +465,13 @@ namespace SchoolworkOrganizer.Panels
             // panel3
             // 
             panel3.Controls.Add(subjectCBox);
+            panel3.Controls.Add(label4);
             panel3.Dock = DockStyle.Top;
             panel3.Location = new Point(0, 0);
             panel3.Margin = new Padding(4, 3, 4, 3);
             panel3.Name = "panel3";
             panel3.Padding = new Padding(12);
-            panel3.Size = new Size(837, 43);
+            panel3.Size = new Size(1028, 46);
             panel3.TabIndex = 7;
             // 
             // subjectCBox
@@ -478,25 +479,34 @@ namespace SchoolworkOrganizer.Panels
             subjectCBox.Dock = DockStyle.Fill;
             subjectCBox.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             subjectCBox.FormattingEnabled = true;
-            subjectCBox.Location = new Point(12, 12);
+            subjectCBox.Location = new Point(87, 12);
             subjectCBox.Margin = new Padding(4, 3, 4, 3);
             subjectCBox.Name = "subjectCBox";
-            subjectCBox.Size = new Size(813, 24);
+            subjectCBox.Size = new Size(929, 24);
             subjectCBox.TabIndex = 0;
             subjectCBox.SelectedIndexChanged += subjectCBox_SelectedIndexChanged;
             // 
+            // label4
+            // 
+            label4.Dock = DockStyle.Left;
+            label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(12, 12);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(75, 22);
+            label4.TabIndex = 1;
+            label4.Text = "Subject:";
+            label4.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // ActivitiesPanel
             // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(panel8);
             Controls.Add(panel4);
             Margin = new Padding(5, 3, 5, 3);
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1280, 720);
-            Margin = new Padding(5, 3, 5, 3);
             Name = "ActivitiesPanel";
-            Text = "Activities";
-            ResumeLayout(false);
+            Size = new Size(1280, 720);
             panel5.ResumeLayout(false);
             panel7.ResumeLayout(false);
             panel4.ResumeLayout(false);
@@ -507,7 +517,6 @@ namespace SchoolworkOrganizer.Panels
             ((System.ComponentModel.ISupportInitialize)table).EndInit();
             panel3.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -546,5 +555,6 @@ namespace SchoolworkOrganizer.Panels
         private System.Windows.Forms.DataGridViewTextBoxColumn DaysRemaining;
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.Button refreshBtn;
+        private Label label4;
     }
 }

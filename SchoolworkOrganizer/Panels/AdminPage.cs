@@ -94,9 +94,9 @@ namespace SchoolworkOrganizer.Panels
         {
             if (tabControl.SelectedTab == null) return;
             if (tabControl.SelectedTab.Controls.Count == 0) return;
-            if (tabControl.SelectedTab.Controls[0] is not Template2) return;
+            if (tabControl.SelectedTab.Controls[0] is not Template) return;
 
-            Template2 tabPage = (Template2)tabControl.SelectedTab.Controls[0];
+            Template tabPage = (Template)tabControl.SelectedTab.Controls[0];
             tabPage.RefreshData();
             RefreshUser();
         }

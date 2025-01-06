@@ -41,15 +41,15 @@ namespace SchoolworkOrganizer
             loginImagePanel = new Panel();
             loginImageBox = new PictureBox();
             panel1 = new Panel();
-            registerPanel = new Panel();
-            pictureBox3 = new PictureBox();
+            registerImagePanel = new Panel();
+            registerImageBox = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             mainPanel.SuspendLayout();
             loginImagePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)loginImageBox).BeginInit();
             panel1.SuspendLayout();
-            registerPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            registerImagePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)registerImageBox).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -143,7 +143,7 @@ namespace SchoolworkOrganizer
             // 
             // panel1
             // 
-            panel1.Controls.Add(registerPanel);
+            panel1.Controls.Add(registerImagePanel);
             panel1.Controls.Add(loginImagePanel);
             panel1.Controls.Add(mainPanel);
             panel1.Dock = DockStyle.Fill;
@@ -153,25 +153,27 @@ namespace SchoolworkOrganizer
             panel1.Size = new Size(1461, 921);
             panel1.TabIndex = 0;
             // 
-            // registerPanel
+            // registerImagePanel
             // 
-            registerPanel.BackColor = Color.FromArgb(65, 78, 101);
-            registerPanel.Controls.Add(pictureBox3);
-            registerPanel.Location = new Point(-890, 0);
-            registerPanel.Margin = new Padding(3, 4, 3, 4);
-            registerPanel.Name = "registerPanel";
-            registerPanel.Size = new Size(890, 909);
-            registerPanel.TabIndex = 20;
+            registerImagePanel.BackColor = Color.FromArgb(65, 78, 101);
+            registerImagePanel.Controls.Add(registerImageBox);
+            registerImagePanel.Location = new Point(-890, 0);
+            registerImagePanel.Margin = new Padding(3, 4, 3, 4);
+            registerImagePanel.Name = "registerImagePanel";
+            registerImagePanel.Size = new Size(890, 909);
+            registerImagePanel.TabIndex = 20;
             // 
-            // pictureBox3
+            // registerImageBox
             // 
-            pictureBox3.Dock = DockStyle.Fill;
-            pictureBox3.Location = new Point(0, 0);
-            pictureBox3.Margin = new Padding(3, 4, 3, 4);
-            pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(890, 909);
-            pictureBox3.TabIndex = 0;
-            pictureBox3.TabStop = false;
+            registerImageBox.Dock = DockStyle.Fill;
+            registerImageBox.Image = Properties.Resources.pngtree_online_e_learning_flat_bundle_design_png_image_13081087__1_;
+            registerImageBox.Location = new Point(0, 0);
+            registerImageBox.Margin = new Padding(3, 4, 3, 4);
+            registerImageBox.Name = "registerImageBox";
+            registerImageBox.Size = new Size(890, 909);
+            registerImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            registerImageBox.TabIndex = 0;
+            registerImageBox.TabStop = false;
             // 
             // LoginPanel
             // 
@@ -193,8 +195,8 @@ namespace SchoolworkOrganizer
             loginImagePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)loginImageBox).EndInit();
             panel1.ResumeLayout(false);
-            registerPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            registerImagePanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)registerImageBox).EndInit();
             ResumeLayout(false);
         }
 
@@ -210,7 +212,7 @@ namespace SchoolworkOrganizer
         private Panels.RegisterInput registerInput;
         private Panel panel1;
         private PictureBox loginImageBox;
-        private Panel registerPanel;
-        private PictureBox pictureBox3;
+        private Panel registerImagePanel;
+        private PictureBox registerImageBox;
     }
 }

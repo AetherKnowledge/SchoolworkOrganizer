@@ -52,6 +52,7 @@
             FilePath = new DataGridViewButtonColumn();
             panel1 = new Panel();
             subjectCBox = new ComboBox();
+            label4 = new Label();
             panel4.SuspendLayout();
             panel5.SuspendLayout();
             panel8.SuspendLayout();
@@ -149,7 +150,7 @@
             fileLabel.Location = new Point(77, 133);
             fileLabel.Margin = new Padding(4, 0, 4, 0);
             fileLabel.Name = "fileLabel";
-            fileLabel.Size = new Size(34, 17);
+            fileLabel.Size = new Size(26, 13);
             fileLabel.TabIndex = 10;
             fileLabel.Text = "File:";
             // 
@@ -160,7 +161,7 @@
             editSubjectCBox.Location = new Point(107, 99);
             editSubjectCBox.Margin = new Padding(4, 3, 4, 3);
             editSubjectCBox.Name = "editSubjectCBox";
-            editSubjectCBox.Size = new Size(134, 25);
+            editSubjectCBox.Size = new Size(134, 21);
             editSubjectCBox.TabIndex = 9;
             // 
             // subjectLabel
@@ -170,7 +171,7 @@
             subjectLabel.Location = new Point(18, 103);
             subjectLabel.Margin = new Padding(4, 0, 4, 0);
             subjectLabel.Name = "subjectLabel";
-            subjectLabel.Size = new Size(100, 17);
+            subjectLabel.Size = new Size(77, 13);
             subjectLabel.TabIndex = 8;
             subjectLabel.Text = "Subject Name:";
             // 
@@ -268,7 +269,7 @@
             reviewerTxtBox.Location = new Point(107, 69);
             reviewerTxtBox.Margin = new Padding(4, 3, 4, 3);
             reviewerTxtBox.Name = "reviewerTxtBox";
-            reviewerTxtBox.Size = new Size(134, 23);
+            reviewerTxtBox.Size = new Size(134, 20);
             reviewerTxtBox.TabIndex = 1;
             // 
             // reviewerLabel
@@ -278,7 +279,7 @@
             reviewerLabel.Location = new Point(7, 73);
             reviewerLabel.Margin = new Padding(4, 0, 4, 0);
             reviewerLabel.Name = "reviewerLabel";
-            reviewerLabel.Size = new Size(111, 17);
+            reviewerLabel.Size = new Size(86, 13);
             reviewerLabel.TabIndex = 0;
             reviewerLabel.Text = "Reviewer Name:";
             // 
@@ -297,11 +298,11 @@
             // 
             panel2.Controls.Add(table);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 43);
+            panel2.Location = new Point(0, 47);
             panel2.Margin = new Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
             panel2.Padding = new Padding(12);
-            panel2.Size = new Size(1028, 677);
+            panel2.Size = new Size(1028, 673);
             panel2.TabIndex = 8;
             // 
             // table
@@ -322,7 +323,7 @@
             table.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             table.RowHeadersWidth = 51;
             table.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            table.Size = new Size(1004, 653);
+            table.Size = new Size(1004, 649);
             table.TabIndex = 6;
             // 
             // ReviewerName
@@ -351,12 +352,13 @@
             // panel1
             // 
             panel1.Controls.Add(subjectCBox);
+            panel1.Controls.Add(label4);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(12);
-            panel1.Size = new Size(1028, 43);
+            panel1.Size = new Size(1028, 47);
             panel1.TabIndex = 7;
             // 
             // subjectCBox
@@ -364,12 +366,24 @@
             subjectCBox.Dock = DockStyle.Fill;
             subjectCBox.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             subjectCBox.FormattingEnabled = true;
-            subjectCBox.Location = new Point(12, 12);
+            subjectCBox.Location = new Point(87, 12);
             subjectCBox.Margin = new Padding(4, 3, 4, 3);
             subjectCBox.Name = "subjectCBox";
-            subjectCBox.Size = new Size(1004, 28);
+            subjectCBox.Size = new Size(929, 24);
             subjectCBox.TabIndex = 0;
             subjectCBox.SelectedIndexChanged += subjectCBox_SelectedIndexChanged;
+            // 
+            // label4
+            // 
+            label4.Dock = DockStyle.Left;
+            label4.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(12, 12);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(75, 23);
+            label4.TabIndex = 2;
+            label4.Text = "Subject:";
+            label4.TextAlign = ContentAlignment.MiddleRight;
             // 
             // ReviewerPanel
             // 
@@ -414,5 +428,6 @@
         private System.Windows.Forms.ComboBox subjectCBox;
         private System.Windows.Forms.TextBox selectedFileLabel;
         private System.Windows.Forms.Button refreshBtn;
+        private Label label4;
     }
 }

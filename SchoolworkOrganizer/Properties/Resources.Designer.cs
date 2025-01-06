@@ -203,6 +203,16 @@ namespace SchoolworkOrganizer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap pngtree_online_e_learning_flat_bundle_design_png_image_13081087__1_ {
+            get {
+                object obj = ResourceManager.GetObject("pngtree-online-e-learning-flat-bundle-design-png-image_13081087 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Screenshot_2024_11_13_231616_removebg_preview {
             get {
                 object obj = ResourceManager.GetObject("Screenshot_2024-11-13_231616-removebg-preview", resourceCulture);

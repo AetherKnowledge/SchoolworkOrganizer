@@ -4,7 +4,7 @@ using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public partial class ReviewerPanel : Template2
+    public partial class ReviewerPanel : Template
     {
         string selectedFilePath = string.Empty;
         public ReviewerPanel()
@@ -41,7 +41,7 @@ namespace SchoolworkOrganizer.Panels
             cancelBtn.Paint += FormUtilities.customButtonPaint;
         }
 
-        public new void RefreshData()
+        public override void RefreshData()
         {
             Clear();
             if (Program.user == null) return;

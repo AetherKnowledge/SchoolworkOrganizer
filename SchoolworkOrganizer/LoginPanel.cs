@@ -13,7 +13,8 @@ namespace SchoolworkOrganizer
         private float animationProgress = 0;
         private bool login = true;
         private int panelGap;
-        private Image defaultImage;
+        private Image loginDefaultImage;
+        private Image registerDefaultImage;
 
         public event EventHandler? WindowStateChanged;
 
@@ -22,15 +23,16 @@ namespace SchoolworkOrganizer
             InitializeComponent();
             panelGap = mainPanel.Location.X + panel1.Location.X;
             mainPanel.Location = new Point(panelGap, mainPanel.Location.Y);
-            mainPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            mainPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 4);
             changePanel.Height = mainPanel.Height;
 
-            loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 4);
             loginImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
-            defaultImage = loginImageBox.Image;
+            loginDefaultImage = loginImageBox.Image;
 
-            registerPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
-            registerPanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+            registerImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 4);
+            registerImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+            registerDefaultImage = registerImageBox.Image;
 
             this.FormClosing += MyFormClosing;
             WindowStateChanged += RefreshPanel;
@@ -84,7 +86,8 @@ namespace SchoolworkOrganizer
 
             if (Math.Abs(target - animationProgress) < 0.0001f)
             {
-                if (loginImageBox.Image != defaultImage) loginImageBox.Image = defaultImage;
+                if (loginImageBox.Image != loginDefaultImage) loginImageBox.Image = loginDefaultImage;
+                if (registerImageBox.Image != registerDefaultImage) registerImageBox.Image = registerDefaultImage;
                 animationProgress = target;
                 animationTimer.Stop();
             }
@@ -102,7 +105,7 @@ namespace SchoolworkOrganizer
 
             mainPanel.Location = new Point(mainPanelX, mainPanel.Location.Y);
             loginImagePanel.Location = new Point(mainPanel.Right + 7, loginImagePanel.Location.Y);
-            registerPanel.Location = new Point((mainPanel.Left - 7) - registerPanel.Width, loginImagePanel.Location.Y);
+            registerImagePanel.Location = new Point((mainPanel.Left - 7) - registerImagePanel.Width, loginImagePanel.Location.Y);
             changePanel.Location = new Point(topPanelX, changePanel.Location.Y);
 
             if (login)
@@ -148,12 +151,13 @@ namespace SchoolworkOrganizer
             login = !login;
 
             int width = 800;
-            int originalWidth = defaultImage.Width;
-            int originalHeight = defaultImage.Height;
+            int originalWidth = loginDefaultImage.Width;
+            int originalHeight = loginDefaultImage.Height;
             // Calculate the new height to maintain the aspect ratio
             int height = (int)((float)originalHeight / originalWidth * width);
 
-            loginImageBox.Image = FormUtilities.ResizeImage(defaultImage, width, height);
+            loginImageBox.Image = FormUtilities.ResizeImage(loginDefaultImage, width, height);
+            registerImageBox.Image = FormUtilities.ResizeImage(registerDefaultImage, width, height);
 
             animationTimer.Start();
 
@@ -173,16 +177,16 @@ namespace SchoolworkOrganizer
         private void RefreshPanel(object? sender, EventArgs e)
         {
             //if (animationProgress != 0 || animationProgress != 1) return;
-            mainPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            mainPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 4);
             changePanel.Height = mainPanel.Height;
 
             loginImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
-            loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
+            loginImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 4);
             loginImagePanel.Location = new Point(mainPanel.Right + 7, loginImagePanel.Location.Y);
 
-            registerPanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
-            registerPanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 2);
-            registerPanel.Location = new Point((mainPanel.Left - 7) - registerPanel.Width, loginImagePanel.Location.Y);
+            registerImagePanel.Width = (this.Width - mainPanel.Width - ((panelGap + 7) * 2));
+            registerImagePanel.Height = this.Height - this.Padding.Top - this.Padding.Bottom - (panelGap * 4);
+            registerImagePanel.Location = new Point((mainPanel.Left - 7) - registerImagePanel.Width, loginImagePanel.Location.Y);
 
             if (login)
             {

@@ -4,7 +4,7 @@ using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public partial class ActivitiesPanel : Template2
+    public partial class ActivitiesPanel : Template
     {
         string selectedFilePath = string.Empty;
         public ActivitiesPanel()
@@ -44,7 +44,7 @@ namespace SchoolworkOrganizer.Panels
             dueDatePicker.CalendarForeColor = Color.FromArgb(65, 78, 101);
         }
 
-        public new void RefreshData()
+        public override void RefreshData()
         {
             Clear();
             if (Program.user == null) return;

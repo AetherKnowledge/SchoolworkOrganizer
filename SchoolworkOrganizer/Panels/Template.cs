@@ -1,24 +1,15 @@
-﻿using MaterialSkin.Controls;
-using SchoolworkOrganizer.Design;
-using SchoolworkOrganizer.Popup;
-using SchoolworkOrganizerUtils;
+﻿using SchoolworkOrganizer.Popup;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public partial class Template : MaterialForm
+    public abstract class Template : UserControl
     {
-
-        public Template()
-        {
-            InitializeComponent();
-            timeKeeper.Interval = 1000;
-            timeKeeper.Tick += Timer1_Tick;
-            timeKeeper.Start();
-            this.FormClosing += MyFormClosing;
-
-            FormUtilities.ChangeButtonColors(homeBtn);
-
-        }
+        public abstract void RefreshData();
 
         public static void MyFormClosing(object? sender, FormClosingEventArgs e)
         {
@@ -34,99 +25,5 @@ namespace SchoolworkOrganizer.Panels
             }
 
         }
-
-        private void Timer1_Tick(object? sender, EventArgs e)
-        {
-            timeTxtBox.Text = DateTime.Now.ToString("MMMM dd, yyyy hh:mm:ss tt");
-        }
-
-        //hide panels before showing it first to save location and size
-        public new void Show()
-        {
-            base.Show();
-
-            if (Program.user == null) return;
-            
-            this.Size = OpenPanels.size;
-            this.Location = OpenPanels.location;
-            this.WindowState = OpenPanels.windowState;
-            
-
-            RefreshUser();
-        }
-
-        public new void Hide()
-        {
-            OpenPanels.size = this.Size;
-            OpenPanels.location = this.Location;
-            OpenPanels.windowState = this.WindowState;
-
-            base.Hide();
-        }
-
-        protected void RefreshUser()
-        {
-            if (Program.user == null) return;
-
-            usernameLabel.Text = Program.user.Username;
-            if (userImageBox.Image != Program.user.WinformImage) userImageBox.Image = Program.user.WinformImage ?? Properties.Resources.user;
-        }
-
-        public void homeBtn_Click(object sender, EventArgs e)
-        {
-            //if (this == OpenPanels.homePanel) return;
-            //this.Hide();
-            //OpenPanels.homePanel.Show();
-        }
-
-        public void activityBtn_Click(object sender, EventArgs e)
-        {
-            //if (this == OpenPanels.activitiesPanel) return;
-            //this.Hide();
-            //OpenPanels.activitiesPanel.Show();
-        }
-
-        public void settingsBtn_Click(object sender, EventArgs e)
-        {
-            //if (this == OpenPanels.settingsPanel) return;
-            //this.Hide();
-            //OpenPanels.settingsPanel.Show();
-        }
-
-        private void reviewerBtn_Click(object sender, EventArgs e)
-        {
-            //if (this == OpenPanels.reviewerPanel) return;
-            //this.Hide();
-            //OpenPanels.reviewerPanel.Show();
-        }
-
-        private void subjectsBtn_Click(object sender, EventArgs e)
-        {
-            //if (this == OpenPanels.subjectsPanel) return;
-            //this.Hide();
-            //OpenPanels.subjectsPanel.Show();
-        }
-
-        public void logoutBtn_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            OpenPanels.loginPage.Show();
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            Color borderColor = Color.Black; // Change to your preferred color
-            int borderThickness = 2;
-
-            // Draw the border
-            using (Pen pen = new Pen(borderColor, borderThickness))
-            {
-                Rectangle rect = new Rectangle(0, 0, this.ClientSize.Width, this.ClientSize.Height);
-                e.Graphics.DrawRectangle(pen, rect);
-            }
-        }
-
     }
 }

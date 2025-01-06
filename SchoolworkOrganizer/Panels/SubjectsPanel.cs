@@ -4,7 +4,7 @@ using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public partial class SubjectsPanel : Template2
+    public partial class SubjectsPanel : Template
     {
         public SubjectsPanel()
         {
@@ -40,7 +40,7 @@ namespace SchoolworkOrganizer.Panels
             cancelBtn.Paint += FormUtilities.customButtonPaint;
         }
 
-        public new void RefreshData()
+        public override void RefreshData()
         {
             Clear();
             RefreshTable();

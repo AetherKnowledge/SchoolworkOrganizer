@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SchoolworkOrganizer
 {
-    public partial class HomePanel : Template2
+    public partial class HomePanel : Template
     {
         public HomePanel()
         {
@@ -19,7 +19,7 @@ namespace SchoolworkOrganizer
 
         }
 
-        public new void RefreshData()
+        public override void RefreshData()
         {
             
         }

@@ -38,7 +38,6 @@
             activitiesTab = new TabPage();
             activitiesPanel = new ActivitiesPanel();
             reviewersTab = new TabPage();
-            reviewerPanel = new ReviewerPanel();
             settingsTab = new TabPage();
             settingsPanel = new SettingsPanel();
             logoImages = new ImageList(components);
@@ -48,6 +47,7 @@
             timeTxtBox = new Label();
             iconImageBox = new PictureBox();
             mainPanel = new Panel();
+            reviewerPanel = new ReviewerPanel();
             tabControl.SuspendLayout();
             homeTab.SuspendLayout();
             subjectTab.SuspendLayout();
@@ -92,12 +92,11 @@
             tabControl.Dock = DockStyle.Fill;
             tabControl.ImageList = logoImages;
             tabControl.Location = new Point(0, 0);
-            tabControl.Margin = new Padding(3, 4, 3, 4);
             tabControl.MouseState = MaterialSkin.MouseState.HOVER;
             tabControl.Multiline = true;
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(1461, 843);
+            tabControl.Size = new Size(1278, 632);
             tabControl.TabIndex = 0;
             tabControl.SelectedIndexChanged += tabControl_SelectedIndexChanged;
             // 
@@ -107,20 +106,19 @@
             homeTab.Controls.Add(homePanel);
             homeTab.ImageKey = "home.png";
             homeTab.Location = new Point(4, 71);
-            homeTab.Margin = new Padding(3, 4, 3, 4);
             homeTab.Name = "homeTab";
-            homeTab.Padding = new Padding(3, 4, 3, 4);
-            homeTab.Size = new Size(1453, 768);
+            homeTab.Padding = new Padding(3, 3, 3, 3);
+            homeTab.Size = new Size(1270, 557);
             homeTab.TabIndex = 0;
             homeTab.Text = "Home";
             // 
             // homePanel
             // 
             homePanel.Dock = DockStyle.Fill;
-            homePanel.Location = new Point(3, 4);
-            homePanel.Margin = new Padding(6, 4, 6, 4);
+            homePanel.Location = new Point(3, 3);
+            homePanel.Margin = new Padding(5, 3, 5, 3);
             homePanel.Name = "homePanel";
-            homePanel.Size = new Size(1447, 760);
+            homePanel.Size = new Size(1264, 551);
             homePanel.TabIndex = 0;
             // 
             // subjectTab
@@ -129,20 +127,19 @@
             subjectTab.Controls.Add(subjectsPanel);
             subjectTab.ImageKey = "subjects-white.png";
             subjectTab.Location = new Point(4, 71);
-            subjectTab.Margin = new Padding(3, 4, 3, 4);
             subjectTab.Name = "subjectTab";
-            subjectTab.Padding = new Padding(3, 4, 3, 4);
-            subjectTab.Size = new Size(1451, 767);
+            subjectTab.Padding = new Padding(3, 3, 3, 3);
+            subjectTab.Size = new Size(1270, 557);
             subjectTab.TabIndex = 1;
             subjectTab.Text = "Subjects";
             // 
             // subjectsPanel
             // 
             subjectsPanel.Dock = DockStyle.Fill;
-            subjectsPanel.Location = new Point(3, 4);
-            subjectsPanel.Margin = new Padding(6, 4, 6, 4);
+            subjectsPanel.Location = new Point(3, 3);
+            subjectsPanel.Margin = new Padding(5, 3, 5, 3);
             subjectsPanel.Name = "subjectsPanel";
-            subjectsPanel.Size = new Size(1445, 759);
+            subjectsPanel.Size = new Size(1264, 551);
             subjectsPanel.TabIndex = 0;
             // 
             // activitiesTab
@@ -151,9 +148,8 @@
             activitiesTab.Controls.Add(activitiesPanel);
             activitiesTab.ImageKey = "activities.png";
             activitiesTab.Location = new Point(4, 71);
-            activitiesTab.Margin = new Padding(3, 4, 3, 4);
             activitiesTab.Name = "activitiesTab";
-            activitiesTab.Size = new Size(1451, 767);
+            activitiesTab.Size = new Size(1270, 557);
             activitiesTab.TabIndex = 2;
             activitiesTab.Text = "Activities";
             // 
@@ -161,9 +157,9 @@
             // 
             activitiesPanel.Dock = DockStyle.Fill;
             activitiesPanel.Location = new Point(0, 0);
-            activitiesPanel.Margin = new Padding(6, 4, 6, 4);
+            activitiesPanel.Margin = new Padding(5, 3, 5, 3);
             activitiesPanel.Name = "activitiesPanel";
-            activitiesPanel.Size = new Size(1451, 767);
+            activitiesPanel.Size = new Size(1270, 557);
             activitiesPanel.TabIndex = 0;
             // 
             // reviewersTab
@@ -172,20 +168,10 @@
             reviewersTab.Controls.Add(reviewerPanel);
             reviewersTab.ImageKey = "reviewer.png";
             reviewersTab.Location = new Point(4, 71);
-            reviewersTab.Margin = new Padding(3, 4, 3, 4);
             reviewersTab.Name = "reviewersTab";
-            reviewersTab.Size = new Size(1451, 767);
+            reviewersTab.Size = new Size(1270, 557);
             reviewersTab.TabIndex = 3;
             reviewersTab.Text = "Reviewers";
-            // 
-            // reviewerPanel
-            // 
-            reviewerPanel.Dock = DockStyle.Fill;
-            reviewerPanel.Location = new Point(0, 0);
-            reviewerPanel.Margin = new Padding(6, 4, 6, 4);
-            reviewerPanel.Name = "reviewerPanel";
-            reviewerPanel.Size = new Size(1451, 767);
-            reviewerPanel.TabIndex = 0;
             // 
             // settingsTab
             // 
@@ -193,9 +179,8 @@
             settingsTab.Controls.Add(settingsPanel);
             settingsTab.ImageKey = "settings.png";
             settingsTab.Location = new Point(4, 71);
-            settingsTab.Margin = new Padding(3, 4, 3, 4);
             settingsTab.Name = "settingsTab";
-            settingsTab.Size = new Size(1451, 767);
+            settingsTab.Size = new Size(1270, 557);
             settingsTab.TabIndex = 4;
             settingsTab.Text = "Settings";
             // 
@@ -203,9 +188,9 @@
             // 
             settingsPanel.Dock = DockStyle.Fill;
             settingsPanel.Location = new Point(0, 0);
-            settingsPanel.Margin = new Padding(6, 4, 6, 4);
+            settingsPanel.Margin = new Padding(5, 3, 5, 3);
             settingsPanel.Name = "settingsPanel";
-            settingsPanel.Size = new Size(1451, 767);
+            settingsPanel.Size = new Size(1270, 557);
             settingsPanel.TabIndex = 0;
             // 
             // logoImages
@@ -230,11 +215,11 @@
             topPanel.Controls.Add(datePanel);
             topPanel.Controls.Add(iconImageBox);
             topPanel.Dock = DockStyle.Top;
-            topPanel.Location = new Point(1, 24);
-            topPanel.Margin = new Padding(5, 4, 5, 4);
-            topPanel.MaximumSize = new Size(0, 92);
+            topPanel.Location = new Point(1, 18);
+            topPanel.Margin = new Padding(4, 3, 4, 3);
+            topPanel.MaximumSize = new Size(0, 69);
             topPanel.Name = "topPanel";
-            topPanel.Size = new Size(1461, 92);
+            topPanel.Size = new Size(1278, 69);
             topPanel.TabIndex = 5;
             // 
             // datePanel
@@ -242,30 +227,30 @@
             datePanel.Controls.Add(timeTxtBox);
             datePanel.Dock = DockStyle.Right;
             datePanel.ForeColor = Color.FromArgb(231, 231, 231);
-            datePanel.Location = new Point(1159, 0);
-            datePanel.Margin = new Padding(5, 4, 5, 4);
+            datePanel.Location = new Point(1014, 0);
+            datePanel.Margin = new Padding(4, 3, 4, 3);
             datePanel.Name = "datePanel";
-            datePanel.Size = new Size(302, 92);
+            datePanel.Size = new Size(264, 69);
             datePanel.TabIndex = 12;
             // 
             // timeTxtBox
             // 
             timeTxtBox.AutoSize = true;
             timeTxtBox.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            timeTxtBox.Location = new Point(5, 60);
-            timeTxtBox.Margin = new Padding(5, 0, 5, 0);
+            timeTxtBox.Location = new Point(4, 45);
+            timeTxtBox.Margin = new Padding(4, 0, 4, 0);
             timeTxtBox.Name = "timeTxtBox";
-            timeTxtBox.Size = new Size(47, 24);
+            timeTxtBox.Size = new Size(38, 18);
             timeTxtBox.TabIndex = 9;
             timeTxtBox.Text = "looo";
             // 
             // iconImageBox
             // 
             iconImageBox.Image = Properties.Resources.Screenshot_2024_11_13_231616_removebg_preview;
-            iconImageBox.Location = new Point(5, 7);
-            iconImageBox.Margin = new Padding(5, 4, 5, 4);
+            iconImageBox.Location = new Point(4, 5);
+            iconImageBox.Margin = new Padding(4, 3, 4, 3);
             iconImageBox.Name = "iconImageBox";
-            iconImageBox.Size = new Size(213, 92);
+            iconImageBox.Size = new Size(186, 69);
             iconImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
             iconImageBox.TabIndex = 10;
             iconImageBox.TabStop = false;
@@ -274,20 +259,29 @@
             // 
             mainPanel.Controls.Add(tabControl);
             mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(1, 116);
-            mainPanel.Margin = new Padding(5, 4, 5, 4);
+            mainPanel.Location = new Point(1, 87);
+            mainPanel.Margin = new Padding(4, 3, 4, 3);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1461, 843);
+            mainPanel.Size = new Size(1278, 632);
             mainPanel.TabIndex = 7;
+            // 
+            // reviewerPanel
+            // 
+            reviewerPanel.Dock = DockStyle.Fill;
+            reviewerPanel.Location = new Point(0, 0);
+            reviewerPanel.Margin = new Padding(5, 3, 5, 3);
+            reviewerPanel.Name = "reviewerPanel";
+            reviewerPanel.Size = new Size(1270, 557);
+            reviewerPanel.TabIndex = 0;
             // 
             // AdminPage
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BigLogo = Properties.Resources.Screenshot_2024_11_13_231616_removebg_preview;
             BigLogoBounds = new Rectangle(69, 5, 186, 69);
             BigLogoDockStyle = DockStyle.None;
-            ClientSize = new Size(1463, 960);
+            ClientSize = new Size(1280, 720);
             Controls.Add(mainPanel);
             Controls.Add(topPanel);
             DisplayImage = true;
@@ -307,10 +301,9 @@
             LogoPanelBackColor = Color.FromArgb(43, 49, 65);
             LogoPanelHeight = 69;
             LogoutImage = Properties.Resources.logout_white;
-            Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(1280, 720);
+            MinimumSize = new Size(1120, 540);
             Name = "AdminPage";
-            Padding = new Padding(1, 24, 1, 1);
+            Padding = new Padding(1, 18, 1, 1);
             SmallLogo = Properties.Resources.Logo_nobg;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AdminPage";
@@ -346,8 +339,8 @@
         private HomePanel homePanel;
         private SubjectsPanel subjectsPanel;
         private ActivitiesPanel activitiesPanel;
-        private ReviewerPanel reviewerPanel;
         private SettingsPanel settingsPanel;
         private ImageList logoImages;
+        private ReviewerPanel reviewerPanel;
     }
 }

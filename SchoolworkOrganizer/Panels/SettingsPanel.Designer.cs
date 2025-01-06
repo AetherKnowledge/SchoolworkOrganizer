@@ -41,24 +41,8 @@
             uploadPicture = new PictureBox();
             label1 = new Label();
             cancelBtn = new Button();
-            SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)uploadPicture).BeginInit();
             SuspendLayout();
-            Controls.Add(cancelBtn);
-            Controls.Add(label1);
-            Controls.Add(uploadPicture);
-            Controls.Add(upload_button);
-            Controls.Add(usernameTxt);
-            Controls.Add(passwordTxt);
-            Controls.Add(verifyTxt);
-            Controls.Add(label9);
-            Controls.Add(emailTxt);
-            Controls.Add(label3);
-            Controls.Add(label6);
-            Controls.Add(updateBtn);
-            Controls.Add(label29);
-            Margin = new Padding(5, 3, 5, 3);
-            Size = new Size(1089, 626);
             // 
             // label9
             // 
@@ -110,7 +94,7 @@
             updateBtn.FlatStyle = FlatStyle.Flat;
             updateBtn.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             updateBtn.ForeColor = Color.FromArgb(231, 231, 231);
-            updateBtn.Location = new Point(574, 423);
+            updateBtn.Location = new Point(956, 658);
             updateBtn.Margin = new Padding(4, 3, 4, 3);
             updateBtn.Name = "updateBtn";
             updateBtn.Size = new Size(150, 47);
@@ -199,7 +183,7 @@
             cancelBtn.FlatStyle = FlatStyle.Flat;
             cancelBtn.Font = new Font("Roboto Light", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cancelBtn.ForeColor = Color.FromArgb(231, 231, 231);
-            cancelBtn.Location = new Point(732, 423);
+            cancelBtn.Location = new Point(1114, 658);
             cancelBtn.Margin = new Padding(4, 3, 4, 3);
             cancelBtn.Name = "cancelBtn";
             cancelBtn.Size = new Size(150, 47);
@@ -212,12 +196,22 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1280, 720);
+            Controls.Add(cancelBtn);
+            Controls.Add(label1);
+            Controls.Add(uploadPicture);
+            Controls.Add(upload_button);
+            Controls.Add(usernameTxt);
+            Controls.Add(passwordTxt);
+            Controls.Add(verifyTxt);
+            Controls.Add(label9);
+            Controls.Add(emailTxt);
+            Controls.Add(label3);
+            Controls.Add(label6);
+            Controls.Add(updateBtn);
+            Controls.Add(label29);
             Margin = new Padding(5, 3, 5, 3);
             Name = "SettingsPanel";
-            Text = "Settings";
-            ResumeLayout(false);
-            PerformLayout();
+            Size = new Size(1280, 720);
             ((System.ComponentModel.ISupportInitialize)uploadPicture).EndInit();
             ResumeLayout(false);
             PerformLayout();

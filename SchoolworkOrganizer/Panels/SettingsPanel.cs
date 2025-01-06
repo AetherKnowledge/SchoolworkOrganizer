@@ -4,14 +4,18 @@ using SchoolworkOrganizerUtils;
 
 namespace SchoolworkOrganizer.Panels
 {
-    public partial class SettingsPanel : Template2
+    public partial class SettingsPanel : Template
     {
         public SettingsPanel()
         {
             InitializeComponent();
+            RefreshPage(null, null);
+
+            SizeChanged += RefreshPage;
+            VisibleChanged += RefreshPage;
         }
 
-        public new void RefreshData()
+        public override void RefreshData()
         {
             RefreshUser();
         }
@@ -84,6 +88,12 @@ namespace SchoolworkOrganizer.Panels
             usernameTxt.Text = Program.user.Username;
             emailTxt.Text = Program.user.Email;
             if (uploadPicture.Image != Program.user.WinformImage) uploadPicture.Image = Program.user.WinformImage ?? Properties.Resources.user; ;
+        }
+
+        public void RefreshPage(object? sender, EventArgs e)
+        {
+            cancelBtn.Location = new Point(this.Width - cancelBtn.Width - 20, this.Height - cancelBtn.Height - 20);
+            updateBtn.Location = new Point(cancelBtn.Location.X - cancelBtn .Width - 20, this.Height - cancelBtn.Height - 20);
         }
     }
 
