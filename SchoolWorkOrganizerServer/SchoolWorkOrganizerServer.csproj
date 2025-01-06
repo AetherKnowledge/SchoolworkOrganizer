@@ -34,8 +34,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y /e &quot;$(TargetDir)*&quot; &quot;Z:\swoserver\&quot;" />
-  </Target>
-
 </Project>
