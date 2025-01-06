@@ -1,6 +1,7 @@
 ﻿using SchoolworkOrganizer.Design;
 using SchoolworkOrganizer.Popup;
 using SchoolworkOrganizerUtils;
+using System.Drawing;
 
 namespace SchoolworkOrganizer.Panels
 {
@@ -31,6 +32,7 @@ namespace SchoolworkOrganizer.Panels
             table.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(43, 49, 65);
             table.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(231, 231, 231);
             table.BackgroundColor = Color.FromArgb(65, 78, 101);
+            table.GridColor = Color.FromArgb(65, 78, 101);
 
             table.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(43, 49, 65);
             table.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(231, 231, 231);
